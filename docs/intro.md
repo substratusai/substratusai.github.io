@@ -13,24 +13,29 @@ and Notebook.
 At the end of this guide, you will have falcon-7b-instruct deployed
 in your own GKE cluster.
 
-
 ## Initial Setup
+
 Let's get started by creating the infrastructure and deploy the Substratus
 controller.
 
 ### What you'll need
 
-- [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
+- [git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [Docker Desktop](https://docs.docker.com/engine/install/)
+- A [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled.
 
 ### Cloning the substratus repo
+
 ```bash
 git clone https://github.com/substratusai/substratus
 cd substratus
 ```
 
 ### Creating the infrastructure in GCP
+
+Use our infrastructure build image to create a cluster and dependent cloud
+components:
+
 ```bash
 docker build ./infra -t substratus-infra && docker run -it \
     -e REGION=us-central1 \
@@ -41,14 +46,16 @@ docker build ./infra -t substratus-infra && docker run -it \
 ```
 
 ### Deploying the controller
+
 ```bash
 export GPU_TYPE=nvidia-l4
 envsubst intall.yaml.template | kubectl apply -f -
 ```
 
-## Deploying Falcon 
+## Deploying Falcon
 
 Define the model CRD for falcon-7b-instruct
+
 ```bash
 kubectl apply -f examples/falcon-7b-instruct/model.yaml
 ```
