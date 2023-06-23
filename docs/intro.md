@@ -2,46 +2,55 @@
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+# Quickstart
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Let's discover **Substratus in less than 5 minutes**.
+Substratus is a cross cloud substrate for training and serving AI models.
+Substratus extends the Kubernetes control plane to orchestrate ML operations
+through the addition of new API endpoints: Model, ModelServer, Dataset,
+and Notebook.
 
-## Getting Started
+At the end of this guide, you will have falcon-7b-instruct deployed
+in your own GKE cluster.
 
-Get started by **creating a new site**.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Initial Setup
+Let's get started by creating the infrastructure and deploy the Substratus
+controller.
 
 ### What you'll need
 
 - [Node.js](https://nodejs.org/en/download/) version 16.14 or above:
   - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
 
-## Generate a new site
 
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
+### Cloning the substratus repo
 ```bash
-npm init docusaurus@latest my-website classic
+git clone https://github.com/substratusai/substratus
+cd substratus
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
-
+### Creating the infrastructure in GCP
 ```bash
-cd my-website
-npm run start
+docker build ./infra -t substratus-infra && docker run -it \
+    -e REGION=us-central1 \
+    -e ZONE=us-central1-a \
+    -e PROJECT=$(gcloud config get project) \
+    -e TOKEN=$(gcloud auth print-access-token) \
+    substratus-infra gcp-up
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+### Deploying the controller
+```bash
+export GPU_TYPE=nvidia-l4
+envsubst intall.yaml.template | kubectl apply -f -
+```
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+## Deploying Falcon 
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+Define the model CRD for falcon-7b-instruct
+```bash
+kubectl apply -f examples/falcon-7b-instruct/model.yaml
+```
+
+WIP, more to come
