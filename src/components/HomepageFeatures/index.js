@@ -1,46 +1,50 @@
-import React from 'react';
-import clsx from 'clsx';
-import styles from './styles.module.css';
+import React from "react";
+import clsx from "clsx";
+import styles from "./styles.module.css";
 
 const FeatureList = [
   {
-    title: 'Deploy 40b LLMs in minutes',
-    Svg: require('@site/static/img/starting-rocket.svg').default,
+    title: "Deploy Open source LLMs in minutes",
+    Svg: require("@site/static/img/starting-rocket.svg").default,
     description: (
       <>
-        Substratus was designed to make it very easy to deploy the latest
-        state of the art models such as Falcon 40b. Popular models are
-        prepackaged as Docker containers by the Substratus team.
+        Substratus enables effortless production-ready deployments of
+        cutting-edge open-source LLMs in minutes. Our platform offers
+        prepackaged Docker images for state-of-the-art OSS models, giving users
+        a standardized, scale-to-zero approach to inferencing that eliminates
+        bespoke deployments.
       </>
     ),
   },
   {
-    title: 'Fine tuning without all complexity',
-    Svg: require('@site/static/img/complex-sinus.svg').default,
+    title: "Fine-tuning without the complexity",
+    Svg: require("@site/static/img/complex-sinus.svg").default,
     description: (
       <>
-        Substratus allows you to simply specify your dataset and the model and
-        will do the training for you. Focus on getting the data instead of
-        figuring out the right way to fine tune the models.
+        Pull an OSS model off the shelf, register a training dataset, and
+        Substratus will do the heavy-lifting to train a fine-tuned model on
+        suitable hardware. Focus on your data instead of fiddling with details
+        of fine-tuning models.
       </>
     ),
   },
   {
-    title: 'Powered by Containers and K8s',
-    Svg: require('@site/static/img/kubernetes-horizontal-color.svg').default,
+    title: "Powered by Kubernetes",
+    Svg: require("@site/static/img/kubernetes-horizontal-color.svg").default,
     description: (
       <>
-        Substratus is built a K8s controller and based on containers. That makes
-        it possible to run any framework inside the container as long as it
-        meets the Substratus container contract.
+        A Kubernetes controller sits at the heart of Substratus, orchestrating
+        workflows between Models, Datasets, and Notebooks. This architecture and
+        our flexible contract empowers users to seamlessly run any framework
+        within the container.
       </>
     ),
   },
 ];
 
-function Feature({Svg, title, description}) {
+function Feature({ Svg, title, description }) {
   return (
-    <div className={clsx('col col--4')}>
+    <div className={clsx("col col--4")}>
       <div className="text--center">
         <Svg className={styles.featureSvg} role="img" />
       </div>
