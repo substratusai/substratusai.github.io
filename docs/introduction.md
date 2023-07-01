@@ -10,7 +10,7 @@ Substratus is a cross cloud substrate for training and serving ML models. Substr
 ## Why Substratus?
 
 * Train and serve models from within your cloud account. Your data stays private.
-* Avoid library lock-in and dependency hell through leveraging containers.
+* Leverage containers to avoid library lock-in and dependency wrangling.
 * Let substratus calculate your resource requirements and automatically provision GPUs, CPUs, and Memory.
 * Adopt best practice conventions by default.
 * Train pre-packaged state of the art models on your own datasets.

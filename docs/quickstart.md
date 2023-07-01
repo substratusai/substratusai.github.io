@@ -18,9 +18,9 @@ NOTE: Support for AWS ([GitHub Issue #12](https://github.com/substratusai/substr
 
 ## Prerequisites
 
-You with need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled.
+You will need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled.
 
-Make sure you have the required tools.
+Run the commands below to make sure you have the required tools.
 
 
 ```bash

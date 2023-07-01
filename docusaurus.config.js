@@ -7,7 +7,7 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Substratus",
-  tagline: "Build, train, and serve LLMs and more!",
+  tagline: "Build, Train, and Serve state of the art Models!",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
