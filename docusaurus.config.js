@@ -67,8 +67,8 @@ const config = {
       navbar: {
         title: "substratus.ai",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
+          alt: "Substratus",
+          src: "img/logo.png",
         },
         items: [
           {

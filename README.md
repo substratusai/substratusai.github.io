@@ -64,3 +64,27 @@ GIT_USER=<Your GitHub username> yarn deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+### Assets
+
+#### Main Icon
+
+Source: https://favicon.io/favicon-generator/
+
+See: `./scratch/favicon_io/`
+
+Settings:
+
+* Letter: "S" (capital)
+* Font: Saira Stencil One
+
+#### General Icons
+
+Source: https://fonts.google.com/icons
+
+Settings:
+
+* Weight: 100 (min)
+* Grade: 0 (middle)
+* Optical Size: 48 (max)
+

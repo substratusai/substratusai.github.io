@@ -30,6 +30,11 @@ To set advanced installation options, first clone the substratus repo.
 git clone https://github.com/substratusai/substratus
 ```
 
+
+```bash
+cd ./substratus
+```
+
 The `install/` directory contains the cluster and infrastructure configuration needed to get Substratus up and running. All configuration is documented in declarative formats (`.yaml`, `.tf`, `Dockerfile`).
 
 ```
