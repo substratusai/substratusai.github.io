@@ -1,0 +1,7 @@
+{% extends 'markdown/index.md.j2' %}
+
+{% block input %}
+```bash
+{{ cell.source.lstrip('!').lstrip('%') }}
+```
+{% endblock input %}

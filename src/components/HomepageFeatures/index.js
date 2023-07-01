@@ -5,38 +5,34 @@ import styles from "./styles.module.css";
 const FeatureList = [
   {
     title: "Deploy Open source LLMs in minutes",
-    Svg: require("@site/static/img/starting-rocket.svg").default,
+    Svg: require("@site/static/img/icons/rocket.svg").default,
     description: (
       <>
-        Substratus enables effortless production-ready deployments of
-        cutting-edge open-source LLMs in minutes. Our platform offers
-        prepackaged Docker images for state-of-the-art OSS models, giving users
-        a standardized, scale-to-zero approach to inferencing that eliminates
-        bespoke deployments.
+        Substratus enables production-ready deployments of
+        cutting-edge open-source LLMs in minutes. Popular state-of-the-art models are available as
+        prepackaged container images. Use best-practices from the start.
       </>
     ),
   },
   {
     title: "Fine-tuning without the complexity",
-    Svg: require("@site/static/img/complex-sinus.svg").default,
+    Svg: require("@site/static/img/icons/adjust.svg").default,
     description: (
       <>
         Pull an OSS model off the shelf, register a training dataset, and
-        Substratus will do the heavy-lifting to train a fine-tuned model on
-        suitable hardware. Focus on your data instead of fiddling with details
-        of fine-tuning models.
+        Substratus will do the heavy-lifting to fine-tune the model on
+        suitable hardware. Focus on your data instead of fiddling with infrastructure.
       </>
     ),
   },
   {
     title: "Powered by Kubernetes",
-    Svg: require("@site/static/img/kubernetes-horizontal-color.svg").default,
+    Svg: require("@site/static/img/icons/cube.svg").default,
     description: (
       <>
-        A Kubernetes controller sits at the heart of Substratus, orchestrating
+        Kubernetes controllers sit at the heart of Substratus, orchestrating
         workflows between Models, Datasets, and Notebooks. This architecture and
-        our flexible contract empowers users to seamlessly run any framework
-        within the container.
+        our flexible contract empowers users to seamlessly run any framework, on any cloud.
       </>
     ),
   },

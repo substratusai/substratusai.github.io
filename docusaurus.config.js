@@ -7,11 +7,11 @@ const darkCodeTheme = require("prism-react-renderer/themes/dracula");
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Substratus",
-  tagline: "Deploying and fine tuning LLMs made easy",
+  tagline: "Build, train, and serve LLMs and more!",
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://substratus.ai",
+  url: "https://substratusai.github.io",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -65,10 +65,10 @@ const config = {
       // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
       navbar: {
-        title: "Substratus.ai",
+        title: "substratus.ai",
         logo: {
-          alt: "My Site Logo",
-          src: "img/logo.svg",
+          alt: "Substratus",
+          src: "img/logo.png",
         },
         items: [
           {
@@ -92,8 +92,8 @@ const config = {
             title: "Docs",
             items: [
               {
-                label: "Tutorial",
-                to: "/docs/intro",
+                label: "Introduction",
+                to: "/docs/",
               },
             ],
           },
@@ -128,7 +128,7 @@ const config = {
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} substratus ai, LLC. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} SubstratusAI. Built with Docusaurus.`,
       },
       prism: {
         theme: lightCodeTheme,

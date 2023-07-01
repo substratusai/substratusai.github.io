@@ -6,6 +6,33 @@
 
 /* You can override the default Infima variables here. */
 :root {
+  /** See: https://www.ankursheel.com/blog/full-width-you-tube-video-embed **/
+  .video-container {
+    background-color: black;
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+  }
+  .video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /** Set the hero to the same color at the background **/
+  .hero {
+    --ifm-hero-background-color: var(--ifm-background-color);
+    --ifm-hero-text-color: var(--ifm-heading-color);
+  }
+  .button {
+    color: var(--ifm-font-color-base-inverse);
+    background-color: var(--ifm-color-primary-lighter);
+  }
+
+
   --ifm-color-primary: #2e8555;
   --ifm-color-primary-dark: #29784c;
   --ifm-color-primary-darker: #277148;
@@ -28,3 +55,4 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
