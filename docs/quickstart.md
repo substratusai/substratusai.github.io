@@ -71,7 +71,7 @@ kubectl get ai
 
 When the ModelServer is reporting a `Ready` status, proceed to the next section to test it out.
 
-## Testing out the ModelServer
+## Testing out the Model Server
 
 The way every company chooses to expose a model will be different. In most cases models are integrated into other business applications and are rarely exposed directly to the internet. Substratus will only serve the model within the Kubernetes cluster (with a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object). The choice of how to expose the model to your users is up to you.
 
