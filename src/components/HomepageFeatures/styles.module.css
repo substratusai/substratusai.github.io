@@ -6,13 +6,13 @@
 }
 
 .featureSvg {
-  height: 200px;
-  width: 200px;
+  height: 160px;
+  width: 160px;
 }
 
 
 .featureSvg {
-  fill: var(--ifm-font-color-base);
+  fill: var(--ifm-font-color);
 }
 
 /*
