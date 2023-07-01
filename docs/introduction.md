@@ -5,7 +5,7 @@ slug: "/"
 
 # Introduction
 
-Substratus is a cross cloud substrate for training and serving AI models. Substratus extends the Kubernetes control plane to orchestrate ML operations through the addition of new API endpoints: Model, ModelServer, Dataset, and Notebook.
+Substratus is a cross cloud substrate for training and serving ML models. Substratus extends the Kubernetes control plane to orchestrate ML operations through the addition of new API endpoints: Model, ModelServer, Dataset, and Notebook.
 
 ## Why Substratus?
 

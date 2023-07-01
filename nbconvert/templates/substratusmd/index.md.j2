@@ -2,6 +2,6 @@
 
 {% block input %}
 ```bash
-{{ cell.source.lstrip('!') }}
+{{ cell.source.lstrip('!').lstrip('%') }}
 ```
 {% endblock input %}

@@ -10,6 +10,12 @@ In this quickstart guide, you will install Substratus into a Google Cloud projec
 
 NOTE: Support for AWS ([GitHub Issue #12](https://github.com/substratusai/substratus/issues/12)) and Azure ([GitHub Issue #63](https://github.com/substratusai/substratus/issues/63)) is planned. Give those issues a thumbs up if you would like to see them prioritized.
 
+<!-- TODO: quickstart video -->
+
+<div class="video-container">
+  <iframe class="video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 ## Prerequisites
 
 You with need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled.
@@ -24,6 +30,11 @@ docker version || open 'https://docs.docker.com/get-docker/'
 
 ```bash
 gcloud version || open 'https://cloud.google.com/sdk/docs/install'
+```
+
+
+```bash
+gke-gcloud-auth-plugin --version || gcloud components install gke-gcloud-auth-plugin
 ```
 
 
@@ -84,7 +95,7 @@ kubectl port-forward service/facebook-opt-125m-modelserver 8080:8080
 
 The packaged model server ships with an API (for application integration) and a GUI interface (for debugging). You can now open up your browser at [http://localhost:8080](http://localhost:8080) and talk to your model!
 
-If you are interesting in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
+If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
 
 ## Cleanup
 
