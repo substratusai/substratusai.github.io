@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[9493],{6800:t=>{t.exports=JSON.parse('{"title":"API","slug":"/category/api","permalink":"/docs/category/api","navigation":{"previous":{"title":"Installation","permalink":"/docs/installation"},"next":{"title":"Dataset","permalink":"/docs/api/datasets"}}}')}}]);
