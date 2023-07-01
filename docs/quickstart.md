@@ -84,11 +84,11 @@ kubectl port-forward service/facebook-opt-125m-modelserver 8080:8080
 
 The packaged model server ships with an API (for application integration) and a GUI interface (for debugging). You can now open up your browser at [http://localhost:8080](http://localhost:8080) and talk to your model!
 
-If you are interesting in continuing your journey into what Substratus can do, take a look at the [Guided Walkthrough](./category/walkthrough).
+If you are interesting in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
 
 ## Cleanup
 
-The process that is serving the model can be stopped by simply deleting the same ModelServer object that was applyed before.
+The process that is serving the model can be stopped by simply deleting the same ModelServer object that was applied before.
 
 
 ```bash
