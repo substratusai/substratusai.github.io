@@ -12,7 +12,7 @@
 
 
 .featureSvg {
-  fill: var(--ifm-font-color);
+  fill: var(--ifm-font-color-base);
 }
 
 /*
