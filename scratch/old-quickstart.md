@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Quickstart
+# Old Quickstart
 
 Substratus is a cross cloud substrate for training and serving AI models.
 Substratus extends the Kubernetes control plane to orchestrate ML operations
