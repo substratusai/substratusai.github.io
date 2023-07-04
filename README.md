@@ -22,7 +22,7 @@ This command starts a local development server and opens up a browser window. Mo
 
 A lot of the documents on this website are generated from Jupyter Notebooks. This allows for testing documentation.
 
-To edit the files, start a local Jupyter Lab instance.
+To edit the notebook files, you can either start a notebook (see below) or use VSCode which can edit notebooks directly.
 
 ```
 npm run notebook
