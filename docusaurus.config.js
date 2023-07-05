@@ -11,7 +11,7 @@ const config = {
   favicon: "img/favicon.ico",
 
   // Set the production url of your site here
-  url: "https://substratusai.github.io",
+  url: "https://substratus.ai",
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: "/",
@@ -43,14 +43,14 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/substratusai/substratusai.github.io/tree/main/",
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            "https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/",
+            "https://github.com/substratusai/substratusai.github.io/tree/main/",
         },
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
@@ -63,9 +63,9 @@ const config = {
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
       // Replace with your project's social card
-      image: "img/docusaurus-social-card.jpg",
+      image: "img/logo.png",
       navbar: {
-        title: "substratus.ai",
+        title: "Substratus.AI",
         logo: {
           alt: "Substratus",
           src: "img/logo.png",
@@ -95,6 +95,14 @@ const config = {
                 label: "Introduction",
                 to: "/docs/",
               },
+              {
+                label: "Quickstart",
+                to: "/docs/quickstart",
+              },
+              {
+                label: "Architecture",
+                to: "/docs/architecture",
+              },
             ],
           },
           {
@@ -103,14 +111,6 @@ const config = {
               {
                 label: "Stack Overflow",
                 href: "https://stackoverflow.com/questions/tagged/substratus",
-              },
-              {
-                label: "Discord",
-                href: "https://discord.gg/RcUShexGu8",
-              },
-              {
-                label: "Twitter",
-                href: "https://twitter.com/docusaurus",
               },
             ],
           },
@@ -123,12 +123,12 @@ const config = {
               },
               {
                 label: "GitHub",
-                href: "https://github.com/facebook/docusaurus",
+                href: "https://github.com/substratusai/substratus",
               },
             ],
           },
         ],
-        copyright: `Copyright © ${new Date().getFullYear()} SubstratusAI. Built with Docusaurus.`,
+        copyright: `Copyright © ${new Date().getFullYear()} SubstratusAI.`,
       },
       prism: {
         theme: lightCodeTheme,
