@@ -6,7 +6,7 @@ sidebar_position: 2
 
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 
-In this quickstart guide, you will install Substratus into a Google Cloud project. You will then explore how Substratus can be used to build and deploy Open Source LLMs.
+In this quickstart guide, you will install Substratus into a Google Cloud Platform project. Then you'll explore how Substratus can be used to build and deploy Open Source LLMs.
 
 NOTE: Support for AWS ([GitHub Issue #12](https://github.com/substratusai/substratus/issues/12)) and Azure ([GitHub Issue #63](https://github.com/substratusai/substratus/issues/63)) is planned. Give those issues a thumbs up if you would like to see them prioritized.
 
@@ -49,24 +49,24 @@ Create a substratus GKE cluster along with supporting infrastructure (buckets, s
 
 ```bash
 docker run -it \
-  -v $HOME/.kube:/root/.kube \
+  -v ${HOME}/.kube:/root/.kube \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
   substratusai/installer gcp-up.sh
 ```
 
-Your kubectl command should now be pointing at the substratus cluster.
+`kubectl` should now be pointing at the substratus cluster.
 
 ## Build and Deploy an Open Source Model
 
-To keep things quick, a small model (125 million parameters) will be used.
+To keep this quick, we'll use a small model (125 million parameters).
 
 
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/model.yaml
 ```
 
-A container build process is now running in the Substratus cluster. You can declare that you would like the built model to be deployed by applying a ModelServer manifest.
+A container build process is now running in the Substratus cluster. Let's also deploy the built model by applying a ModelServer manifest. ModelServer should start serving shortly after the Model build finishes (~3 minutes).
 
 
 ```bash
@@ -80,11 +80,11 @@ You can check on the progress of both processes using a single command.
 kubectl get ai
 ```
 
-When the ModelServer is reporting a `Ready` status, proceed to the next section to test it out.
+When the ModelServer reports a `Ready` status, proceed to the next section to test it out.
 
 ## Testing out the Model Server
 
-The way every company chooses to expose a model will be different. In most cases models are integrated into other business applications and are rarely exposed directly to the internet. Substratus will only serve the model within the Kubernetes cluster (with a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object). The choice of how to expose the model to your users is up to you.
+The way every company chooses to expose a model will be different. In most cases models are integrated into other business applications and are rarely exposed directly to the Internet. By default, substratus will only serve the model within the Kubernetes cluster (with a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object). From here, it's up to you to expose the model to a wider network (e.g., the internal VPC network or the Internet) via annotated Service or Ingress objects.
 
 In order to access the model for exploratory purposes, forward ports from within the cluster to your local machine.
 
@@ -93,7 +93,12 @@ In order to access the model for exploratory purposes, forward ports from within
 kubectl port-forward service/facebook-opt-125m-modelserver 8080:8080
 ```
 
-The packaged model server ships with an API (for application integration) and a GUI interface (for debugging). You can now open up your browser at [http://localhost:8080](http://localhost:8080) and talk to your model!
+All substratus ModelServers ship with an API and documentation. You can now open up your browser at [http://localhost:8080/docs](http://localhost:8080/docs) and talk to your model! Alternatively, request text generation via the HTTP API:
+
+
+```bash
+ curl -X POST -H "Content-Type: application/json" -d '{"prompt": "the quick brown fox", "max_new_tokens": 30}' http://localhost:8080/generate
+```
 
 If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
 
