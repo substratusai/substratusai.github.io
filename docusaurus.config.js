@@ -112,6 +112,10 @@ const config = {
                 label: "Stack Overflow",
                 href: "https://stackoverflow.com/questions/tagged/substratus",
               },
+              {
+                label: "Discord",
+                href: "https://discord.gg/RcUShexGu8",
+              },
             ],
           },
           {
