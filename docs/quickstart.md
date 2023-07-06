@@ -93,11 +93,20 @@ In order to access the model for exploratory purposes, forward ports from within
 kubectl port-forward service/facebook-opt-125m-modelserver 8080:8080
 ```
 
-All substratus ModelServers ship with an API and documentation. You can now open up your browser at [http://localhost:8080/docs](http://localhost:8080/docs) and talk to your model! Alternatively, request text generation via the HTTP API:
+All substratus ModelServers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the HTTP API:
 
 
 ```bash
- curl -X POST -H "Content-Type: application/json" -d '{"prompt": "the quick brown fox", "max_new_tokens": 30}' http://localhost:8080/generate
+ curl http://localhost:8080/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{ \
+    "model": "facebook-opt-125m", \
+    "prompt": "The quick brown fox ", \
+    "max_tokens": 30, \
+    "temperature": 0 \
+  }'
+  # choices[0].text will very different
+{"id":"cmpl-2d4c8871b20dc45e6ac98322","object":"text_completion","created":1688628294,"model":"facebook-opt-125m","choices":[{"text":"I've read Patrick Beut, Richard Eichel, Elliot Gagné","index":0,"logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":1,"completion_tokens":16,"total_tokens":17}}
 ```
 
 If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
