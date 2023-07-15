@@ -66,7 +66,7 @@ To keep this quick, we'll use a small model (125 million parameters).
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/model.yaml
 ```
 
-A container build process is now running in the Substratus cluster. Let's also deploy the built model by applying a ModelServer manifest. ModelServer should start serving shortly after the Model build finishes (~3 minutes).
+A container build process is now running in the Substratus cluster. Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~3 minutes).
 
 
 ```bash
@@ -80,9 +80,9 @@ You can check on the progress of both processes using a single command.
 kubectl get ai
 ```
 
-When the ModelServer reports a `Ready` status, proceed to the next section to test it out.
+When the Server reports a `Ready` status, proceed to the next section to test it out.
 
-## Testing out the Model Server
+## Testing out the Server
 
 The way every company chooses to expose a model will be different. In most cases models are integrated into other business applications and are rarely exposed directly to the Internet. By default, substratus will only serve the model within the Kubernetes cluster (with a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object). From here, it's up to you to expose the model to a wider network (e.g., the internal VPC network or the Internet) via annotated Service or Ingress objects.
 
@@ -90,10 +90,10 @@ In order to access the model for exploratory purposes, forward ports from within
 
 
 ```bash
-kubectl port-forward service/facebook-opt-125m-modelserver 8080:8080
+kubectl port-forward service/facebook-opt-125m-server 8080:8080
 ```
 
-All substratus ModelServers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the HTTP API:
+All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the HTTP API:
 
 
 ```bash
@@ -113,7 +113,7 @@ If you are interested in continuing your journey through Substratus, take a look
 
 ## Cleanup
 
-The process that is serving the model can be stopped by simply deleting the same ModelServer object that was applied before.
+The process that is serving the model can be stopped by simply deleting the same Server object that was applied before.
 
 
 ```bash

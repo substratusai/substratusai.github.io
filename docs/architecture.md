@@ -6,7 +6,15 @@ sidebar_position: 5
 
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 
-Substratus extends the Kubernetes control plane to orchestrate the full lifecycle of machine learning models. It does this by introducing new custom resources into the Kubernetes API: Model, ModelServer, Dataset, Notebook. A set of controllers, bundled together into a single Deployment respond to these new resource types. Substratus can be described as a [Kubernetes Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/) as it automates the orchestration of common ML tasks: packaging model source code into containers, pulling and transforming datasets, running training jobs, managing dynamic notebook development environments.
+Substratus extends the Kubernetes control plane to orchestrate the full lifecycle
+of machine learning models. It does this by introducing new custom resources
+into the Kubernetes API: Model, Server, Dataset, Notebook. A set of controllers,
+bundled together into a single Deployment respond to these new resource types.
+Substratus can be described as a
+[Kubernetes Operator](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/)
+as it automates the orchestration of common ML tasks: packaging models local to
+the infrastructure, packaging ML jobs into containers, pulling and transforming
+datasets, running training jobs, managing dynamic notebook development environments.
 
 <img src="/img/diagrams/high-level-architecture.excalidraw.png"></img>
 
@@ -18,9 +26,9 @@ The Model resource is at the center of Substratus. A Model object represents an 
 
 
 
-## ModelServers
+## Servers
 
-The ModelServer resource is responsible for exposing the a Model with a HTTP API for inference.
+The Server resource is responsible for exposing the a Model with a HTTP API for inference.
 
 :::note
 

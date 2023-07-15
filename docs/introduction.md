@@ -5,7 +5,7 @@ slug: "/"
 
 # Introduction
 
-Substratus is a cross-cloud substrate for training and serving ML models. Substratus extends the Kubernetes control plane to orchestrate ML operations through the addition of new API endpoints: Model, ModelServer, Dataset, and Notebook.
+Substratus is a cross-cloud substrate for training and serving ML models. Substratus extends the Kubernetes control plane to orchestrate ML operations through the addition of new API endpoints: Model, Server, Dataset, and Notebook.
 
 ## Why Substratus?
 
@@ -23,3 +23,9 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 <div class="video-container">
   <iframe class="video" src="https://www.youtube.com/embed/RVeXSjTTMgU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
+
+## Next steps
+- Go through the [Quickstart](./quickstart.md) to deploy a small CPU only only model
+- [Install Substratus](./installation.md) and provision required cloud infrastructure
+- Go through end-to-end Tutorial
+- Learn more about the [Architecture](./architecture.md)
