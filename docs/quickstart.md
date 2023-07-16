@@ -57,27 +57,28 @@ docker run -it \
 
 `kubectl` should now be pointing at the substratus cluster.
 
-## Build and Deploy an Open Source Model
+## Deploy an Open Source Model
 
-To keep this quick, we'll use a small model (125 million parameters).
+To keep this quick, we'll use a smallish model falcon-7b-instruct (just 7 billion parameters).
 
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/model.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
 ```
 
-A container build process is now running in the Substratus cluster. Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~3 minutes).
+The model is now being downloaded from HuggingFace into a GCS bucket. This takes about 5 minutes. 
+Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~3 minutes).
 
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/server.yaml
+ kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
 ```
 
 You can check on the progress of both processes using a single command.
 
 
 ```bash
-kubectl get ai
+ kubectl get ai
 ```
 
 When the Server reports a `Ready` status, proceed to the next section to test it out.
@@ -90,26 +91,29 @@ In order to access the model for exploratory purposes, forward ports from within
 
 
 ```bash
-kubectl port-forward service/facebook-opt-125m-server 8080:8080
+kubectl port-forward service/falcon-7b-instruct-server 8080:8080
 ```
 
-All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the HTTP API:
+    Error from server (NotFound): services "falcon-7b-instruct-server" not found
+
+
+All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the OpenAI compatible HTTP API:
 
 
 ```bash
  curl http://localhost:8080/v1/completions \
   -H "Content-Type: application/json" \
   -d '{ \
-    "model": "facebook-opt-125m", \
-    "prompt": "The quick brown fox ", \
-    "max_tokens": 30, \
-    "temperature": 0 \
+    "model": "falcon-7b-instruct", \
+    "prompt": "Who was the first president of the United States? ", \
+    "max_tokens": 30\
   }'
   # choices[0].text will very different
 {"id":"cmpl-2d4c8871b20dc45e6ac98322","object":"text_completion","created":1688628294,"model":"facebook-opt-125m","choices":[{"text":"I've read Patrick Beut, Richard Eichel, Elliot Gagné","index":0,"logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":1,"completion_tokens":16,"total_tokens":17}}
 ```
 
-If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
+If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) or
+follow the [tutorial to finetune falcon-7b-instruct](./tutorials/deploying-finetuning-falcon-7b-instruct.md) with a custom dataset.
 
 ## Cleanup
 
