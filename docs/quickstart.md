@@ -57,32 +57,33 @@ docker run -it \
 
 `kubectl` should now be pointing at the substratus cluster.
 
-## Build and Deploy an Open Source Model
+## Deploy an Open Source Model
 
-To keep this quick, we'll use a small model (125 million parameters).
+To keep this quick, we'll use a smallish model, the falcon-7b-instruct model (just 7 billion parameters).
 
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/model.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
 ```
 
-A container build process is now running in the Substratus cluster. Let's also deploy the built model by applying a ModelServer manifest. ModelServer should start serving shortly after the Model build finishes (~3 minutes).
+The model is now being downloaded from HuggingFace into a GCS bucket. This takes about 5 minutes. 
+Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~3 minutes).
 
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/server.yaml
+ kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
 ```
 
 You can check on the progress of both processes using a single command.
 
 
 ```bash
-kubectl get ai
+ kubectl get ai
 ```
 
-When the ModelServer reports a `Ready` status, proceed to the next section to test it out.
+When the Server reports a `Ready` status, proceed to the next section to test it out.
 
-## Testing out the Model Server
+## Testing out the Server
 
 The way every company chooses to expose a model will be different. In most cases models are integrated into other business applications and are rarely exposed directly to the Internet. By default, substratus will only serve the model within the Kubernetes cluster (with a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object). From here, it's up to you to expose the model to a wider network (e.g., the internal VPC network or the Internet) via annotated Service or Ingress objects.
 
@@ -90,34 +91,56 @@ In order to access the model for exploratory purposes, forward ports from within
 
 
 ```bash
-kubectl port-forward service/facebook-opt-125m-modelserver 8080:8080
+kubectl port-forward service/falcon-7b-instruct-server 8080:8080
 ```
 
-All substratus ModelServers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the HTTP API:
+All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the OpenAI compatible HTTP API:
 
 
 ```bash
  curl http://localhost:8080/v1/completions \
   -H "Content-Type: application/json" \
   -d '{ \
-    "model": "facebook-opt-125m", \
-    "prompt": "The quick brown fox ", \
-    "max_tokens": 30, \
-    "temperature": 0 \
-  }'
-  # choices[0].text will very different
-{"id":"cmpl-2d4c8871b20dc45e6ac98322","object":"text_completion","created":1688628294,"model":"facebook-opt-125m","choices":[{"text":"I've read Patrick Beut, Richard Eichel, Elliot Gagné","index":0,"logprobs":null,"finish_reason":"length"}],"usage":{"prompt_tokens":1,"completion_tokens":16,"total_tokens":17}}
+    "model": "falcon-7b-instruct", \
+    "prompt": "Who was the first president of the United States? ", \
+    "max_tokens": 12\
+  }' | jq
 ```
 
-If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough).
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+      0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   458  100   326  100   132    171     69  0:00:01  0:00:01 --:--:--   241
+    [1;39m{
+      [0m[34;1m"id"[0m[1;39m: [0m[0;32m"cmpl-e42772faf58cd46c18a955f1"[0m[1;39m,
+      [0m[34;1m"object"[0m[1;39m: [0m[0;32m"text_completion"[0m[1;39m,
+      [0m[34;1m"created"[0m[1;39m: [0m[0;39m1689485483[0m[1;39m,
+      [0m[34;1m"model"[0m[1;39m: [0m[0;32m"falcon-7b-instruct"[0m[1;39m,
+      [0m[34;1m"choices"[0m[1;39m: [0m[1;39m[
+        [1;39m{
+          [0m[34;1m"text"[0m[1;39m: [0m[0;32m"\nGeorge Washington was the first president of the United States."[0m[1;39m,
+          [0m[34;1m"index"[0m[1;39m: [0m[0;39m0[0m[1;39m,
+          [0m[34;1m"logprobs"[0m[1;39m: [0m[1;30mnull[0m[1;39m,
+          [0m[34;1m"finish_reason"[0m[1;39m: [0m[0;32m"length"[0m[1;39m
+        [1;39m}[0m[1;39m
+      [1;39m][0m[1;39m,
+      [0m[34;1m"usage"[0m[1;39m: [0m[1;39m{
+        [0m[34;1m"prompt_tokens"[0m[1;39m: [0m[0;39m11[0m[1;39m,
+        [0m[34;1m"completion_tokens"[0m[1;39m: [0m[0;39m12[0m[1;39m,
+        [0m[34;1m"total_tokens"[0m[1;39m: [0m[0;39m23[0m[1;39m
+      [1;39m}[0m[1;39m
+    [1;39m}[0m
+
+
+If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) or
+follow the [tutorial to finetune falcon-7b-instruct](./tutorials/deploying-finetuning-falcon-7b-instruct.md) with a custom dataset.
 
 ## Cleanup
 
-The process that is serving the model can be stopped by simply deleting the same ModelServer object that was applied before.
+The process that is serving the model can be stopped by simply deleting the same Server object that was applied before.
 
 
 ```bash
-kubectl delete -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/server.yaml
+ kubectl delete -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
 ```
 
 If you want to uninstall the entire Substratus system and all infrastructure, you can run the `gcp-down.sh` script from the installation container.

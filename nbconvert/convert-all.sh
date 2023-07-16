@@ -16,8 +16,7 @@ convert() {
     --template substratusmd \
     --TemplateExporter.extra_template_basedirs=$repo/nbconvert/templates \
     --TagRemovePreprocessor.enabled=True \
-    --TagRemovePreprocessor.remove_cell_tags remove_cell \
-    --ClearOutputPreprocessor.enabled=True
+    --TagRemovePreprocessor.remove_cell_tags remove_cell
 }
 
 for nbfile in $repo/docs/*.ipynb
