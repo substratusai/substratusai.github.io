@@ -103,33 +103,31 @@ All substratus Servers ship with an API and interactive frontend. Open up your b
   -d '{ \
     "model": "falcon-7b-instruct", \
     "prompt": "Who was the first president of the United States? ", \
-    "max_tokens": 12\
-  }' | jq
+    "max_tokens": 10\
+  }' 
 ```
 
-      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                     Dload  Upload   Total   Spent    Left  Speed
-      0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0100   458  100   326  100   132    171     69  0:00:01  0:00:01 --:--:--   241
-    [1;39m{
-      [0m[34;1m"id"[0m[1;39m: [0m[0;32m"cmpl-e42772faf58cd46c18a955f1"[0m[1;39m,
-      [0m[34;1m"object"[0m[1;39m: [0m[0;32m"text_completion"[0m[1;39m,
-      [0m[34;1m"created"[0m[1;39m: [0m[0;39m1689485483[0m[1;39m,
-      [0m[34;1m"model"[0m[1;39m: [0m[0;32m"falcon-7b-instruct"[0m[1;39m,
-      [0m[34;1m"choices"[0m[1;39m: [0m[1;39m[
-        [1;39m{
-          [0m[34;1m"text"[0m[1;39m: [0m[0;32m"\nGeorge Washington was the first president of the United States."[0m[1;39m,
-          [0m[34;1m"index"[0m[1;39m: [0m[0;39m0[0m[1;39m,
-          [0m[34;1m"logprobs"[0m[1;39m: [0m[1;30mnull[0m[1;39m,
-          [0m[34;1m"finish_reason"[0m[1;39m: [0m[0;32m"length"[0m[1;39m
-        [1;39m}[0m[1;39m
-      [1;39m][0m[1;39m,
-      [0m[34;1m"usage"[0m[1;39m: [0m[1;39m{
-        [0m[34;1m"prompt_tokens"[0m[1;39m: [0m[0;39m11[0m[1;39m,
-        [0m[34;1m"completion_tokens"[0m[1;39m: [0m[0;39m12[0m[1;39m,
-        [0m[34;1m"total_tokens"[0m[1;39m: [0m[0;39m23[0m[1;39m
-      [1;39m}[0m[1;39m
-    [1;39m}[0m
-
+```json
+{
+  "id": "cmpl-e42772faf58cd46c18a955f1",
+  "object": "text_completion",
+  "created": 1689485483,
+  "model": "falcon-7b-instruct",
+  "choices": [
+    {
+      "text": "\nGeorge Washington was the first president of the United States.",
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "length"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 11,
+    "completion_tokens": 12,
+    "total_tokens": 23
+  }
+}
+```
 
 If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) or
 follow the [tutorial to finetune falcon-7b-instruct](./tutorials/deploying-finetuning-falcon-7b-instruct.md) with a custom dataset.
