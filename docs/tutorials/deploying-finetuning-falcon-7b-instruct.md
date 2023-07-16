@@ -272,7 +272,7 @@ It takes a few minutes to load the dataset. Verify the Dataset is ready:
 
 ### Creating the fine tuned model
 Fine tuned model = base model + dataset. Substratus makes this very easy by creating
-new Model resource where specify the base model and the dataset, resulting in a
+new Model resource where you specify the base model and the dataset, resulting in a
 new fine tuned model.
 
 Create the fined model by running:

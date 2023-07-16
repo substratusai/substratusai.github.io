@@ -9,7 +9,8 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 
 ## Why Substratus?
 
-* Ability to deploy and finetune state of the lart large language models easily within an hour.
+* Zero code needed to deploy and finetune OSS LLMs
+* Ability to deploy and finetune state of the art large language models easily within an hour.
 * Automatically provision all the required infrastructure (K8s cluster, buckets etc) in your cloud account using Terraform.
 * Scale from 0 and spot VMs supported by default (GPUs $$$).
 * Your data stays private and won't be used by the corporate overlords
