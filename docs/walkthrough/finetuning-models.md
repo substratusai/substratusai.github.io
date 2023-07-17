@@ -55,14 +55,15 @@ By using a predefined paths the model automatically loads and stores from cloud 
 - You have loaded the falcon-7b-instruct model by following [quickstart guide](../quickstart.md)
 - You have loaded the k8s-instruction Dataset by following the [loading datasets guide](./loading-datasets.md)
 
-Verify that the falcon-7b-instruct base model has been loaded and is ready:
+Run the commands below to ensure the you satisfy all the prerequisites:
 
 
 ```bash
- kubectl describe model falcon-7b-instruct
+ kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
+! kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/datasets/k8s-instructions.yaml
 ```
 
-Verify that the k8s-instruct Dataset has been loaded and is ready:
+Verify that the falcon-7b-instruct model and k8s-instruct Dataset are ready:
 
 
 ```bash
