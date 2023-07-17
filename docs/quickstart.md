@@ -129,8 +129,7 @@ All substratus Servers ship with an API and interactive frontend. Open up your b
 }
 ```
 
-If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) or
-follow the [tutorial to finetune falcon-7b-instruct](./tutorials/deploying-finetuning-falcon-7b-instruct.md) with a custom dataset.
+If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) to learn how to finetune models with your own dataset and much more!
 
 ## Cleanup
 
