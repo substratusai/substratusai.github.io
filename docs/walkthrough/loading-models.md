@@ -6,7 +6,7 @@ sidebar_position: 1
 
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 
-Substratus makes it very easy to import your existing ML models into Substratus.
+Import your existing ML models into Substratus.
 You can for example use the Substratus provided `substratusai/model-loader-huggingface`
 container image to load models into Substratus.
 

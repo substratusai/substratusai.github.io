@@ -6,14 +6,14 @@ sidebar_position: 4
 
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 The large pretrained base models are already very helpful, but
-with finetuning smal and large language models can be made even more helpful.
+with finetuning small and large language models can be made even more helpful.
 
-Finetunig is especially helpful for use cases that require private internal
+Finetuning is especially helpful for use cases that require private internal
 data or for use cases that require domain specific knowledge that wasn't
 available on the internet.
 
 In Substratus the Model resource allows you to specify a `baseModel` and
-a `trainingDataset` to make it very easy to create new finetuned models.
+a `trainingDataset` to create new finetuned models.
 
 To summarize: 
 `finetunedModel = training_image(baseModel, trainingDataset)`. 
