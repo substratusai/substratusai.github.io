@@ -29,3 +29,8 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 - [Install Substratus](./installation.md) and provision required cloud infrastructure
 - Finetune a model by following the [walkthroughs](./walkthrough/finetuning-models.md)
 - Learn more about the [Architecture](./architecture.md)
+- Star the repo the [GitHub repo](https://github.com/substratusai/substratus) and file an
+  issue to provide feedback
+
+Note: Substratus might still introduce backward incompatible changes to the APIs. This
+will change once Substratus reaches 1.0 milestone.
