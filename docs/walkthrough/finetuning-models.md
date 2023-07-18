@@ -63,7 +63,7 @@ Run the commands below to ensure the you satisfy all the prerequisites:
 ! kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/datasets/k8s-instructions.yaml
 ```
 
-Verify that the falcon-7b-instruct model and k8s-instruct Dataset are ready:
+Verify that the falcon-7b-instruct model and k8s-instruct Dataset are ready (this should take ~5 minutes):
 
 
 ```bash
