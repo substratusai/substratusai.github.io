@@ -6,15 +6,10 @@ sidebar_position: 2
 
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 
-In this quickstart guide, you will install Substratus into a Google Cloud Platform project. Then you'll explore how Substratus can be used to build and deploy Open Source LLMs.
+In this quickstart guide, you will install Substratus into a Google Cloud Platform project. Then you'll explore how Substratus can be used to load and deploy Open Source LLMs.
 
 NOTE: Support for AWS ([GitHub Issue #12](https://github.com/substratusai/substratus/issues/12)) and Azure ([GitHub Issue #63](https://github.com/substratusai/substratus/issues/63)) is planned. Give those issues a thumbs up if you would like to see them prioritized.
 
-<!-- TODO: quickstart video -->
-
-<div class="video-container">
-  <iframe class="video" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-</div>
 
 ## Prerequisites
 
