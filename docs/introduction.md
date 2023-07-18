@@ -18,16 +18,14 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 * Adopt best practice conventions by default.
 * Leverage GitOps out of the box.
 
-## One Minute Intro Video
-
-<!-- TODO: 1 minute intro video -->
+## Intro Video (less than 2 mins)
 
 <div class="video-container">
-  <iframe class="video" src="https://www.youtube.com/embed/RVeXSjTTMgU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <iframe class="video" src="https://www.youtube.com/embed/CLyXKJHIQ6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 ## Next steps
-- Go through the [Quickstart](./quickstart.md) to deploy a small CPU only only model
+- Go through the [Quickstart](./quickstart.md) to deploy a falcon-7b-instruct model
 - [Install Substratus](./installation.md) and provision required cloud infrastructure
-- Go through end-to-end Tutorial
+- Finetune a model by following the [walkthroughs](./walkthrough/finetuning-models.md)
 - Learn more about the [Architecture](./architecture.md)
