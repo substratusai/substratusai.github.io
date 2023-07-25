@@ -22,3 +22,4 @@ yarn-error.log*
 # Notebooks
 .ipynb_checkpoints
 __pycache__
+.venv

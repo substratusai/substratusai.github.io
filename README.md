@@ -85,3 +85,11 @@ Settings:
 * Weight: 100 (min)
 * Grade: 0 (middle)
 * Optical Size: 48 (max)
+
+### Testing
+
+We test the contents of our docs via `testbook`.
+
+```bash
+pytest .
+```
