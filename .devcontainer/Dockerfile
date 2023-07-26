@@ -1,5 +1,4 @@
 FROM mcr.microsoft.com/devcontainers/base:jammy
-# FROM mcr.microsoft.com/vscode/devcontainers/base:bullseye
 
 # [Option] Install zsh
 ARG INSTALL_ZSH="true"
@@ -52,8 +51,5 @@ RUN apt-get update -y && \
     gcc \
     python3-dev \
     nodejs
-
-# TODO(bjb): copy and install requirements.txt
-# RUN python3 -m ipykernel install --user
 
 CMD [ "sleep", "infinity" ]
