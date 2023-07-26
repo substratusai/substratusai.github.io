@@ -8,13 +8,13 @@ venv:
 
 .PHONY: install
 install: venv
-	@ ${PIP} install -r requirements.txt && \
+	${PIP} install -r requirements.txt && \
 	${PYTHON} -m ipykernel install --user
 
 .PHONY: test
 test: install
-	@ ${VENV_NAME}/bin/pytest -svvv
+	${VENV_NAME}/bin/pytest -svvv
 
 .PHONY: freeze
 freeze: install
-	@ ${PYTHON} -m pip freeze > requirements.txt
+	${PYTHON} -m pip freeze > requirements.txt

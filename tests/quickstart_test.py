@@ -65,8 +65,8 @@ def test_ai_resources_ready(auth_tb_quickstart) -> None:
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
 def test_pf_and_curl(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k port-forward server")
-    time.sleep(5)
-    # just easier to do this using requests
+    time.sleep(10)
+    # it's just easier to do this using requests
     response = requests.post(
         "http://localhost:8080/v1/completions",
         headers={"Content-Type": "application/json"},
