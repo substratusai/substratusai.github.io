@@ -79,7 +79,7 @@ def auth_tb_serving_models():
         yield tb
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session", autouse=True)
 def gcp_setup(auth_tb_quickstart):
     auth_tb_quickstart.execute_cell("installer gcp-up")
     assert "Apply complete!" in auth_tb_quickstart.cell_output_text("installer gcp-up")

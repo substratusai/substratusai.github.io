@@ -18,7 +18,7 @@ def test_software_dependencies_stdout(tb_quickstart) -> None:
 
 
 @pytest.mark.dependency()
-def test_model_apply(gcp_setup, auth_tb_quickstart) -> None:
+def test_model_apply(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k apply model")
     assert (
         "model.substratus.ai/falcon-7b-instruct created"
@@ -29,7 +29,7 @@ def test_model_apply(gcp_setup, auth_tb_quickstart) -> None:
 
 
 @pytest.mark.dependency()
-def test_server_apply(gcp_setup, auth_tb_quickstart) -> None:
+def test_server_apply(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k apply server")
     assert (
         "server.substratus.ai/falcon-7b-instruct created"
@@ -45,7 +45,7 @@ def test_server_apply(gcp_setup, auth_tb_quickstart) -> None:
         "test_server_apply",
     ]
 )
-def test_ai_resources_ready(gcp_setup, auth_tb_quickstart) -> None:
+def test_ai_resources_ready(auth_tb_quickstart) -> None:
     timeout = (
         time.time() + 60 * 15
     )  # 15 minutes from now since this requires a new node
@@ -63,7 +63,7 @@ def test_ai_resources_ready(gcp_setup, auth_tb_quickstart) -> None:
 
 
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
-def test_pf_and_curl(gcp_setup, auth_tb_quickstart) -> None:
+def test_pf_and_curl(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k port-forward server")
     time.sleep(5)
     # just easier to do this using requests
