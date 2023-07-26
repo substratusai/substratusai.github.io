@@ -57,41 +57,6 @@ It takes about 5 minutes to pull the container, load the model into GPU memory a
  kubectl describe server falcon-7b-instruct
 ```
 
-    Name:         falcon-7b-instruct
-    Namespace:    default
-    Labels:       <none>
-    Annotations:  <none>
-    API Version:  substratus.ai/v1
-    Kind:         Server
-    Metadata:
-      Creation Timestamp:  2023-07-17T06:37:26Z
-      Generation:          1
-      Resource Version:    15962533
-      UID:                 a25eae87-c17b-40df-9e1e-7ccaff0f8a2e
-    Spec:
-      Image:
-        Name:  substratusai/model-server-basaran
-      Model:
-        Name:  falcon-7b-instruct
-      Resources:
-        Cpu:   2
-        Disk:  10
-        Gpu:
-          Count:  1
-          Type:   nvidia-l4
-        Memory:   10
-    Status:
-      Conditions:
-        Last Transition Time:  2023-07-17T06:42:01Z
-        Message:               
-        Observed Generation:   1
-        Reason:                DeploymentReady
-        Status:                True
-        Type:                  Deployed
-      Ready:                   true
-    Events:                    <none>
-
-
 By default Substratus creates a K8s Service to expose the Server, however this Service is of type ClusterIP, which means you can not directly access it over the internet. So let's use K8s Port Forwarding to access the server.
 
 Run the following command to forward your local 8080 port to the Server port 8080:

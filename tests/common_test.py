@@ -17,13 +17,13 @@ def auth() -> tuple[str, str]:
     )
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def tb_quickstart():
     with testbook("docs/quickstart.ipynb", execute=False, timeout=1800) as tb:
         yield tb
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="session")
 def auth_tb_quickstart(tb_quickstart):
     sa_activate, set_project = auth()
     tb_quickstart.inject(sa_activate)

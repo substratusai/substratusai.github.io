@@ -59,35 +59,6 @@ to be ready. Verify by running:
  kubectl describe model falcon-7b-instruct
 ```
 
-    Name:         falcon-7b-instruct
-    Namespace:    default
-    Labels:       <none>
-    Annotations:  <none>
-    API Version:  substratus.ai/v1
-    Kind:         Model
-    Metadata:
-      Creation Timestamp:  2023-07-15T02:46:05Z
-      Generation:          1
-      Resource Version:    14266797
-      UID:                 077198a0-32ec-4f07-9bc3-ba3a1f1a3729
-    Spec:
-      Image:
-        Name:  substratusai/model-loader-huggingface
-      Params:
-        Name:  tiiuae/falcon-7b-instruct
-    Status:
-      Conditions:
-        Last Transition Time:  2023-07-15T02:51:18Z
-        Message:               
-        Observed Generation:   1
-        Reason:                JobComplete
-        Status:                True
-        Type:                  Modelled
-      Ready:                   true
-      URL:                     gs://my-gcs-bucket-name/077198a0-32ec-4f07-9bc3-ba3a1f1a3729/
-    Events:                    <none>
-
-
 You can see the Model `status.url` field reports the location of where the model is saved.
 
 You have now successfully loaded a HuggingFace model in Substratus and can use that

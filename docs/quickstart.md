@@ -49,7 +49,6 @@ docker run -it \
   -v ${HOME}/.kube:/root/.kube \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
-  -e AUTO_APPROVE=yes \
   substratusai/installer:main gcp-up.sh
 ```
 
@@ -67,7 +66,7 @@ kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/
 ```
 
 The model is now being downloaded from HuggingFace into a GCS bucket. This takes about 5 minutes.
-Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~3 minutes).
+Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~10 minutes total).
 
 
 
@@ -96,27 +95,6 @@ In order to access the model for exploratory purposes, forward ports from within
 
 ```bash
 kubectl port-forward service/falcon-7b-instruct-server 8080:8080
-```
-
-
-```bash
-import subprocess
-
-
-def start_port_forward():
-    cmd = ["kubectl", "port-forward", "service/falcon-7b-instruct-server", "8080:8080"]
-    return subprocess.Popen(cmd)
-
-
-port_forward_process = start_port_forward()
-
-```
-
-
-```bash
-# Kill the process
-port_forward_process.terminate()
-
 ```
 
 All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the OpenAI compatible HTTP API:
@@ -177,16 +155,8 @@ If you want to uninstall the entire Substratus system and all infrastructure, yo
 docker run -it \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
-  -e AUTO_APPROVE=yes \
   substratusai/installer:main gcp-down.sh
 ```
-
-    (unset)
-    Unable to find image 'substratusai/installer:latest' locally
-    latest: Pulling from substratusai/installer
-    docker: no matching manifest for linux/arm64/v8 in the manifest list entries.
-    See 'docker run --help'.
-
 
 To learn more about how Substratus works, check out the [Architecture](./architecture) page.
 
