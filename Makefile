@@ -13,7 +13,7 @@ install: venv
 
 .PHONY: test
 test: install
-	PYDEVD_DISABLE_FILE_VALIDATION=1 ${VENV_NAME}/bin/pytest -svvv
+	PYDEVD_DISABLE_FILE_VALIDATION=1 JUPYTER_PLATFORM_DIRS=1 ${VENV_NAME}/bin/pytest
 
 .PHONY: freeze
 freeze: install

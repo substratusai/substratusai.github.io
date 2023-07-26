@@ -20,6 +20,7 @@ def test_software_dependencies_stdout(tb_quickstart) -> None:
     assert "Client Version" in tb_quickstart.cell_output_text("kubectl-version")
 
 
+# TODO(bjb): how can we use a branch instead?
 @pytest.mark.dependency()
 def test_model_apply(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k apply model")
@@ -49,6 +50,8 @@ def test_server_apply(auth_tb_quickstart) -> None:
     ]
 )
 def test_ai_resources_ready(auth_tb_quickstart) -> None:
+    # NOTE(bjb): this can be incredibly slow and sometimes not work at all as it
+    # depends on creating a new GPU node. Currently this project hits quota
     timeout = (
         time.time() + 60 * 15
     )  # 15 minutes from now since this requires a new node
