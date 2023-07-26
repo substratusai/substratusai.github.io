@@ -32,7 +32,8 @@
         "ms-python.vscode-pylance",
         "ms-python.python",
         "stkb.rewrap",
-        "vscodevim.vim"
+        "vscodevim.vim",
+        "ms-vscode.makefile-tools"
       ]
     },
     // TODO(bjb): this doesnt work

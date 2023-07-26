@@ -1,11 +1,13 @@
-import os
-import pytest
-from testbook import testbook
 import json
+import os
+
+import pytest
 from pytest_dependency import depends  # import the depends function
+from testbook import testbook
 
 
 def auth() -> tuple[str, str]:
+    # TODO(bjb): migrate to env var/default creds
     cred_file_path = f"{os.path.expanduser('~')}/.gcp/doc-test-creds.json"
     assert os.path.isfile(cred_file_path)
     with open(cred_file_path, "r") as f:
@@ -47,6 +49,7 @@ def auth_tb_finetuning_models():
 def auth_tb_loading_datasets():
     with testbook(
         "docs/walkthrough/loading-datasets.ipynb",
+        # TODO(bjb): try to execute=True against this nb
         execute=False,
     ) as tb:
         sa_activate, set_project = auth()
@@ -81,8 +84,19 @@ def auth_tb_serving_models():
 
 @pytest.fixture(scope="session", autouse=True)
 def gcp_setup(auth_tb_quickstart):
-    auth_tb_quickstart.execute_cell("installer gcp-up")
-    assert "Apply complete!" in auth_tb_quickstart.cell_output_text("installer gcp-up")
+    for _ in range(3):  # Retry up to 3 times
+        try:
+            auth_tb_quickstart.execute_cell("installer gcp-up")
+            # TODO(bjb): handle the case where a lock file is blocking
+            # TODO(bjb): ideally we could namespace all the infra components so more than one user could be running tests at once
+            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
+                "installer gcp-up"
+            )
+            break
+        except Exception as err:
+            print(f"gcp-up encountered an error: {err}")
+            continue
+
     yield  # teardown below the yield
     # NOTE(bjb): comment out the following lines to keep infra up and iterate more rapidly on tests
     auth_tb_quickstart.execute_cell("installer gcp-down")

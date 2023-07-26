@@ -25,13 +25,15 @@ class NewFileHandler(FileSystemEventHandler):
 
 def process_msg(msg):
     if msg["msg_type"] in ["stream", "execute_result"]:
-        print(msg)
         output = (
             msg["content"]["data"].get("text/plain", "")
             if "data" in msg["content"]
             else msg["content"].get("text", "")
         )
         print(f"Output: {output}")
+    else:
+        print(f"Unhandled message type: {msg['msg_type']}")
+        print(msg)
 
 
 async def watch_kernel(connection_file):

@@ -1,13 +1,10 @@
 import json
 import time
+
 import pytest
+from fixtures import auth_tb_quickstart  # needed because the fixture depends on it
+from fixtures import auth_tb_loading_datasets, gcp_setup, tb_quickstart
 from pytest_dependency import depends
-from common_test import (
-    auth_tb_loading_datasets,
-    auth_tb_quickstart,  # needed because the fixture depends on it
-    gcp_setup,
-    tb_quickstart,
-)
 
 
 @pytest.mark.dependency()
