@@ -18,6 +18,7 @@ You will need a [Google Cloud Platform](https://console.cloud.google.com/) proje
 Run the commands below to make sure you have the required tools.
 
 
+
 ```bash
 docker version || open 'https://docs.docker.com/get-docker/'
 ```
@@ -37,9 +38,10 @@ gke-gcloud-auth-plugin --version || gcloud components install gke-gcloud-auth-pl
 kubectl version --client || open 'https://kubernetes.io/docs/tasks/tools/#kubectl'
 ```
 
-## Install Substratus
+## Install Substratus in GCP
 
 Create a substratus GKE cluster along with supporting infrastructure (buckets, service accounts, image registries).
+
 
 
 ```bash
@@ -47,36 +49,42 @@ docker run -it \
   -v ${HOME}/.kube:/root/.kube \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
-  substratusai/installer gcp-up.sh
+  -e AUTO_APPROVE=yes \
+  substratusai/installer:main gcp-up.sh
 ```
 
 `kubectl` should now be pointing at the substratus cluster.
+
 
 ## Deploy an Open Source Model
 
 To keep this quick, we'll use a smallish model, the falcon-7b-instruct model (just 7 billion parameters).
 
 
+
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
 ```
 
-The model is now being downloaded from HuggingFace into a GCS bucket. This takes about 5 minutes. 
+The model is now being downloaded from HuggingFace into a GCS bucket. This takes about 5 minutes.
 Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~3 minutes).
 
 
+
 ```bash
- kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
 ```
 
 You can check on the progress of both processes using a single command.
 
 
+
 ```bash
- kubectl get ai
+kubectl get ai
 ```
 
 When the Server reports a `Ready` status, proceed to the next section to test it out.
+
 
 ## Testing out the Server
 
@@ -85,21 +93,44 @@ The way every company chooses to expose a model will be different. In most cases
 In order to access the model for exploratory purposes, forward ports from within the cluster to your local machine.
 
 
+
 ```bash
 kubectl port-forward service/falcon-7b-instruct-server 8080:8080
+```
+
+
+```bash
+import subprocess
+
+
+def start_port_forward():
+    cmd = ["kubectl", "port-forward", "service/falcon-7b-instruct-server", "8080:8080"]
+    return subprocess.Popen(cmd)
+
+
+port_forward_process = start_port_forward()
+
+```
+
+
+```bash
+# Kill the process
+port_forward_process.terminate()
+
 ```
 
 All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the OpenAI compatible HTTP API:
 
 
+
 ```bash
- curl http://localhost:8080/v1/completions \
+curl http://localhost:8080/v1/completions \
   -H "Content-Type: application/json" \
   -d '{ \
     "model": "falcon-7b-instruct", \
     "prompt": "Who was the first president of the United States? ", \
     "max_tokens": 10\
-  }' 
+  }'
 ```
 
 ```json
@@ -124,11 +155,14 @@ All substratus Servers ship with an API and interactive frontend. Open up your b
 }
 ```
 
+
 If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) to learn how to finetune models with your own dataset and much more!
+
 
 ## Cleanup
 
 The process that is serving the model can be stopped by simply deleting the same Server object that was applied before.
+
 
 
 ```bash
@@ -138,11 +172,21 @@ The process that is serving the model can be stopped by simply deleting the same
 If you want to uninstall the entire Substratus system and all infrastructure, you can run the `gcp-down.sh` script from the installation container.
 
 
+
 ```bash
 docker run -it \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
-  substratusai/installer gcp-down.sh
+  -e AUTO_APPROVE=yes \
+  substratusai/installer:main gcp-down.sh
 ```
 
+    (unset)
+    Unable to find image 'substratusai/installer:latest' locally
+    latest: Pulling from substratusai/installer
+    docker: no matching manifest for linux/arm64/v8 in the manifest list entries.
+    See 'docker run --help'.
+
+
 To learn more about how Substratus works, check out the [Architecture](./architecture) page.
+

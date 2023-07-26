@@ -14,3 +14,7 @@ install: venv
 .PHONY: test
 test: install
 	@ ${VENV_NAME}/bin/pytest -svvv
+
+.PHONY: freeze
+freeze: install
+	@ ${PYTHON} -m pip freeze > requirements.txt

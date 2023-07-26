@@ -88,8 +88,13 @@ Settings:
 
 ### Testing
 
-We test the contents of our docs via `testbook`.
+We test the contents of our docs via [`testbook`](https://github.com/nteract/testbook).
+These tests stand up real infrastructure by executing cells in the documentation
+and expect a GCP credential to live at `~/.gcp/doc-test-creds.json`. We'll migrate
+to workload identity pools using github as supporting CI is created.
+
+Tests can be run via:
 
 ```bash
-pytest .
+make test
 ```

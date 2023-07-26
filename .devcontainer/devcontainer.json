@@ -1,3 +1,5 @@
+// NOTE: this didn't work (docker from docker was fussy) but I think the dockerfile is worth keeping
+// to inform our dependencies during a CI run
 {
   "name": "Docker from Docker",
   "dockerFile": "Dockerfile",
