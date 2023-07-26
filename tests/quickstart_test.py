@@ -37,6 +37,7 @@ def test_software_dependencies_stdout(tb) -> None:
     assert "Client Version" in tb.cell_output_text("kubectl-version")
 
 
+@pytest.mark.dependency()
 def test_yaml_apply(gcp_setup, auth_tb) -> None:
     auth_tb.execute_cell("k apply model")
     assert "model.substratus.ai/falcon-7b-instruct created" in auth_tb.cell_output_text(
