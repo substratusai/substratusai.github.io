@@ -25,18 +25,10 @@ def auth_tb(tb):
     yield tb
 
 
-@pytest.mark.dependency()  # mark this test as a dependency
-def test_gcp_up(auth_tb) -> None:
+@pytest.fixture(scope="module")
+def gcp_setup(auth_tb):
     auth_tb.execute_cell("installer gcp-up")
     assert "Apply complete!" in auth_tb.cell_output_text("installer gcp-up")
-
-
-# # list the final test of each walkthrough as a depends
-# @pytest.mark.dependency(
-#     depends=[
-#         "test_pf_and_curl",
-#     ]
-# )
-# def test_gcp_down(auth_tb) -> None:
-#     auth_tb.execute_cell("installer gcp-down")
-#     assert "Apply complete!" in auth_tb.cell_output_text("installer gcp-down")
+    yield  # teardown below the yield
+    # auth_tb.execute_cell("installer gcp-down")
+    # assert "Apply complete!" in auth_tb.cell_output_text("installer gcp-down")

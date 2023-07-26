@@ -4,6 +4,7 @@ import pytest
 from testbook import testbook
 import json
 from pytest_dependency import depends  # import the depends function
+from common_test import gcp_setup
 
 
 @pytest.fixture(scope="module")
@@ -36,8 +37,7 @@ def test_software_dependencies_stdout(tb) -> None:
     assert "Client Version" in tb.cell_output_text("kubectl-version")
 
 
-@pytest.mark.dependency(depends=["test_gcp_up"])
-def test_yaml_apply(auth_tb) -> None:
+def test_yaml_apply(gcp_setup, auth_tb) -> None:
     auth_tb.execute_cell("k apply model")
     assert "model.substratus.ai/falcon-7b-instruct created" in auth_tb.cell_output_text(
         "k apply model"
@@ -54,7 +54,7 @@ def test_yaml_apply(auth_tb) -> None:
 
 
 @pytest.mark.dependency(depends=["test_yaml_apply"])
-def test_ai_resources_ready(auth_tb) -> None:
+def test_ai_resources_ready(gcp_setup, auth_tb) -> None:
     timeout = (
         time.time() + 60 * 15
     )  # 15 minutes from now since this requires a new node
@@ -72,7 +72,7 @@ def test_ai_resources_ready(auth_tb) -> None:
 
 
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
-def test_pf_and_curl(auth_tb) -> None:
+def test_pf_and_curl(gcp_setup, auth_tb) -> None:
     auth_tb.execute_cell("k port-forward server")
     time.sleep(5)
     curl_ouptut = auth_tb.execute_cell("curl local completion api")
