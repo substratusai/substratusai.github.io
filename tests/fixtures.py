@@ -1,7 +1,8 @@
 import os
+import subprocess
 
 import pytest
-from pytest_dependency import depends  # import the depends function
+from pytest_dependency import depends
 from testbook import testbook
 from google.cloud import storage
 import google.auth
@@ -21,8 +22,20 @@ def authenticate_to_gcp():
         raise ValueError("credentials.token is empty")
 
 
-def ensure_gcp_project():
-    project_id = os.environ.get("PROJECT_ID", "substratus-integration-tests")
+def ensure_gcp_project() -> str:
+    project_id = subprocess.run(
+        ["gcloud", "config", "get-value", "project"],
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
+
+    if project_id == "(unset)":
+        project_id = os.environ.get("PROJECT_ID")
+
+    if not project_id:
+        raise ValueError(
+            "Project ID is not set. Please set the PROJECT_ID environment variable."
+        )
     return f"!gcloud config set project {project_id} -q"
 
 
