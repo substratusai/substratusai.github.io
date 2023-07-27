@@ -12,10 +12,13 @@ compatible API endpoint and also a Web UI which is compatible with most of the
 Large Language Models on HuggingFace.
 
 ## Creating a server for falcon-7b-instruct
+
 Prerequisites:
+
 - The falcon-7b-instruct model was loaded by following the [loading models walkthrough](./loading-datasets.md)
 
 Run the following command to satisfy the prerequisites:
+
 
 
 ```bash
@@ -25,11 +28,13 @@ Run the following command to satisfy the prerequisites:
 Create the Server resource by running:
 
 
+
 ```bash
  kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
 ```
 
 The following Server resource is used:
+
 ```yaml
 apiVersion: substratus.ai/v1
 kind: Server
@@ -45,12 +50,16 @@ spec:
       type: nvidia-l4
       count: 1
 ```
+
 In the Model resource spec the following things are configured:
+
 1. image.name: This is the image published by Substratus that can serve models.
 2. model.name: Refers to the name of the model that was loaded earlier in this tutorial
 3. resources: These specify what kind of resources are needed to serve the model. The Falcon-7b model requires GPUs to perform decently. In this case, 1 NVidia L4 GPU is requested.
 
+
 It takes about 5 minutes to pull the container, load the model into GPU memory and being ready to serve requests. You can check if the Server is ready by running:
+
 
 
 ```bash
@@ -95,6 +104,7 @@ It takes about 5 minutes to pull the container, load the model into GPU memory a
 By default Substratus creates a K8s Service to expose the Server, however this Service is of type ClusterIP, which means you can not directly access it over the internet. So let's use K8s Port Forwarding to access the server.
 
 Run the following command to forward your local 8080 port to the Server port 8080:
+
 
 
 ```bash

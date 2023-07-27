@@ -85,3 +85,24 @@ Settings:
 * Weight: 100 (min)
 * Grade: 0 (middle)
 * Optical Size: 48 (max)
+
+### Testing
+
+We test the contents of our docs via [`testbook`](https://github.com/nteract/testbook)
+and pytest. These tests stand up live cloud infrastructure in our integration
+test project or `PROJECT_ID` if specified instead. The test suite relies on an
+active set of GCP credentials in your shell session so
+`gcloud auth login --update-adc` prior to running.
+
+Tests can be run via:
+
+```bash
+make test
+```
+
+Optionally, you can specify the branch of `substratusai/substratus` to test
+against for all manifests referencing examples in that repo.
+
+```bash
+make test SUBSTRATUS_BRANCH=feat/foobar
+```
