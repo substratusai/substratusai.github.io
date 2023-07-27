@@ -28,15 +28,15 @@ def ensure_gcp_project() -> str:
         capture_output=True,
         text=True,
     ).stdout.strip()
-    if project_id and project_id != "(unset)":
-        return f"gcloud config set project {project_id} -q"
 
-    project_id = os.environ.get("PROJECT_ID")
+    if project_id == "(unset)":
+        project_id = os.environ.get("PROJECT_ID")
+
     if not project_id:
         raise ValueError(
             "Project ID is not set. Please set the PROJECT_ID environment variable."
         )
-    return f"gcloud config set project {project_id} -q"
+    return f"!gcloud config set project {project_id} -q"
 
 
 @pytest.fixture(scope="session")
