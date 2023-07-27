@@ -1,4 +1,3 @@
-import json
 import os
 
 import pytest
@@ -7,6 +6,7 @@ from testbook import testbook
 from google.cloud import storage
 import google.auth
 from google.auth.transport.requests import Request
+from testbook.testbook import TestbookNotebookClient
 
 
 def authenticate_to_gcp():
@@ -27,58 +27,64 @@ def ensure_gcp_project():
 
 
 @pytest.fixture(scope="session")
-def tb_quickstart():
+def tb_quickstart(branch):
     with testbook("docs/quickstart.ipynb", execute=False, timeout=1800) as tb:
+        change_branch(tb, branch)
         yield tb
 
 
 @pytest.fixture(scope="session")
-def auth_tb_quickstart(tb_quickstart):
+def auth_tb_quickstart(tb_quickstart, branch):
+    change_branch(tb_quickstart, branch)
     authenticate_to_gcp()
     tb_quickstart.inject(ensure_gcp_project())
     yield tb_quickstart
 
 
 @pytest.fixture(scope="module")
-def auth_tb_finetuning_models():
+def auth_tb_finetuning_models(branch):
     with testbook(
         "docs/walkthrough/finetuning-models.ipynb",
         execute=False,
     ) as tb:
+        change_branch(tb, branch)
         authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
 
 @pytest.fixture(scope="module")
-def auth_tb_loading_datasets():
+def auth_tb_loading_datasets(branch):
     with testbook(
         "docs/walkthrough/loading-datasets.ipynb",
-        # TODO(bjb): try to execute=True against this nb
+        # TODO(bjb): next iteration, try to execute=True against this nb
         execute=False,
     ) as tb:
+        change_branch(tb, branch)
         authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
 
 @pytest.fixture(scope="module")
-def auth_tb_loading_models():
+def auth_tb_loading_models(branch):
     with testbook(
         "docs/walkthrough/loading-models.ipynb",
         execute=False,
     ) as tb:
+        change_branch(tb, branch)
         authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
 
 @pytest.fixture(scope="module")
-def auth_tb_serving_models():
+def auth_tb_serving_models(branch):
     with testbook(
         "docs/walkthrough/serving-models.ipynb",
         execute=False,
     ) as tb:
+        change_branch(tb, branch)
         authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
@@ -128,3 +134,12 @@ def delete_state_lock(
     blob.delete()
 
     print("Blob {} deleted.".format(blob_name))
+
+
+def change_branch(tb: TestbookNotebookClient, branch: str) -> None:
+    for c in tb.cells:
+        if "https://raw.githubusercontent.com/substratusai/substratus/main" in c.source:
+            c.source = c.source.replace(
+                "https://raw.githubusercontent.com/substratusai/substratus/main",
+                f"https://raw.githubusercontent.com/substratusai/substratus/{branch}",
+            )

@@ -20,7 +20,6 @@ def test_software_dependencies_stdout(tb_quickstart) -> None:
     assert "Client Version" in tb_quickstart.cell_output_text("kubectl-version")
 
 
-# TODO(bjb): is it possible to specify a branch?
 @pytest.mark.dependency()
 def test_model_apply(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k apply model")

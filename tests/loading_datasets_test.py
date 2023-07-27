@@ -28,6 +28,7 @@ def test_dataset_ready(gcp_setup, auth_tb_loading_datasets) -> None:
         )
         ready_status = output_json["status"]["ready"]
         if ready_status is True:
+            assert True
             break
         elif time.time() > timeout:
             assert False, "Timeout waiting for dataset to be ready"
