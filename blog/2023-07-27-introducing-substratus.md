@@ -19,7 +19,7 @@ pain in early 2023:
 
 * How can we easily experiment with LLMs? 👩‍🔬
 * Can I inference using my workstation's hardware and OS? 💻
-* What about fine-tuning, can I do that locally? 📏
+* What about fine-tuning, can I do that locally? Why do I run out of GPU memory?! 📏
 * Can I stream or do I really need to download this whole dataset?! I didn't
   plan on uninstalling Flight Simulator tonight...✈️
 * Is any part of this workflow portable or repeatable? ♻️
