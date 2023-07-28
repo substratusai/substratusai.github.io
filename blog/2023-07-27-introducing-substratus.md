@@ -13,57 +13,71 @@ tags: [hello world, introduction, oss launch]
 We're beyond excited to announce Substratus, an open-source infrastructure
 framework to manage machine learning primitives in Kubernetes.
 
-Open Source machine learning models are exploding in popularity and it's nearly
+Open source machine learning models are exploding in popularity and it's nearly
 impossible for any individual or organization to keep up. We felt this exact
-pain earlier in 2023: how can we experiment with these models? Can I inference
-using my workstation's hardware? What about fine-tuning, is that also possible
-locally? Do I really need to download this whole dataset?! It's not unreasonable
-to walk away from a couple hours of yak shaving, resigned to using Colab. Your
-strategy for bringing an ML workflow to your day job is effectively 🤷🏾‍♀️ I
-hope you and your engineering team like Sagemaker's opinions (and pricing).
+pain in early 2023:
 
-But under the hood, ML workloads can all sit on undifferentiated primitives,
-abundant across cloud platforms (compute, storage, networks). GPUs may be
-less-available but are no-less commodity than the rest of the ML hardware stack.
-Furthermore, multi-cloud footprints are increasingly common across medium and
-large enterprises. Data security matters a great deal to these firms. Workflow
-standardization matters just as much to ML practitioners. As the problem-space
-clarified and solvable, Substratus was born.
+* How can we easily experiment with these LLMs? 👩‍🔬
+* Can I inference using my workstation's hardware and OS? 💻
+* What about fine-tuning, is that also possible locally? 📏
+* Can I stream or do I really need to download this whole dataset?! I hope I
+  don't need to uninstall Flight Simulator...✈️
+* Is any part of this workflow portable or repeatable? ♻️
+
+It wouldn't be unreasonable to walk away from a couple hours of yak-shaving,
+resigned to using Colab. But your strategy to deliver a secure, consistent, and
+portable ML workflow to your day job is still effectively 🤷🏾‍♀️. At this
+point, you hope your engineering team is satisfied with Sagemaker's opinions and pricing because
+it's looking like the de-facto option. 💸
+
+There's got to be a better way.
 
 ## Why Substratus?
 
-**Easy to Experiment**: Substratus makes it easy for developers to experiment
-with and fine-tune open-source machine learning models, fostering innovation and
-rapid development.
+ML workloads operate on undifferentiated compute primitives,
+abundant across cloud platforms (CPU, GPU, storage, networks). GPUs may be
+less-available but are no-less commodity than the rest of the ML hardware stack.
+It takes some work to orchestrate these components to be useful in an ML
+context, but that shouldn't come at the cost of vendor lock-in.
 
-**Security**: With the option to deploy Substratus internally, keep your
-sensitive data close and your deployment story portable, mitigating risks and
-ensuring data privacy.
+It's also increasingly common to find multi-cloud footprints in medium and
+large enterprises. Data security matters a great deal to these firms -
+making proprietary APIs a non-starter. Workflow repeatability and interface
+consistency will increasingly matter to ML practitioners.
 
-**Multi-Cloud, Multi-Cluster Awareness**: Substratus is designed to be aware of
-multiple clouds and clusters, providing flexibility and the power to choose the
-best resources for your needs.
+As this problem-space clarified and we understood it to be solvable, Substratus
+was born. Here's what it aims to deliver:
+
+**Rapid experimentation with the latest ML models**: Substratus makes it easy for
+developers - particularly those comfortable with Kubernetes - to experiment
+with and fine-tune open-source machine learning models.
+
+**Security of internal ownership**: Deploy internally on your chosen cloud
+providers and keep your sensitive training data where it lives today. Serve
+models internally as you would any other enterprise-facing tool.
+
+**Open-core**: Substratus will always be open-core. Period. If your team can
+support it - and we believe many can - deploy the platform where ever it best
+suits the business.
 
 While there are other open-source projects in this space, we've taken careful
-notes on how we want to differentiate. Substratus is not just a tool; it's a
-comprehensive solution, built with a deep understanding of the needs and
-challenges of ML development, cluster management, and security. We're excited to
-see how you will use Substratus to innovate and build new solutions. Stay tuned
-for more updates!
+notes on how we want to differentiate.
 
-We're laser-focused on getting infrastructure orchestration right while offering key extension points to plug
-into the wider ML ecosystem. Through chaining Substratus primitives, both
-creativity and organizational opinion can truly be unleashed.
+## What are our opinions as we launch?
 
-## What are our opinions as we blast off?
+1. A small and consistent API - we have CRDs for `Models`, `Datasets`, `Servers`, and `Notebooks`.
+   That's it!
+2. Few integration points with our supported cloud providers - we want to avoid
 
-1. A small API
-2. Limited integration to our supported platforms
 3. Operational simplicity
 4. Actually Open AI
 
 As of now, we support Google Cloud Platform, with AWS and Azure support coming
 soon.
+
+We're laser-focused on getting infrastructure orchestration right while offering key extension points to plug
+into the wider ML ecosystem. Through chaining Substratus primitives, both
+creativity and organizational opinion can truly be unleashed.
 
 ## Our Product Roadmap
 
@@ -77,7 +91,7 @@ every step in our journey.
    we see room for another level of excellence by knitting our infrastructure
    stack into a higher-level, integrated developer experience.
 2. **Substratus Cloud**: Soon, you'll be able get an API key and unlock the same
-   substratus open source API through a managed platform. Forget the quotas of
+   substratus open-source API through a managed platform. Forget the quotas of
    your personal cloud account. Our SaaS is the perfect way to get started and
    share your work with a wider community without deploying infrastructure.
 3. **Partner Integrations**: We're teaming up with our friends at LangChain and
@@ -90,3 +104,12 @@ every step in our journey.
    cluster federation feature.
 6. **RBAC for Teams**: Role-based access control for teams, ensuring security
    and privacy for your projects.
+   **Multi-Cloud, Multi-Cluster Awareness**: Substratus is designed to be aware of
+multiple clouds and clusters, providing flexibility and the power to choose the
+best resources for your needs.
+
+Substratus is not just a tool; it's a
+comprehensive solution, built with a deep understanding of the needs and
+challenges of ML development, cluster management, and security. We're excited to
+see how you will use Substratus to innovate and build new solutions. Stay tuned
+for more updates!
