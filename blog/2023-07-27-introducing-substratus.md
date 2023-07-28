@@ -93,6 +93,8 @@ operators, and security teams just a little better at every step in our journey.
 
 <!-- TODO(bjb): separate out product from project roadmap items -->
 
+1. **Large scale distributed training**: Ability to run training jobs on more
+   than 8 GPUs
 1. **VSCode Integration**: We're working on a VSCode extension to bring an
    exceptional notebook experience into your favorite editor. The Jupyter
    Extension for VSCode is a great foundation for that experience today, but we
