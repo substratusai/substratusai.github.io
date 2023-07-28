@@ -19,7 +19,8 @@ pain in early 2023:
 
 * How can we easily experiment with LLMs? 👩‍🔬
 * Can I inference using my workstation's hardware and OS? 💻
-* What about fine-tuning, can I do that locally? Why do I run out of GPU memory?! 📏
+* What about fine-tuning, can I do that locally? Why do I run out of GPU
+  memory?! 📏
 * Can I stream or do I really need to download this whole dataset?! I didn't
   plan on uninstalling Flight Simulator tonight...✈️
 * Is any part of this workflow portable or repeatable? ♻️
@@ -90,36 +91,42 @@ notes on how we want to differentiate.
 There's no shortage of features we plan to build and we have no intention of
 keeping our cards close. We hope to make the days of ML engineers, cluster
 operators, and security teams just a little better at every step in our journey.
+Here's what we have on-deck:
 
-<!-- TODO(bjb): separate out product from project roadmap items -->
-
-1. **Large scale distributed training**: Ability to run training jobs on more
-   than 8 GPUs
-1. **VSCode Integration**: We're working on a VSCode extension to bring an
-   exceptional notebook experience into your favorite editor. The Jupyter
+1. **Supporting each of the big-3 cloud platforms**: As of now, we support
+  Google Cloud Platform, with AWS and Azure support coming soon.
+2. **VSCode Integration**: We're designing and developing a VSCode extension to
+  bring a first class notebook experience into your favorite editor. The Jupyter
    Extension for VSCode is a great foundation for that experience today, but we
-   see room for another level of excellence by knitting our infrastructure stack
-   into a higher-level, integrated developer experience.
-2. **Substratus Cloud**: Soon, you'll be able get an API key and unlock the same
-   substratus open-source API through a managed platform. Forget the quotas of
-   your personal cloud account. Our SaaS is the perfect way to get started and
-   share your work with a wider community without deploying infrastructure.
-3. **Partner Integrations**: We're teaming up with our friends at LangChain and
-   Weaviate to provide integrations and demos showing how and where Substratus
-   fits in the larger ML ecosystem.
-4. **Cost and Capacity Conscious Workload Scheduling**: Cloud GPUs are
-   notoriously expensive. Substratus can soften the blow by efficiently managing
-   workloads with cost-effective and capacity-conscious scheduling.
-5. **Multi-cluster**: Manage your clusters with ease with our upcoming cluster
-   federation feature.
-6. **RBAC for Teams**: Role-based access control for teams, ensuring security
-   and privacy for your projects.
-7. **Multi-Cloud, Multi-Cluster Awareness**: Substratus is designed to be aware
-of multiple clouds and clusters, providing flexibility and the power to choose
-the best resources for your needs.
-8. **Supporting more cloud platforms**: As of now, we support Google Cloud
-Platform, with AWS and Azure support coming soon.
+   see room for another level of excellence by knitting infrastructure
+   operations into a higher-level, developer experience and workflow.
+3. **Large-scale distributed training**: We aim to support the largest of
+  training workloads. Currently we're able to utilize 8 GPUs for a single model
+  but we've heard this isn't enough for every use-case. We intend to make wider
+  horizontal GPU distribution a paved path on Substratus.
+4. **Partner Integrations**: We're teaming up with our friends at LangChain and
+   Weaviate to provide integrations and demos showcasing how and where
+   Substratus fits in the larger ML ecosystem.
 
-Say hi on discord, file an issue on github if you hit a snag, and sign-up for our
-monthly newsletter to keep track of the project. We're excited to see how you'll
-use Substratus to innovate. Stay tuned!
+The roadmap above is all high priority for our open source project but we think
+there's great value in getting started at low or no cost without standing up
+infrastructure of your own. These upcoming features form the foundation of our
+fledgling SaaS product:
+
+1. **Substratus Cloud**: Soon, you'll be able get an API key and unlock the same
+   Substratus open-source API through a managed platform! Forget the quotas of
+   your personal cloud account, our SaaS is the perfect way to get started and
+   share your work without deploying infrastructure.
+2. **RBAC for Teams**: Role-based access control for teams, ensuring security
+   and privacy for your projects.
+3. **Multi-cloud, multi-cluster operations**: Manage your hybrid-SaaS clusters
+  easily without needing to switch kubecontexts. Our enterprise CLI is
+  fully-aware of everywhere your org has deployed Substratus.
+4. **Cost and Capacity Conscious Workload Scheduling**: Cloud GPUs are
+   notoriously expensive and sometimes unavailable in certain locations.
+   Substratus can soften the blow by efficiently managing workloads with
+   cost-aware and capacity-conscious scheduling.
+
+What's next? Say hi on discord, file an issue on github if you hit a snag, and
+sign-up for our monthly newsletter to keep track of the project. We're excited
+to see how you'll use Substratus to innovate. Stay tuned!
