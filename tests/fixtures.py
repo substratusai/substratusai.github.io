@@ -146,9 +146,10 @@ def delete_state_lock(
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(blob_name)
-    blob.delete()
-
-    print("Blob {} deleted.".format(blob_name))
+    if blob.exists():
+        blob.delete()
+        print("Blob {} deleted.".format(blob_name))
+    print("lock file does not exist")
 
 
 def change_branch(tb: TestbookNotebookClient, branch: str) -> None:
