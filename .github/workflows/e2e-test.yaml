@@ -1,31 +1,33 @@
 name: e2e docs test
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - main
-env:
-  PROJECT_ID: substratus-integration-tests
 jobs:
   run-tests:
     name: run tests
     runs-on: ubuntu-latest
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: "read"
+      id-token: "write"
+    env:
+      PROJECT_ID: substratus-integration-tests
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v1"
+        with:
+          install_components: "gke-gcloud-auth-plugin,kubectl"
+          project_id: "substratus-integration-tests"
       - id: auth
         name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v0.4.0
         with:
-          workload_identity_provider: 'projects/489627518739/locations/global/workloadIdentityPools/github-identities/providers/github-com'
-          service_account: 'docs-test-runner@substratus-integration-tests.iam.gserviceaccount.com'
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v1'
-        with:
-          install_components: 'gke-gcloud-auth-plugin,kubectl'
-          project_id: 'substratus-integration-tests'
+          workload_identity_provider: "projects/489627518739/locations/global/workloadIdentityPools/github-identities/providers/github-com"
+          service_account: "docs-test-runner@substratus-integration-tests.iam.gserviceaccount.com"
+          token_format: "access_token"
       - name: Run tests
         run: |
           sudo apt-get update -y && \
