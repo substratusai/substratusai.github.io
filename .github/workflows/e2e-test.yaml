@@ -1,0 +1,39 @@
+name: e2e docs test
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  run-tests:
+    name: run tests
+    runs-on: ubuntu-latest
+    steps:
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          workload_identity_provider: 'projects/489627518739/locations/global/workloadIdentityPools/github-identities/providers/github-com'
+          service_account: 'docs-test-runner@substratus-integration-tests.iam.gserviceaccount.com'
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          apt-get update -y && \
+          apt-get install -y --no-install-recommends \
+          apt-transport-https \
+          ca-certificates \
+          gnupg \
+          curl && \
+          echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
+          curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add - && \
+          curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash - && \
+          apt-get update -y && \
+          apt-get install -y --no-install-recommends \
+          google-cloud-cli \
+          google-cloud-cli-gke-gcloud-auth-plugin \
+          kubectl \
+          python3 \
+          python3-pip \
+          gcc \
+          python3-dev && \
+          PROJECT_ID=substratus-integration-tests make test
