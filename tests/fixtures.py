@@ -18,6 +18,8 @@ def authenticate_to_gcp():
 
     if credentials.token:
         os.environ["GOOGLE_CREDENTIALS"] = credentials.token
+    if os.environ.get("GOOGLE_CREDENTIALS"):
+        credentials.token = os.environ.get("GOOGLE_CREDENTIALS")
     else:
         raise ValueError("credentials.token is empty")
 

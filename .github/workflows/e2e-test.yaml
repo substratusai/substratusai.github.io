@@ -1,14 +1,17 @@
 name: e2e docs test
-permissions:
-  id-token: write
 on:
   pull_request:
     branches:
       - main
+env:
+  PROJECT_ID: substratus-integration-tests
 jobs:
   run-tests:
     name: run tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: 'read'
+      id-token: 'write'
     steps:
       - id: auth
         name: Authenticate to Google Cloud
@@ -21,7 +24,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
         with:
-          install_components: 'google-cloud-cli-gke-gcloud-auth-plugin,kubectl'
+          install_components: 'gke-gcloud-auth-plugin,kubectl'
           project_id: 'substratus-integration-tests'
       - name: Run tests
         run: |
@@ -31,4 +34,4 @@ jobs:
           python3-pip \
           gcc \
           python3-dev && \
-          PROJECT_ID=substratus-integration-tests make test
+          GOOGLE_CREDENTIALS=$(gcloud auth print-access-token) make test
