@@ -1,5 +1,6 @@
 appnope==0.1.3
 asttokens==2.2.1
+asyncio==3.4.3
 attrs==23.1.0
 backcall==0.2.0
 black==23.7.0
@@ -26,6 +27,7 @@ iniconfig==2.0.0
 ipykernel==6.24.0
 ipython==8.14.0
 isort==5.12.0
+janus==1.0.0
 jedi==0.18.2
 jsonschema==4.18.4
 jsonschema-specifications==2023.7.1
@@ -52,6 +54,7 @@ pyasn1==0.5.0
 pyasn1-modules==0.3.0
 Pygments==2.15.1
 pytest==7.4.0
+pytest-asyncio==0.21.1
 pytest-dependency==0.5.1
 python-dateutil==2.8.2
 pyzmq==25.1.0
@@ -65,5 +68,7 @@ testbook==0.4.2
 tomli==2.0.1
 tornado==6.3.2
 traitlets==5.9.0
+typing_extensions==4.7.1
 urllib3==1.26.16
+watchdog==3.0.0
 wcwidth==0.2.6

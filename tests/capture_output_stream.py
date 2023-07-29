@@ -59,6 +59,7 @@ async def main():
     paths_to_watch = [
         f"{os.path.expanduser('~')}/Library/Jupyter/runtime/",  # only works on mac OS
         "/private/var/folders/9n/1rd9yjf913s10bzn5w9mdf_m0000gn/T/",  # I'm certain this is not portable as is
+        "/tmp/",
     ]
 
     existing_files = {
@@ -78,7 +79,3 @@ async def main():
     queue_watcher = watch_queue(queue, existing_files)
 
     await asyncio.gather(*tasks, observer_task, queue_watcher)
-
-
-# Run the main loop
-asyncio.run(main())

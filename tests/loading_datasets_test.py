@@ -2,13 +2,16 @@ import json
 import time
 
 import pytest
-from fixtures import auth_tb_quickstart  # needed because the fixture depends on it
-from fixtures import auth_tb_loading_datasets, gcp_setup, tb_quickstart
+from conftest import (
+    auth_tb_quickstart,
+    auth_tb_loading_datasets,
+    tb_quickstart,
+)
 from pytest_dependency import depends
 
 
 @pytest.mark.dependency()
-def test_dataset_apply(gcp_setup, auth_tb_loading_datasets) -> None:
+def test_dataset_apply(auth_tb_loading_datasets) -> None:
     auth_tb_loading_datasets.execute_cell("k apply dataset")
     assert (
         "dataset.substratus.ai/k8s-instructions created"
@@ -19,7 +22,7 @@ def test_dataset_apply(gcp_setup, auth_tb_loading_datasets) -> None:
 
 
 @pytest.mark.dependency(depends=["test_dataset_apply"])
-def test_dataset_ready(gcp_setup, auth_tb_loading_datasets) -> None:
+def test_dataset_ready(auth_tb_loading_datasets) -> None:
     timeout = time.time() + 60 * 5
     while True:
         auth_tb_loading_datasets.execute_cell("k get dataset")
