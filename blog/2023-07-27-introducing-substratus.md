@@ -36,6 +36,11 @@ There's got to be a better way.
 
 ## Why Substratus?
 
+**Faster time to market of custom ML models**: Load a base model, finetune it
+with your own dataset and serve it without having to write any code. Substratus
+provides out of the box container images to make zero code finetuning a reality.
+Need more flexibility? Simply clone the official image and adapt it to your needs.
+
 **Avoid vendor lock-in**: Machine learning workloads operate on undifferentiated
 compute primitives, abundant across all cloud platforms (CPU, GPU, storage,
 networks). GPUs may be less-available but are no-less commodity than the rest of
