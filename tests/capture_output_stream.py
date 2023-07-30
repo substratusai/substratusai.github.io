@@ -75,14 +75,17 @@ def start_watches():
         "/tmp/",
     ]
 
-    existing_files = {
-        f for path in paths_to_watch for f in glob.glob(os.path.join(path, "*.json"))
+    existent_paths_to_watch = [path for path in paths_to_watch if os.path.exists(path)]
+    existing_runtime_config_files = {
+        f
+        for path in existent_paths_to_watch
+        for f in glob.glob(os.path.join(path, "*.json"))
     }
-    logger.info(f"Watching {len(existing_files)} existing files")
+    logger.info(f"Watching {len(existing_runtime_config_files)} existing files")
 
     queue = Queue()
-    watched_files = set(existing_files)
-    for config_file in existing_files:
+    watched_files = set(existing_runtime_config_files)
+    for config_file in existing_runtime_config_files:
         watch_thread = threading.Thread(
             target=watch_kernel,
             args=(
@@ -94,7 +97,7 @@ def start_watches():
         threads.append(watch_thread)
 
     observer = Observer()
-    for path in paths_to_watch:
+    for path in existent_paths_to_watch:
         observer.schedule(NewFileHandler(queue), path, recursive=True)
 
     observer.start()
