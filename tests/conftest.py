@@ -142,7 +142,7 @@ def gcp_setup(auth_tb_quickstart):
     for attempt in range(3):  # Retry up to 3 times
         try:
             auth_tb_quickstart.execute_cell("installer gcp-down")
-            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
+            assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
                 "installer gcp-down"
             )
             break
