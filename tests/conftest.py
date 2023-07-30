@@ -23,21 +23,6 @@ def branch(pytestconfig):
     return pytestconfig.getoption("branch")
 
 
-def authenticate_to_gcp():
-    credentials, _ = google.auth.default()
-    # Refresh the credentials if they are expired
-    if not credentials.valid and credentials.expired and credentials.refresh_token:
-        credentials.refresh(Request())
-
-    if credentials.token:
-        os.environ["GOOGLE_CREDENTIALS"] = credentials.token
-        return
-    if os.environ.get("GOOGLE_CREDENTIALS"):
-        credentials.token = os.environ.get("GOOGLE_CREDENTIALS")
-        return
-    raise ValueError("Failed to authenticate with GCP")
-
-
 def ensure_gcp_project() -> str:
     project_id = subprocess.run(
         ["gcloud", "config", "get-value", "project"],
