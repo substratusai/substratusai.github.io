@@ -3,16 +3,17 @@
 A utility to watch and stream outputs of local ipykernel events.
 """
 
-import logging
-import time
-from jupyter_client.blocking.client import BlockingKernelClient
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
 import glob
+import logging
 import os
 import re
 import threading
+import time
 from queue import Queue
+
+from jupyter_client.blocking.client import BlockingKernelClient
+from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 
 ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
 logger = logging.getLogger(__name__)

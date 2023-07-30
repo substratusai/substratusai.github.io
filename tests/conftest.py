@@ -1,14 +1,14 @@
-import pytest
+import logging
 import os
 import subprocess
 
-from testbook import testbook
-from google.cloud import storage
 import google.auth
-from google.auth.transport.requests import Request
-from testbook.testbook import TestbookNotebookClient
-import logging
+import pytest
 from capture_output_stream import start_watches
+from google.auth.transport.requests import Request
+from google.cloud import storage
+from testbook import testbook
+from testbook.testbook import TestbookNotebookClient
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s: %(message)s")
 logger = logging.getLogger(__name__)

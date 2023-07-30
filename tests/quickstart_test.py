@@ -1,15 +1,12 @@
 import json
-import time
 import socket
+import time
 from contextlib import closing
 
-from flaky import flaky
 import pytest
 import requests
-from conftest import (
-    auth_tb_quickstart,
-    tb_quickstart,
-)
+from conftest import auth_tb_quickstart, tb_quickstart
+from flaky import flaky
 from pytest_dependency import depends  # import the depends function
 
 
