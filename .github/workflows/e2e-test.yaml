@@ -2,7 +2,7 @@ name: e2e docs test
 on:
   issue_comment:
     types: [created]
-  workflow_dispatch:
+  # workflow_dispatch:
 jobs:
   run-tests:
     name: run tests
