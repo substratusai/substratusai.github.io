@@ -119,22 +119,23 @@ def gcp_setup(auth_tb_quickstart):
     yield  # teardown below the yield
 
     logger.debug("Tearing down gcp_setup")
-    for attempt in range(3):  # Retry up to 3 times
-        try:
-            auth_tb_quickstart.execute_cell("installer gcp-down")
-            assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
-                "installer gcp-down"
-            )
-            break
-        except Exception as err:
-            logger.warning(f"gcp-down encountered an error: {err}")
-            if attempt == 1:
-                delete_state_lock()
-            continue
-        finally:
-            stop_event.set()
-            for thread in threads:
-                thread.join()  # Wait for threads to finish
+    try:
+        for attempt in range(3):  # Retry up to 3 times
+            try:
+                auth_tb_quickstart.execute_cell("installer gcp-down")
+                assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
+                    "installer gcp-down"
+                )
+                break
+            except Exception as err:
+                logger.warning(f"gcp-down encountered an error: {err}")
+                if attempt == 1:
+                    delete_state_lock()
+                continue
+    finally:
+        stop_event.set()
+        for thread in threads:
+            thread.join()  # Wait for threads to finish
 
 
 def delete_state_lock(
