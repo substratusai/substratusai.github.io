@@ -24,7 +24,7 @@ def branch(pytestconfig):
 
 
 def authenticate_to_gcp():
-    credentials, project = google.auth.default()
+    credentials, _ = google.auth.default()
     # Refresh the credentials if they are expired
     if not credentials.valid and credentials.expired and credentials.refresh_token:
         credentials.refresh(Request())
@@ -65,7 +65,6 @@ def tb_quickstart(branch):
 @pytest.fixture(scope="session")
 def auth_tb_quickstart(tb_quickstart, branch):
     change_branch(tb_quickstart, branch)
-    authenticate_to_gcp()
     tb_quickstart.inject(ensure_gcp_project())
     yield tb_quickstart
 
@@ -77,7 +76,6 @@ def auth_tb_finetuning_models(branch):
         execute=False,
     ) as tb:
         change_branch(tb, branch)
-        authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
@@ -90,7 +88,6 @@ def auth_tb_loading_datasets(branch):
         execute=False,
     ) as tb:
         change_branch(tb, branch)
-        authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
@@ -102,7 +99,6 @@ def auth_tb_loading_models(branch):
         execute=False,
     ) as tb:
         change_branch(tb, branch)
-        authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
@@ -114,7 +110,6 @@ def auth_tb_serving_models(branch):
         execute=False,
     ) as tb:
         change_branch(tb, branch)
-        authenticate_to_gcp()
         tb.inject(ensure_gcp_project())
         yield tb
 
