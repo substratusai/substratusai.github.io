@@ -9,7 +9,7 @@ import os
 import re
 import threading
 import time
-from queue import Queue, Empty
+from queue import Empty, Queue
 
 from jupyter_client.blocking.client import BlockingKernelClient
 from watchdog.events import FileSystemEventHandler
@@ -49,13 +49,16 @@ def watch_kernel(connection_file, stop_event):
     kc.load_connection_file()
     kc.start_channels()
 
-    while not stop_event.is_set():
-        try:
-            msg = kc.get_iopub_msg(timeout=1)
-            if msg:
-                process_msg(msg)
-        except Exception as _:
-            continue
+    try:
+        while not stop_event.is_set():
+            try:
+                msg = kc.get_iopub_msg(timeout=1)
+                if msg:
+                    process_msg(msg)
+            except Exception as _:
+                continue
+    finally:
+        kc.stop_channels()  # Or some other method to close or clean up the client
 
 
 def watch_queue(queue, watched_files, stop_event):
@@ -72,9 +75,9 @@ def watch_queue(queue, watched_files, stop_event):
             continue
 
 
-def start_watches():
+def start_watches() -> tuple[list[threading.Thread], threading.Event]:
     stop_event = threading.Event()
-    threads = []
+    threads: list[threading.Thread] = []
     paths_to_watch = [
         f"{os.path.expanduser('~')}/Library/Jupyter/runtime/",
         "/private/var/folders/9n/1rd9yjf913s10bzn5w9mdf_m0000gn/T/",

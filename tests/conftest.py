@@ -133,7 +133,9 @@ def gcp_setup(auth_tb_quickstart):
     finally:
         stop_event.set()
         for thread in threads:
-            thread.join()  # Wait for threads to finish
+            thread.join(timeout=1)
+            if thread.is_alive():
+                logger.warning(f"Thread {thread.name} did not stop as expected")
 
 
 def delete_state_lock(
