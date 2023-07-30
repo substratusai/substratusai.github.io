@@ -3,13 +3,18 @@
 A utility to watch and stream outputs of local ipykernel events.
 """
 
-import asyncio
-from jupyter_client.asynchronous import AsyncKernelClient
+import logging
+from jupyter_client.blocking.client import BlockingKernelClient
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 import glob
 import os
-import janus
+import re
+import threading
+from queue import Queue
+
+ansi_escape = re.compile(r"\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])")
+logger = logging.getLogger(__name__)
 
 
 class NewFileHandler(FileSystemEventHandler):
@@ -19,8 +24,8 @@ class NewFileHandler(FileSystemEventHandler):
     def on_created(self, event):
         if event.is_directory or not event.src_path.endswith(".json"):
             return
-        print(f"New kernel detected: {event.src_path}")
-        self.queue.sync_q.put(event.src_path)
+        logger.debug(f"New kernel detected: {event.src_path}")
+        self.queue.put(event.src_path)
 
 
 def process_msg(msg):
@@ -30,52 +35,86 @@ def process_msg(msg):
             if "data" in msg["content"]
             else msg["content"].get("text", "")
         )
-        print(f"Output: {output}")
+        clean_text = ansi_escape.sub("", output)
+        logger.info(clean_text.rstrip("\n"))
     else:
-        print(f"Unhandled message type: {msg['msg_type']}")
-        print(msg)
+        logger.debug(f"Unhandled message type: {msg['msg_type']}")
+        logger.debug(msg)
 
 
-async def watch_kernel(connection_file):
-    kc = AsyncKernelClient(connection_file=connection_file)
+def watch_kernel(connection_file, stop_event):
+    kc = BlockingKernelClient(connection_file=connection_file)
     kc.load_connection_file()
     kc.start_channels()
 
-    while True:
-        msg = await kc.iopub_channel.get_msg()
-        process_msg(msg)
+    while not stop_event.is_set():
+        try:
+            msg = kc.get_iopub_msg(timeout=1)
+            if msg:
+                process_msg(msg)
+        except Exception as _:
+            continue
 
 
-async def watch_queue(queue, watched_files):
-    while True:
-        new_file = await queue.async_q.get()
+def watch_queue(queue, watched_files, stop_event):
+    while not stop_event.is_set():
+        new_file = queue.get()
         if new_file not in watched_files:
-            print(f"Processing new kernel: {new_file}")
+            logger.debug(f"Processing new kernel: {new_file}")
             watched_files.add(new_file)
-            asyncio.create_task(watch_kernel(new_file))
+            threading.Thread(target=watch_kernel, args=(new_file, stop_event)).start()
 
 
-async def main():
+def start_watches():
+    stop_event = threading.Event()
+    threads = []
     paths_to_watch = [
-        f"{os.path.expanduser('~')}/Library/Jupyter/runtime/",  # only works on mac OS
-        "/private/var/folders/9n/1rd9yjf913s10bzn5w9mdf_m0000gn/T/",  # I'm certain this is not portable as is
+        f"{os.path.expanduser('~')}/Library/Jupyter/runtime/",
+        "/private/var/folders/9n/1rd9yjf913s10bzn5w9mdf_m0000gn/T/",
         "/tmp/",
     ]
 
     existing_files = {
         f for path in paths_to_watch for f in glob.glob(os.path.join(path, "*.json"))
     }
-    print(f"Watching {len(existing_files)} existing files")
+    logger.info(f"Watching {len(existing_files)} existing files")
 
-    queue = janus.Queue()
-
-    tasks = [watch_kernel(config_file) for config_file in existing_files]
+    queue = Queue()
+    watched_files = set(existing_files)
+    for config_file in existing_files:
+        watch_thread = threading.Thread(
+            target=watch_kernel,
+            args=(
+                config_file,
+                stop_event,
+            ),
+        )
+        watch_thread.start()
+        threads.append(watch_thread)
 
     observer = Observer()
     for path in paths_to_watch:
         observer.schedule(NewFileHandler(queue), path, recursive=True)
 
-    observer_task = asyncio.get_event_loop().run_in_executor(None, observer.start)
-    queue_watcher = watch_queue(queue, existing_files)
+    observer.start()
 
-    await asyncio.gather(*tasks, observer_task, queue_watcher)
+    # Start the watch_queue function in a separate thread
+    watch_queue_thread = threading.Thread(
+        target=watch_queue,
+        args=(
+            queue,
+            watched_files,
+            stop_event,
+        ),
+    )
+    watch_queue_thread.start()
+    threads.append(watch_queue_thread)
+    return threads, stop_event
+
+
+def main():
+    start_watches()
+
+
+if __name__ == "__main__":
+    main()

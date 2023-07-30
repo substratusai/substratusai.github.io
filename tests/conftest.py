@@ -1,20 +1,16 @@
 import pytest
-import asyncio
 import os
 import subprocess
 
-from pytest_dependency import depends
 from testbook import testbook
 from google.cloud import storage
 import google.auth
 from google.auth.transport.requests import Request
 from testbook.testbook import TestbookNotebookClient
 import logging
-from capture_output_stream import main
+from capture_output_stream import start_watches
 
-logging.basicConfig(level=logging.INFO)
-# TODO(bjb): remove
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
 logger = logging.getLogger(__name__)
 
 
@@ -124,19 +120,40 @@ def auth_tb_serving_models(branch):
 
 @pytest.fixture(scope="session", autouse=True)
 def gcp_setup(auth_tb_quickstart):
-    logger.debug("Starting gcp_setup")
+    threads, stop_event = start_watches()  # start watches in threads
+    for attempt in range(3):  # Retry up to 3 times
+        logger.debug(f"Attempt {attempt} to execute installer gcp-up")
+        try:
+            auth_tb_quickstart.execute_cell("installer gcp-up")
+            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
+                "installer gcp-up"
+            )
+            break
+        except Exception as err:
+            logger.warning(f"gcp-up encountered an error: {err}")
+            if attempt == 1:
+                delete_state_lock()
+            continue
 
-    # Create a new event loop for this fixture
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    yield  # teardown below the yield
 
-    logger.info("before capturing stream")
-    main_task = loop.create_task(main())  # Create task using the created loop
-    logger.info("output should stream")
-    # ... rest of the code ...
-
-    # Close the event loop when done
-    loop.close()
+    logger.debug("Tearing down gcp_setup")
+    for attempt in range(3):  # Retry up to 3 times
+        try:
+            auth_tb_quickstart.execute_cell("installer gcp-down")
+            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
+                "installer gcp-down"
+            )
+            break
+        except Exception as err:
+            logger.warning(f"gcp-down encountered an error: {err}")
+            if attempt == 1:
+                delete_state_lock()
+            continue
+        finally:
+            stop_event.set()
+            for thread in threads:
+                thread.join()  # Wait for threads to finish
 
 
 def delete_state_lock(

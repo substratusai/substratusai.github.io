@@ -17,7 +17,7 @@ install: venv
 
 .PHONY: test
 test: install
-	$(COMMON_VARS) PROJECT_ID=$(PROJECT_ID) ${VENV_NAME}/bin/pytest -svvv --branch=$(SUBSTRATUS_BRANCH)
+	$(COMMON_VARS) PROJECT_ID=$(PROJECT_ID) ${VENV_NAME}/bin/pytest -s --branch=$(SUBSTRATUS_BRANCH)
 
 
 .PHONY: freeze
