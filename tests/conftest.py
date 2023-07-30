@@ -25,17 +25,17 @@ def branch(pytestconfig):
 
 def authenticate_to_gcp():
     credentials, project = google.auth.default()
-
     # Refresh the credentials if they are expired
     if not credentials.valid and credentials.expired and credentials.refresh_token:
         credentials.refresh(Request())
 
-    # Check if credentials are now valid
-    if not credentials.valid:
-        raise ValueError("Failed to authenticate with GCP")
-
-    # Return the credentials and project if you need to use them
-    return credentials, project
+    if credentials.token:
+        os.environ["GOOGLE_CREDENTIALS"] = credentials.token
+        return
+    if os.environ.get("GOOGLE_CREDENTIALS"):
+        credentials.token = os.environ.get("GOOGLE_CREDENTIALS")
+        return
+    raise ValueError("Failed to authenticate with GCP")
 
 
 def ensure_gcp_project() -> str:
@@ -142,7 +142,7 @@ def gcp_setup(auth_tb_quickstart):
     for attempt in range(3):  # Retry up to 3 times
         try:
             auth_tb_quickstart.execute_cell("installer gcp-down")
-            assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
+            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
                 "installer gcp-down"
             )
             break
