@@ -33,7 +33,5 @@ jobs:
           sudo apt-get update -y && \
           sudo apt-get install -y --no-install-recommends \
           python3 \
-          python3-pip \
-          gcc \
-          python3-dev && \
-          GOOGLE_CREDENTIALS=$(gcloud auth print-access-token) make test
+          python3-pip && \
+          make test
