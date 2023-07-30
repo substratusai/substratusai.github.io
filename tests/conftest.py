@@ -2,10 +2,8 @@ import logging
 import os
 import subprocess
 
-import google.auth
 import pytest
 from capture_output_stream import start_watches
-from google.auth.transport.requests import Request
 from google.cloud import storage
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient

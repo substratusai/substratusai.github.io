@@ -9,7 +9,7 @@ import os
 import re
 import threading
 import time
-from queue import Queue
+from queue import Queue, Empty
 
 from jupyter_client.blocking.client import BlockingKernelClient
 from watchdog.events import FileSystemEventHandler
@@ -60,11 +60,16 @@ def watch_kernel(connection_file, stop_event):
 
 def watch_queue(queue, watched_files, stop_event):
     while not stop_event.is_set():
-        new_file = queue.get()
-        if new_file not in watched_files:
-            logger.debug(f"Processing new kernel: {new_file}")
-            watched_files.add(new_file)
-            threading.Thread(target=watch_kernel, args=(new_file, stop_event)).start()
+        try:
+            new_file = queue.get()
+            if new_file not in watched_files:
+                logger.debug(f"Processing new kernel: {new_file}")
+                watched_files.add(new_file)
+                threading.Thread(
+                    target=watch_kernel, args=(new_file, stop_event)
+                ).start()
+        except Empty:
+            continue
 
 
 def start_watches():
@@ -94,6 +99,7 @@ def start_watches():
                 stop_event,
             ),
         )
+        watch_thread.daemon = True
         watch_thread.start()
         threads.append(watch_thread)
 
