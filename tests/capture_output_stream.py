@@ -4,6 +4,7 @@ A utility to watch and stream outputs of local ipykernel events.
 """
 
 import logging
+import time
 from jupyter_client.blocking.client import BlockingKernelClient
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -113,7 +114,20 @@ def start_watches():
 
 
 def main():
-    start_watches()
+    logging.basicConfig(
+        level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s"
+    )  # Configure logging here
+    threads, stop_event = start_watches()
+
+    try:
+        while True:  # Keep the script running
+            time.sleep(1)
+    except KeyboardInterrupt:
+        stop_event.set()  # Signal the threads to stop
+        for thread in threads:
+            thread.join()  # Wait for all threads to finish
+
+    print("Exiting...")
 
 
 if __name__ == "__main__":

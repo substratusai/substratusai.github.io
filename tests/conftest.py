@@ -10,7 +10,7 @@ from testbook.testbook import TestbookNotebookClient
 import logging
 from capture_output_stream import start_watches
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s")
+logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 
