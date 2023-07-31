@@ -1,7 +1,10 @@
+"""
+conftest - a conventional place to configure pytest and put fixtures
+"""
+import ctypes
 import logging
 import os
 import subprocess
-import sys
 
 import pytest
 from emit_ipyk_output_stream import start_watches
@@ -11,20 +14,9 @@ from testbook.testbook import TestbookNotebookClient
 
 logging.basicConfig(
     level=logging.INFO,
-    format="pytest: %(message)s",
+    format="%(message)s",
 )
 logger = logging.getLogger(__name__)
-
-# a dict to track if tests pass or fail
-test_statuses = {}
-
-
-# Hook to update the test status after each test
-def pytest_runtest_makereport(item, call):
-    if call.when == "call":  # Only consider the actual test call
-        test_name = item.name
-        status = call.excinfo is None  # True if success, False if failure
-        test_statuses[test_name] = status
 
 
 def pytest_addoption(parser):
@@ -144,7 +136,7 @@ def auth_tb_serving_models(branch):
 def gcp_setup(auth_tb_quickstart):
     threads, stop_event = start_watches()  # start watches in threads
     for attempt in range(3):  # Retry up to 3 times
-        logger.debug(f"Attempt {attempt} to execute installer gcp-up")
+        logger.info(f"Attempt {attempt + 1} to execute installer gcp-up")
         try:
             auth_tb_quickstart.execute_cell("installer gcp-up")
             assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
@@ -159,39 +151,54 @@ def gcp_setup(auth_tb_quickstart):
 
     yield  # teardown below the yield
 
-    logger.debug("Tearing down gcp_setup")
     try:
         for attempt in range(3):  # Retry up to 3 times
-            try:
-                auth_tb_quickstart.execute_cell("installer gcp-down")
-                assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
-                    "installer gcp-down"
-                )
-                break
-            except Exception as err:
-                logger.warning(f"gcp-down encountered an error: {err}")
-                if attempt == 1:
-                    delete_state_lock()
-                continue
+            logger.info(f"Attempt {attempt + 1} to execute installer gcp-down")
+            # TODO(bjb): flip these
+            break
+            # try:
+            #     auth_tb_quickstart.execute_cell("installer gcp-down")
+            #     assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
+            #         "installer gcp-down"
+            #     )
+            #     break
+            # except Exception as err:
+            #     logger.warning(f"gcp-down encountered an error: {err}")
+            #     if attempt == 1:
+            #         delete_state_lock()
+            #     continue
     finally:
         try:
             stop_event.set()
             for thread in threads:
                 thread.join(timeout=1)
-            # Check for any threads that did not stop
-            alive_threads = [thread for thread in threads if thread.is_alive()]
-            if alive_threads:
-                logger.warning(
-                    f"Threads {', '.join(thread.name for thread in alive_threads)} did not stop as expected"
-                )
 
-                # Determine the exit code based on test statuses
-                exit_code = (
-                    1 if any(not status for status in test_statuses.values()) else 0
-                )
-                sys.exit(exit_code)
-        except Exception as e:
-            logger.error(f"An error occurred during thread termination: {e}")
+            # Check for any threads that did not stop and forcefully terminate them
+            force_terminate_threads(threads)
+        except Exception as err:
+            logger.error(f"An error occurred during thread termination: {err}")
+
+
+def force_terminate_threads(threads):
+    alive_threads = [thread for thread in threads if thread.is_alive()]
+    if not alive_threads:
+        return
+
+    logger.warning(
+        f"Forcefully terminating threads {', '.join(thread.name for thread in alive_threads)}"
+    )
+    for thread in alive_threads:
+        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(
+            ctypes.c_long(thread.ident), ctypes.py_object(SystemExit)
+        )
+        if res == 0:
+            logger.error("Invalid thread ID for thread %s", thread.name)
+        elif res > 1:
+            # If we accidentally hit the wrong thread, clean up the exception
+            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread.ident, 0)
+            logger.error(
+                "Failure to terminate thread %s, hit wrong thread", thread.name
+            )
 
 
 def delete_state_lock(

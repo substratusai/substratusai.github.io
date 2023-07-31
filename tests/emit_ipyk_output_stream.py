@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A utility to watch and stream outputs of local ipykernel events.
+emit_ipk_output_stream - A utility to watch and stream outputs of local ipykernel events.
 """
 
 import glob
@@ -127,10 +127,6 @@ def start_watches() -> tuple[list[threading.Thread], threading.Event]:
 
 
 def main():
-    logging.basicConfig(
-        level=logging.INFO,
-        format="ipyk: %(message)s",
-    )  # Configure logging here
     threads, stop_event = start_watches()
 
     try:
@@ -145,4 +141,8 @@ def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(message)s",
+    )  # Configure logging here
     main()
