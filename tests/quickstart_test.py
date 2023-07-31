@@ -5,7 +5,7 @@ from contextlib import closing
 
 import pytest
 import requests
-from conftest import auth_tb_quickstart, gcp_setup, tb_quickstart
+from conftest import auth_tb_quickstart, tb_quickstart
 from flaky import flaky
 from pytest_dependency import depends  # import the depends function
 
@@ -105,3 +105,12 @@ def find_free_port():
         s.bind(("", 0))
         s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         return s.getsockname()[1]
+
+
+@pytest.mark.dependency(depends=["test_pf_and_curl"])
+def test_server_delete(auth_tb_quickstart) -> None:
+    auth_tb_quickstart.execute_cell("k delete server")
+    assert (
+        "server.substratus.ai/falcon-7b-instruct deleted"
+        in auth_tb_quickstart.cell_output_text("k delete server")
+    )

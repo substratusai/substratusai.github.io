@@ -2,7 +2,7 @@ import json
 import time
 
 import pytest
-from conftest import auth_tb_loading_datasets, gcp_setup
+from conftest import auth_tb_loading_datasets
 from pytest_dependency import depends
 
 

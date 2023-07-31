@@ -154,19 +154,17 @@ def gcp_setup(auth_tb_quickstart):
     try:
         for attempt in range(3):  # Retry up to 3 times
             logger.info(f"Attempt {attempt + 1} to execute installer gcp-down")
-            # TODO(bjb): flip these
-            break
-            # try:
-            #     auth_tb_quickstart.execute_cell("installer gcp-down")
-            #     assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
-            #         "installer gcp-down"
-            #     )
-            #     break
-            # except Exception as err:
-            #     logger.warning(f"gcp-down encountered an error: {err}")
-            #     if attempt == 1:
-            #         delete_state_lock()
-            #     continue
+            try:
+                auth_tb_quickstart.execute_cell("installer gcp-down")
+                assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
+                    "installer gcp-down"
+                )
+                break
+            except Exception as err:
+                logger.warning(f"gcp-down encountered an error: {err}")
+                if attempt == 1:
+                    delete_state_lock()
+                continue
     finally:
         try:
             stop_event.set()

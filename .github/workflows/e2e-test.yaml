@@ -43,6 +43,9 @@ jobs:
           service_account: "docs-test-runner@substratus-integration-tests.iam.gserviceaccount.com"
       - name: make test
         run: |
+          sudo mkdir -p /home/runner/.kube/ && \
+          sudo chown -R runner:runner /home/runner/.kube/ && \
+          sudo chmod -R 700 /home/runner/.kube/ && \
           sudo apt-get update -y && \
           sudo apt-get install -y --no-install-recommends \
           python3 \
