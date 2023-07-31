@@ -4,11 +4,16 @@ conftest - a conventional place to configure pytest and put fixtures
 import ctypes
 import logging
 import os
+import re
 import subprocess
+import time
 
 import pytest
 from emit_ipyk_output_stream import start_watches
 from google.cloud import storage
+from googleapiclient.discovery import build
+from google.cloud import container_v1
+from google.cloud import artifactregistry_v1
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient
 
@@ -17,6 +22,7 @@ logging.basicConfig(
     format="%(message)s",
 )
 logger = logging.getLogger(__name__)
+PROJECT_ID = ""
 
 
 def pytest_addoption(parser):
@@ -65,6 +71,9 @@ def ensure_gcp_project() -> str:
         raise ValueError(
             "Project ID is not set. Please set the PROJECT_ID environment variable."
         )
+    PROJECT_ID = project_id
+    logger.info(f"working on project {PROJECT_ID}")
+    time.sleep(2)
     return f"!gcloud config set project {project_id} -q"
 
 
@@ -139,10 +148,12 @@ def gcp_setup(auth_tb_quickstart):
         logger.info(f"Attempt {attempt + 1} to execute installer gcp-up")
         try:
             auth_tb_quickstart.execute_cell("installer gcp-up")
-            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
-                "installer gcp-up"
-            )
-            break
+            up_output = auth_tb_quickstart.cell_output_text("installer gcp-up")
+            if "Apply complete!" in up_output:
+                break
+            if "Error 409" in up_output:
+                delete_conflicts(up_output)
+                continue
         except Exception as err:
             logger.warning(f"gcp-up encountered an error: {err}")
             if attempt == 1:
@@ -154,17 +165,16 @@ def gcp_setup(auth_tb_quickstart):
     try:
         for attempt in range(3):  # Retry up to 3 times
             logger.info(f"Attempt {attempt + 1} to execute installer gcp-down")
-            try:
-                auth_tb_quickstart.execute_cell("installer gcp-down")
-                assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
-                    "installer gcp-down"
-                )
-                break
-            except Exception as err:
-                logger.warning(f"gcp-down encountered an error: {err}")
-                if attempt == 1:
-                    delete_state_lock()
-                continue
+            # try:
+            #     auth_tb_quickstart.execute_cell("installer gcp-down")
+            #     down_output = auth_tb_quickstart.cell_output_text("installer gcp-down")
+            #     if "Destroy complete!" in down_output:
+            #         break
+            # except Exception as err:
+            #     logger.warning(f"gcp-down encountered an error: {err}")
+            #     if attempt == 1:
+            #         delete_state_lock()
+            #     continue
     finally:
         try:
             stop_event.set()
@@ -197,6 +207,66 @@ def force_terminate_threads(threads):
             logger.error(
                 "Failure to terminate thread %s, hit wrong thread", thread.name
             )
+
+
+def delete_conflicts(up_output: str, location: str = "us-central1"):
+    """Delete any resources that are causing conflicts during gcp-up"""
+    conflict_lines = re.findall(r"Error 409: (.*?)\n", up_output)
+    location_pattern = re.compile(r"locations/(\w+-\w+\d)")
+    location_match = location_pattern.search(up_output)
+    location = location_match.group(1) if location_match else "us-central1"
+
+    for line in conflict_lines:
+        logger.info(f"Deleting conflicting resource in line: {line}")
+
+        # Process each line to delete the corresponding resource
+        if "Service account" in line:
+            # Extract and delete the service account
+            service_account_name_part = line.split(" ")[2].strip().rstrip(".")
+            service_account_email = (
+                f"{service_account_name_part}@{PROJECT_ID}.iam.gserviceaccount.com"
+            )
+            delete_service_account(service_account_email)
+        elif "Already exists: projects" in line and "clusters" in line:
+            # Extract and delete the cluster
+            cluster_name = line.split("/")[-1].rstrip(".")
+            delete_cluster(cluster_name, location)
+        elif "bucket succeeded and you already own it." in line:
+            # Extract and delete the bucket
+            bucket_name = f"{PROJECT_ID}-substratus-artifacts"
+            delete_bucket(bucket_name)
+        elif "the repository already exists" in line:
+            # Delete the artifact registry repository
+            repository_name = "substratus"
+            delete_repository(repository_name, location)
+
+
+def delete_service_account(
+    service_account_email: str,
+):
+    # credentials = ... # Assuming you have set up the credentials
+    # service = build('iam', 'v1', credentials=credentials)
+    service = build("iam", "v1")
+    full_name = f"projects/{PROJECT_ID}/serviceAccounts/{service_account_email}"
+    service.projects().serviceAccounts().delete(name=full_name).execute()
+
+
+def delete_cluster(cluster_name: str, location: str):
+    container_client = container_v1.ClusterManagerClient()
+    container_client.delete_cluster(PROJECT_ID, location, cluster_name)
+
+
+def delete_bucket(bucket_name: str):
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    bucket.delete(force=True)
+
+
+def delete_repository(repository_name: str, location: str):
+    artifact_client = artifactregistry_v1.ArtifactRegistryClient()
+    artifact_client.delete_repository(
+        name=f"projects/{PROJECT_ID}/locations/{location}/repositories/{repository_name}"
+    )
 
 
 def delete_state_lock(
