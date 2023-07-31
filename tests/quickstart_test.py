@@ -1,16 +1,16 @@
 import json
-import time
 import socket
+import time
 from contextlib import closing
 
-from flaky import flaky
 import pytest
 import requests
-from fixtures import auth_tb_quickstart, gcp_setup, tb_quickstart
+from conftest import auth_tb_quickstart, gcp_setup, tb_quickstart
+from flaky import flaky
 from pytest_dependency import depends  # import the depends function
 
 
-def test_software_dependencies_stdout(tb_quickstart) -> None:
+def test_software_dependencies_stdout(gcp_setup, tb_quickstart) -> None:
     tb_quickstart.execute_cell("docker-version")
     assert "Client:" in tb_quickstart.cell_output_text("docker-version")
     tb_quickstart.execute_cell("gcloud-version")
@@ -21,7 +21,7 @@ def test_software_dependencies_stdout(tb_quickstart) -> None:
 
 
 @pytest.mark.dependency()
-def test_model_apply(auth_tb_quickstart) -> None:
+def test_model_apply(gcp_setup, auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k apply model")
     assert (
         "model.substratus.ai/falcon-7b-instruct created"
@@ -32,7 +32,7 @@ def test_model_apply(auth_tb_quickstart) -> None:
 
 
 @pytest.mark.dependency()
-def test_server_apply(auth_tb_quickstart) -> None:
+def test_server_apply(gcp_setup, auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k apply server")
     assert (
         "server.substratus.ai/falcon-7b-instruct created"
@@ -48,7 +48,7 @@ def test_server_apply(auth_tb_quickstart) -> None:
         "test_server_apply",
     ]
 )
-def test_ai_resources_ready(auth_tb_quickstart) -> None:
+def test_ai_resources_ready(gcp_setup, auth_tb_quickstart) -> None:
     # NOTE(bjb): this can be incredibly slow and sometimes not work at all as it
     # depends on creating a new GPU node. Currently this project hits quota
     timeout = (
@@ -69,7 +69,7 @@ def test_ai_resources_ready(auth_tb_quickstart) -> None:
 
 @flaky(max_runs=3)
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
-def test_pf_and_curl(auth_tb_quickstart) -> None:
+def test_pf_and_curl(gcp_setup, auth_tb_quickstart) -> None:
     for _ in range(3):  # Try 3 times
         port = find_free_port()
         try:
