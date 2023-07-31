@@ -39,7 +39,7 @@ jobs:
         with:
           workload_identity_provider: "projects/489627518739/locations/global/workloadIdentityPools/github-identities/providers/github-com"
           service_account: "docs-test-runner@substratus-integration-tests.iam.gserviceaccount.com"
-      - name: Run tests
+      - name: make test
         run: |
           sudo apt-get update -y && \
           sudo apt-get install -y --no-install-recommends \
