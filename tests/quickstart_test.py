@@ -70,8 +70,10 @@ def test_ai_resources_ready(auth_tb_quickstart) -> None:
 @flaky(max_runs=3)
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
 def test_pf_and_curl(auth_tb_quickstart) -> None:
+    time.sleep(5)
     for _ in range(3):  # Try 3 times
         port = find_free_port()
+        port = 8080
         try:
             # Using a random port to avoid collisions
             auth_tb_quickstart.inject(f"port = {port}")
@@ -111,6 +113,6 @@ def find_free_port():
 def test_server_delete(auth_tb_quickstart) -> None:
     auth_tb_quickstart.execute_cell("k delete server")
     assert (
-        "server.substratus.ai/falcon-7b-instruct deleted"
+        'server.substratus.ai "falcon-7b-instruct" deleted'
         in auth_tb_quickstart.cell_output_text("k delete server")
     )

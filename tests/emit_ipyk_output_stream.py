@@ -12,6 +12,7 @@ import time
 from queue import Empty, Queue
 
 from jupyter_client.blocking.client import BlockingKernelClient
+from traitlets import observe
 from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
@@ -58,7 +59,8 @@ def watch_kernel(connection_file, stop_event):
             except Exception as _:
                 continue
     finally:
-        kc.stop_channels()  # Or some other method to close or clean up the client
+        kc.stop_channels()
+        kc.shutdown()
 
 
 def watch_queue(queue, watched_files, stop_event):
@@ -75,7 +77,7 @@ def watch_queue(queue, watched_files, stop_event):
             continue
 
 
-def start_watches() -> tuple[list[threading.Thread], threading.Event]:
+def start_watches() -> tuple[list[threading.Thread], threading.Event, Observer]:
     stop_event = threading.Event()
     threads: list[threading.Thread] = []
     paths_to_watch = [
@@ -123,11 +125,11 @@ def start_watches() -> tuple[list[threading.Thread], threading.Event]:
     )
     watch_queue_thread.start()
     threads.append(watch_queue_thread)
-    return threads, stop_event
+    return threads, stop_event, observer
 
 
 def main():
-    threads, stop_event = start_watches()
+    threads, stop_event, _ = start_watches()
 
     try:
         while True:  # Keep the script running
@@ -135,7 +137,7 @@ def main():
     except KeyboardInterrupt:
         stop_event.set()  # Signal the threads to stop
         for thread in threads:
-            thread.join()  # Wait for all threads to finish
+            thread.join(timeout=5)  # Wait for all threads to finish
 
     print("Exiting...")
 
@@ -144,5 +146,5 @@ if __name__ == "__main__":
     logging.basicConfig(
         level=logging.INFO,
         format="%(message)s",
-    )  # Configure logging here
+    )
     main()

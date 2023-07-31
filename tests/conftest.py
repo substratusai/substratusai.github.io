@@ -1,19 +1,14 @@
 """
 conftest - a conventional place to configure pytest and put fixtures
 """
-import ctypes
 import logging
 import os
 import re
 import subprocess
-import time
 
 import pytest
-from emit_ipyk_output_stream import start_watches
-from google.cloud import storage
+from google.cloud import artifactregistry_v1, container_v1, storage
 from googleapiclient.discovery import build
-from google.cloud import container_v1
-from google.cloud import artifactregistry_v1
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient
 
@@ -72,8 +67,6 @@ def ensure_gcp_project() -> str:
             "Project ID is not set. Please set the PROJECT_ID environment variable."
         )
     PROJECT_ID = project_id
-    logger.info(f"working on project {PROJECT_ID}")
-    time.sleep(2)
     return f"!gcloud config set project {project_id} -q"
 
 
@@ -143,7 +136,6 @@ def auth_tb_serving_models(branch):
 
 @pytest.fixture(scope="session", autouse=True)
 def gcp_setup(auth_tb_quickstart):
-    threads, stop_event = start_watches()  # start watches in threads
     for attempt in range(3):  # Retry up to 3 times
         logger.info(f"Attempt {attempt + 1} to execute installer gcp-up")
         try:
@@ -162,51 +154,19 @@ def gcp_setup(auth_tb_quickstart):
 
     yield  # teardown below the yield
 
-    try:
-        for attempt in range(3):  # Retry up to 3 times
-            logger.info(f"Attempt {attempt + 1} to execute installer gcp-down")
-            # try:
-            #     auth_tb_quickstart.execute_cell("installer gcp-down")
-            #     down_output = auth_tb_quickstart.cell_output_text("installer gcp-down")
-            #     if "Destroy complete!" in down_output:
-            #         break
-            # except Exception as err:
-            #     logger.warning(f"gcp-down encountered an error: {err}")
-            #     if attempt == 1:
-            #         delete_state_lock()
-            #     continue
-    finally:
+    for attempt in range(3):  # Retry up to 3 times
+        logger.info(f"Attempt {attempt + 1} to execute installer gcp-down")
         try:
-            stop_event.set()
-            for thread in threads:
-                thread.join(timeout=1)
-
-            # Check for any threads that did not stop and forcefully terminate them
-            force_terminate_threads(threads)
+            auth_tb_quickstart.execute_cell("installer gcp-down")
+            down_output = auth_tb_quickstart.cell_output_text("installer gcp-down")
+            if "Destroy complete!" in down_output:
+                break
         except Exception as err:
-            logger.error(f"An error occurred during thread termination: {err}")
-
-
-def force_terminate_threads(threads):
-    alive_threads = [thread for thread in threads if thread.is_alive()]
-    if not alive_threads:
-        return
-
-    logger.warning(
-        f"Forcefully terminating threads {', '.join(thread.name for thread in alive_threads)}"
-    )
-    for thread in alive_threads:
-        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(
-            ctypes.c_long(thread.ident), ctypes.py_object(SystemExit)
-        )
-        if res == 0:
-            logger.error("Invalid thread ID for thread %s", thread.name)
-        elif res > 1:
-            # If we accidentally hit the wrong thread, clean up the exception
-            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread.ident, 0)
-            logger.error(
-                "Failure to terminate thread %s, hit wrong thread", thread.name
-            )
+            logger.warning(f"gcp-down encountered an error: {err}")
+            if attempt == 1:
+                delete_state_lock()
+            continue
+    logger.info("gcp-down completed successfully")
 
 
 def delete_conflicts(up_output: str, location: str = "us-central1"):
@@ -244,8 +204,6 @@ def delete_conflicts(up_output: str, location: str = "us-central1"):
 def delete_service_account(
     service_account_email: str,
 ):
-    # credentials = ... # Assuming you have set up the credentials
-    # service = build('iam', 'v1', credentials=credentials)
     service = build("iam", "v1")
     full_name = f"projects/{PROJECT_ID}/serviceAccounts/{service_account_email}"
     service.projects().serviceAccounts().delete(name=full_name).execute()
