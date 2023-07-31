@@ -2,8 +2,10 @@ import logging
 import os
 import subprocess
 
+import google.auth
 import pytest
 from capture_output_stream import start_watches
+from google.auth.transport.requests import Request
 from google.cloud import storage
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient
@@ -14,6 +16,26 @@ logger = logging.getLogger(__name__)
 
 def pytest_addoption(parser):
     parser.addoption("--branch", action="store", default="main")
+
+
+def verify_auth():
+    """
+    verify_auth checks that your credentials are valid and not expired. This is
+    less necessary in a CI context but useful for local testing since you'd
+    otherwise be prompted for a password within the notebook under test.
+    """
+    credentials, _ = google.auth.default()
+    if not credentials.valid and credentials.expired and credentials.refresh_token:
+        credentials.refresh(Request())
+        return
+
+    if credentials.token:
+        os.environ["GOOGLE_CREDENTIALS"] = credentials.token
+        return
+    if os.environ.get("GOOGLE_CREDENTIALS"):
+        credentials.token = os.environ.get("GOOGLE_CREDENTIALS")
+        return
+    raise ValueError("Failed to authenticate with GCP")
 
 
 @pytest.fixture(scope="session")
@@ -47,6 +69,7 @@ def tb_quickstart(branch):
 
 @pytest.fixture(scope="session")
 def auth_tb_quickstart(tb_quickstart, branch):
+    verify_auth()
     change_branch(tb_quickstart, branch)
     tb_quickstart.inject(ensure_gcp_project())
     yield tb_quickstart
@@ -58,6 +81,7 @@ def auth_tb_finetuning_models(branch):
         "docs/walkthrough/finetuning-models.ipynb",
         execute=False,
     ) as tb:
+        verify_auth()
         change_branch(tb, branch)
         tb.inject(ensure_gcp_project())
         yield tb
@@ -70,6 +94,7 @@ def auth_tb_loading_datasets(branch):
         # TODO(bjb): next iteration, try to execute=True against this nb
         execute=False,
     ) as tb:
+        verify_auth()
         change_branch(tb, branch)
         tb.inject(ensure_gcp_project())
         yield tb
@@ -81,6 +106,7 @@ def auth_tb_loading_models(branch):
         "docs/walkthrough/loading-models.ipynb",
         execute=False,
     ) as tb:
+        verify_auth()
         change_branch(tb, branch)
         tb.inject(ensure_gcp_project())
         yield tb
@@ -92,6 +118,7 @@ def auth_tb_serving_models(branch):
         "docs/walkthrough/serving-models.ipynb",
         execute=False,
     ) as tb:
+        verify_auth()
         change_branch(tb, branch)
         tb.inject(ensure_gcp_project())
         yield tb
