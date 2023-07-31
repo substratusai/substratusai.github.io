@@ -4,12 +4,15 @@ import subprocess
 import sys
 
 import pytest
-from capture_output_stream import start_watches
+from emit_ipyk_output_stream import start_watches
 from google.cloud import storage
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient
 
-logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s: %(message)s")
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",
+)
 logger = logging.getLogger(__name__)
 
 # a dict to track if tests pass or fail
