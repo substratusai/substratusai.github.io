@@ -2,10 +2,8 @@ import logging
 import os
 import subprocess
 
-import google.auth
 import pytest
 from capture_output_stream import start_watches
-from google.auth.transport.requests import Request
 from google.cloud import storage
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient
@@ -24,18 +22,21 @@ def verify_auth():
     less necessary in a CI context but useful for local testing since you'd
     otherwise be prompted for a password within the notebook under test.
     """
-    credentials, _ = google.auth.default()
-    if not credentials.valid and credentials.expired and credentials.refresh_token:
-        credentials.refresh(Request())
-        return
-
-    if credentials.token:
-        os.environ["GOOGLE_CREDENTIALS"] = credentials.token
-        return
-    if os.environ.get("GOOGLE_CREDENTIALS"):
-        credentials.token = os.environ.get("GOOGLE_CREDENTIALS")
-        return
-    raise ValueError("Failed to authenticate with GCP")
+    try:
+        result = subprocess.run(
+            ["gcloud", "auth", "list"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if "No credentialed accounts." in result.stdout:
+            raise ValueError("No credentialed accounts")
+        elif "Credentialed Accounts" in result.stdout:
+            return
+        else:
+            raise Exception(f"Unexpected output: {result.stdout}")
+    except Exception as err:
+        Exception(f"An error occurred while checking gcloud authentication: {str(err)}")
 
 
 @pytest.fixture(scope="session")
