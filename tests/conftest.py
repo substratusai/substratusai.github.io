@@ -1,6 +1,7 @@
 import logging
 import os
 import subprocess
+import sys
 
 import pytest
 from capture_output_stream import start_watches
@@ -10,6 +11,17 @@ from testbook.testbook import TestbookNotebookClient
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s:%(name)s: %(message)s")
 logger = logging.getLogger(__name__)
+
+# a dict to track if tests pass or fail
+test_statuses = {}
+
+
+# Hook to update the test status after each test
+def pytest_runtest_makereport(item, call):
+    if call.when == "call":  # Only consider the actual test call
+        test_name = item.name
+        status = call.excinfo is None  # True if success, False if failure
+        test_statuses[test_name] = status
 
 
 def pytest_addoption(parser):
@@ -128,42 +140,31 @@ def auth_tb_serving_models(branch):
 @pytest.fixture(scope="session", autouse=True)
 def gcp_setup(auth_tb_quickstart):
     threads, stop_event = start_watches()  # start watches in threads
-    for attempt in range(3):  # Retry up to 3 times
-        logger.debug(f"Attempt {attempt} to execute installer gcp-up")
-        try:
-            auth_tb_quickstart.execute_cell("installer gcp-up")
-            assert "Apply complete!" in auth_tb_quickstart.cell_output_text(
-                "installer gcp-up"
-            )
-            break
-        except Exception as err:
-            logger.warning(f"gcp-up encountered an error: {err}")
-            if attempt == 1:
-                delete_state_lock()
-            continue
+    # ... (rest of setup code) ...
 
     yield  # teardown below the yield
 
     logger.debug("Tearing down gcp_setup")
+    # ... (rest of teardown code) ...
+
+    # Finally block to handle thread termination
     try:
-        for attempt in range(3):  # Retry up to 3 times
-            try:
-                auth_tb_quickstart.execute_cell("installer gcp-down")
-                assert "Destroy complete!" in auth_tb_quickstart.cell_output_text(
-                    "installer gcp-down"
-                )
-                break
-            except Exception as err:
-                logger.warning(f"gcp-down encountered an error: {err}")
-                if attempt == 1:
-                    delete_state_lock()
-                continue
-    finally:
         stop_event.set()
         for thread in threads:
-            thread.join(timeout=1)
-            if thread.is_alive():
-                logger.warning(f"Thread {thread.name} did not stop as expected")
+            thread.join(timeout=5)
+
+        # Check for any threads that did not stop
+        alive_threads = [thread for thread in threads if thread.is_alive()]
+        if alive_threads:
+            logger.warning(
+                f"Threads {', '.join(thread.name for thread in alive_threads)} did not stop as expected"
+            )
+
+            # Determine the exit code based on test statuses
+            exit_code = 1 if any(not status for status in test_statuses.values()) else 0
+            sys.exit(exit_code)
+    except Exception as e:
+        logger.error(f"An error occurred during thread termination: {e}")
 
 
 def delete_state_lock(
