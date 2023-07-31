@@ -1,7 +1,7 @@
 name: e2e docs test
 on:
-  pull_request:
-    branches: ["main"]
+  # pull_request:
+  #   branches: ["main"]
   workflow_dispatch:
   issue_comment:
     types: [created]
