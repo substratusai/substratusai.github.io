@@ -11,7 +11,7 @@ from testbook.testbook import TestbookNotebookClient
 
 logging.basicConfig(
     level=logging.INFO,
-    format="%(message)s",
+    format="pytest: %(message)s",
 )
 logger = logging.getLogger(__name__)
 

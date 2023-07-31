@@ -25,8 +25,7 @@ def test_dataset_ready(gcp_setup, auth_tb_loading_datasets) -> None:
         output_json = json.loads(
             auth_tb_loading_datasets.cell_output_text("k get dataset")
         )
-        ready_status = output_json["status"]["ready"]
-        if ready_status is True:
+        if 'status' in output_json.keys() and 'ready' in output_json["status"].keys() and output_json["status"]["ready"]:
             assert True
             break
         elif time.time() > timeout:

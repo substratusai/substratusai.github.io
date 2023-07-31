@@ -128,7 +128,8 @@ def start_watches() -> tuple[list[threading.Thread], threading.Event]:
 
 def main():
     logging.basicConfig(
-        level=logging.INFO, format="%(levelname)s:%(name)s:%(message)s"
+        level=logging.INFO,
+        format="ipyk: %(message)s",
     )  # Configure logging here
     threads, stop_event = start_watches()
 
