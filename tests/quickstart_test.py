@@ -1,4 +1,5 @@
 import json
+import logging
 import socket
 import time
 from contextlib import closing
@@ -8,6 +9,8 @@ import requests
 from conftest import auth_tb_quickstart, tb_quickstart
 from flaky import flaky
 from pytest_dependency import depends  # import the depends function
+
+logger = logging.getLogger(__name__)
 
 
 def test_software_dependencies_stdout(tb_quickstart) -> None:
@@ -67,38 +70,33 @@ def test_ai_resources_ready(auth_tb_quickstart) -> None:
         time.sleep(30)
 
 
-@flaky(max_runs=3)
+@flaky(max_runs=5)
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
 def test_pf_and_curl(auth_tb_quickstart) -> None:
-    time.sleep(90)
-    for _ in range(6):  # Try 6 times
-        port = find_free_port()
-        try:
-            # Using a random port to avoid collisions
-            auth_tb_quickstart.inject(f"port = {port}")
-            auth_tb_quickstart.execute_cell("k port-forward server")
-            time.sleep(10)
-            response = requests.post(
-                f"http://localhost:{port}/v1/completions",
-                headers={"Content-Type": "application/json"},
-                data=json.dumps(
-                    {
-                        "model": "falcon-7b-instruct",
-                        "prompt": "Who was the first president of the United States? ",
-                        "max_tokens": 10,
-                    }
-                ),
-            )
-            assert response.status_code == 200
-            assert len(response.json()["choices"][0]["text"]) > 0
-            break
-        except AssertionError:
-            # If the assertions fail, cleanup and retry
-            auth_tb_quickstart.execute_cell("port_forward_process.kill()")
-            continue
-        finally:
-            # Always cleanup even if no exception
-            auth_tb_quickstart.execute_cell("port_forward_process.kill()")
+    logger.info("waiting 90 seconds before attempting port forward...")
+    time.sleep(60)
+    port = find_free_port()
+    try:
+        # Using a random port to avoid collisions
+        auth_tb_quickstart.inject(f"port = {port}")
+        auth_tb_quickstart.execute_cell("k port-forward server")
+        time.sleep(5)
+        response = requests.post(
+            f"http://localhost:{port}/v1/completions",
+            headers={"Content-Type": "application/json"},
+            data=json.dumps(
+                {
+                    "model": "falcon-7b-instruct",
+                    "prompt": "Who was the first president of the United States? ",
+                    "max_tokens": 10,
+                }
+            ),
+        )
+        assert response.status_code == 200
+        assert len(response.json()["choices"][0]["text"]) > 0
+    finally:
+        # Always cleanup even if no exception
+        auth_tb_quickstart.execute_cell("port_forward_process.kill()")
 
 
 def find_free_port():

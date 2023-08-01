@@ -21,5 +21,5 @@ test: install
 	rm tail_ipyk_output_stream.pid
 
 .PHONY: freeze
-freeze: install
+freeze:
 	${PYTHON} -m pip freeze > requirements.txt
