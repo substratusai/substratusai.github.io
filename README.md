@@ -107,3 +107,12 @@ repo to test against for all manifests referencing examples in that repo.
 ```bash
 make test SUBSTRATUS_BRANCH=feat/foobar
 ```
+
+Within GitHub Actions, you should see all the output of the notebooks as they're
+executed but running locally (Mac), we don't have this working. If you want to
+run locally, launch the helper utility in a separate shell or as a background
+process first:
+
+```bash
+./tests/utils/tail_ipyk_output_stream.py
+```
