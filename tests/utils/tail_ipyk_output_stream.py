@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-emit_ipk_output_stream - A utility to watch and stream outputs of local ipykernel events.
+tail_ipyk_output_stream - A utility to watch and stream outputs of local ipykernel events.
 """
 
 import glob

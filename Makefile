@@ -15,10 +15,10 @@ install: venv
 
 .PHONY: test
 test: install
-	${PYTHON} ./tests/emit_ipyk_output_stream.py & echo $$! > emit_ipyk_output_stream.pid
+	${PYTHON} ./tests/utils/tail_ipyk_output_stream.py & echo $$! > tail_ipyk_output_stream.pid
 	$(COMMON_VARS) ${VENV_NAME}/bin/pytest -s --branch=$(SUBSTRATUS_BRANCH)
-	kill `cat emit_ipyk_output_stream.pid` || true
-	rm emit_ipyk_output_stream.pid
+	kill `cat tail_ipyk_output_stream.pid` || true
+	rm tail_ipyk_output_stream.pid
 
 .PHONY: freeze
 freeze: install
