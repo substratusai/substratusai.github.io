@@ -7,7 +7,6 @@ jobs:
   run-tests:
     name: run tests
     if: |
-      github.event_name == 'pull_request' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issue_comment' &&
       github.event.issue.pull_request &&
@@ -20,6 +19,17 @@ jobs:
     env:
       PROJECT_ID: substratus-integration-tests
     steps:
+      - name: Print entire workflow_dispatch event
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "${{ toJson(github.event) }}"
+      - name: Print debug info
+        run: |
+          echo "Event name: ${{ github.event_name }}"
+          echo "Pull request associated: ${{ github.event.issue.pull_request }}"
+          echo "Comment body: ${{ github.event.comment.body }}"
+          echo "Author association: ${{ github.event.comment.author_association }}"
+      - name: Stop execution
+        run: exit 1
       - name: Checkout
         uses: actions/checkout@v3
       - name: Turnstyle
