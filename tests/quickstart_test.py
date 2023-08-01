@@ -70,7 +70,7 @@ def test_ai_resources_ready(auth_tb_quickstart) -> None:
 @flaky(max_runs=3)
 @pytest.mark.dependency(depends=["test_ai_resources_ready"])
 def test_pf_and_curl(auth_tb_quickstart) -> None:
-    time.sleep(30)
+    time.sleep(90)
     for _ in range(6):  # Try 6 times
         port = find_free_port()
         try:
