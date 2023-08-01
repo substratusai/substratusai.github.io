@@ -8,6 +8,7 @@ import subprocess
 
 import pytest
 from google.cloud import artifactregistry_v1, container_v1, storage
+from google.cloud.container_v1.types import DeleteClusterRequest
 from googleapiclient.discovery import build
 from testbook import testbook
 from testbook.testbook import TestbookNotebookClient
@@ -17,7 +18,7 @@ logging.basicConfig(
     format="%(message)s",
 )
 logger = logging.getLogger(__name__)
-PROJECT_ID = ""
+PROJECT_ID = None
 
 
 def pytest_addoption(parser):
@@ -53,6 +54,7 @@ def branch(pytestconfig):
 
 
 def ensure_gcp_project() -> str:
+    global PROJECT_ID
     project_id = subprocess.run(
         ["gcloud", "config", "get-value", "project"],
         capture_output=True,
@@ -211,11 +213,15 @@ def delete_service_account(
 
 def delete_cluster(cluster_name: str, location: str):
     container_client = container_v1.ClusterManagerClient()
-    container_client.delete_cluster(PROJECT_ID, location, cluster_name)
+    req = DeleteClusterRequest(
+        name=f"projects/{PROJECT_ID}/locations/{location}/clusters/{cluster_name}"
+    )
+    container_client.delete_cluster(req)
 
 
 def delete_bucket(bucket_name: str):
     storage_client = storage.Client()
+    logger.info(f"deleting bucket {bucket_name}")
     bucket = storage_client.get_bucket(bucket_name)
     bucket.delete(force=True)
 
@@ -228,7 +234,7 @@ def delete_repository(repository_name: str, location: str):
 
 
 def delete_state_lock(
-    bucket_name="substratus-integration-tests-substratus-terraform",
+    bucket_name=f"{PROJECT_ID}-substratus-terraform",
     blob_name="primary/default.tflock",
 ):
     """Deletes the state file from the bucket."""

@@ -15,10 +15,15 @@ install: venv
 
 .PHONY: test
 test: install
-	${PYTHON} ./tests/utils/tail_ipyk_output_stream.py & echo $$! > tail_ipyk_output_stream.pid
+	${PYTHON} ./tests/utils/tail_ipyk_output_stream.py > tail_ipyk_output_stream.log 2>&1 &
+	echo $$! > tail_ipyk_output_stream.pid
+	tail -f tail_ipyk_output_stream.log &
+	tail_pid=$$! # Capture the PID of the tail process
 	$(COMMON_VARS) ${VENV_NAME}/bin/pytest -s --branch=$(SUBSTRATUS_BRANCH)
 	kill `cat tail_ipyk_output_stream.pid` || true
+	kill $$tail_pid || true # Kill the tail process
 	rm tail_ipyk_output_stream.pid
+	rm tail_ipyk_output_stream.log
 
 .PHONY: freeze
 freeze:
