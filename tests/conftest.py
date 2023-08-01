@@ -5,6 +5,7 @@ import logging
 import os
 import re
 import subprocess
+import time
 
 import pytest
 from google.cloud import artifactregistry_v1, container_v1, storage
@@ -148,10 +149,10 @@ def gcp_setup(auth_tb_quickstart):
             if "Error 409" in up_output:
                 delete_conflicts(up_output)
                 continue
+            if "Error acquiring the state lock" in up_output:
+                delete_state_lock()
         except Exception as err:
             logger.warning(f"gcp-up encountered an error: {err}")
-            if attempt == 1:
-                delete_state_lock()
             continue
 
     yield  # teardown below the yield
@@ -163,10 +164,10 @@ def gcp_setup(auth_tb_quickstart):
             down_output = auth_tb_quickstart.cell_output_text("installer gcp-down")
             if "Destroy complete!" in down_output:
                 break
+            elif "Error acquiring the state lock" in down_output:
+                delete_state_lock()
         except Exception as err:
             logger.warning(f"gcp-down encountered an error: {err}")
-            if attempt == 1:
-                delete_state_lock()
             continue
     logger.info("gcp-down completed successfully")
 
@@ -181,7 +182,6 @@ def delete_conflicts(up_output: str, location: str = "us-central1"):
     for line in conflict_lines:
         logger.info(f"Deleting conflicting resource in line: {line}")
 
-        # Process each line to delete the corresponding resource
         if "Service account" in line:
             # Extract and delete the service account
             service_account_name_part = line.split(" ")[2].strip().rstrip(".")
@@ -189,10 +189,6 @@ def delete_conflicts(up_output: str, location: str = "us-central1"):
                 f"{service_account_name_part}@{PROJECT_ID}.iam.gserviceaccount.com"
             )
             delete_service_account(service_account_email)
-        elif "Already exists: projects" in line and "clusters" in line:
-            # Extract and delete the cluster
-            cluster_name = line.split("/")[-1].rstrip(".")
-            delete_cluster(cluster_name, location)
         elif "bucket succeeded and you already own it." in line:
             # Extract and delete the bucket
             bucket_name = f"{PROJECT_ID}-substratus-artifacts"
@@ -201,6 +197,10 @@ def delete_conflicts(up_output: str, location: str = "us-central1"):
             # Delete the artifact registry repository
             repository_name = "substratus"
             delete_repository(repository_name, location)
+        elif "Already exists: projects" in line and "clusters" in line:
+            # Extract and delete the cluster
+            cluster_name = line.split("/")[-1].rstrip(".").rstrip().rstrip(".")
+            delete_cluster(cluster_name, location)
 
 
 def delete_service_account(
@@ -208,15 +208,21 @@ def delete_service_account(
 ):
     service = build("iam", "v1")
     full_name = f"projects/{PROJECT_ID}/serviceAccounts/{service_account_email}"
+    logger.info(f"deleting SA: {full_name}")
     service.projects().serviceAccounts().delete(name=full_name).execute()
 
 
 def delete_cluster(cluster_name: str, location: str):
     container_client = container_v1.ClusterManagerClient()
+    logger.info(
+        f"cluster is projects/{PROJECT_ID}/locations/{location}/clusters/{cluster_name}"
+    )
     req = DeleteClusterRequest(
         name=f"projects/{PROJECT_ID}/locations/{location}/clusters/{cluster_name}"
     )
     container_client.delete_cluster(req)
+    logger.info("waiting 5 minutes for cluster deletion")
+    time.sleep(300)  # Wait for cluster deletion to complete
 
 
 def delete_bucket(bucket_name: str):
@@ -233,19 +239,24 @@ def delete_repository(repository_name: str, location: str):
     )
 
 
-def delete_state_lock(
-    bucket_name=f"{PROJECT_ID}-substratus-terraform",
-    blob_name="primary/default.tflock",
-):
+def delete_state_lock(bucket_name=None, blob_name="primary/default.tflock"):
     """Deletes the state file from the bucket."""
-    print("deleting state lock file from bucket")
+    global PROJECT_ID
+    ensure_gcp_project()
+    if bucket_name is None:
+        if PROJECT_ID is None:
+            raise ValueError("PROJECT_ID must be set before calling this function")
+        bucket_name = f"{PROJECT_ID}-substratus-terraform"
+
+    logger.info(f"deleting state lock file from bucket: {bucket_name}")
     storage_client = storage.Client()
     bucket = storage_client.bucket(bucket_name)
     blob = bucket.blob(blob_name)
     if blob.exists():
         blob.delete()
-        print("Blob {} deleted.".format(blob_name))
-    print("lock file does not exist")
+        print(f"Blob {blob_name} deleted.")
+    else:
+        print("lock file does not exist")
 
 
 def change_branch(tb: TestbookNotebookClient, branch: str) -> None:

@@ -27,7 +27,7 @@ class NewFileHandler(FileSystemEventHandler):
 
         # Only process files that match the pattern we're interested in
         file_name = os.path.basename(event.src_path)
-        if file_name.startswith("kernel-") and file_name.endswith(".json"):
+        if file_name.endswith(".json"):
             logger.info(f"New kernel detected: {event.src_path}")
             self.queue.sync_q.put(event.src_path)
 
@@ -39,8 +39,10 @@ def process_msg(msg):
             if "data" in msg["content"]
             else msg["content"].get("text", "")
         )
-        if not output.startswith(("NativeEvent", "queue_event")):
-            logger.info(output)
+        if not any(
+            output.startswith(prefix) for prefix in ("NativeEvent", "queue_event")
+        ):
+            print(output.strip("\n"))
 
 
 async def watch_kernel(connection_file):
@@ -80,7 +82,10 @@ async def main():
 
     observer = Observer()
     for path in paths_to_watch:
-        observer.schedule(NewFileHandler(queue), path, recursive=True)
+        if os.path.exists(path):
+            observer.schedule(NewFileHandler(queue), path, recursive=True)
+        else:
+            logger.warning(f"Path {path} does not exist. Skipping.")
 
     observer_task = asyncio.get_event_loop().run_in_executor(None, observer.start)
     queue_watcher = watch_queue(queue, existing_files)

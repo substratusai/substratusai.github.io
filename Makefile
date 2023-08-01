@@ -15,16 +15,21 @@ install: venv
 
 .PHONY: test
 test: install
-	${PYTHON} ./tests/utils/tail_ipyk_output_stream.py > tail_ipyk_output_stream.log 2>&1 &
-	echo $$! > tail_ipyk_output_stream.pid
-	tail -f tail_ipyk_output_stream.log &
-	tail_pid=$$! # Capture the PID of the tail process
+	@logfile="tail_ipyk_output_stream_$$PPID.log"; \
+	pidfile="tail_ipyk_output_stream_$$PPID.pid"; \
+	trap 'kill `cat $$pidfile` || true; kill $$tail_pid || true; rm $$pidfile; rm $$logfile;' EXIT; \
+	${PYTHON} ./tests/utils/tail_ipyk_output_stream.py > $$logfile 2>&1 & \
+	echo $$! > $$pidfile; \
+	tail -f $$logfile & \
+	tail_pid=$$!; \
 	$(COMMON_VARS) ${VENV_NAME}/bin/pytest -s --branch=$(SUBSTRATUS_BRANCH)
-	kill `cat tail_ipyk_output_stream.pid` || true
-	kill $$tail_pid || true # Kill the tail process
-	rm tail_ipyk_output_stream.pid
-	rm tail_ipyk_output_stream.log
+
 
 .PHONY: freeze
 freeze:
 	${PYTHON} -m pip freeze > requirements.txt
+
+.PHONY: lint
+lint:
+	${VENV_NAME}/bin/isort ./**/*.py
+	${VENV_NAME}/bin/black .

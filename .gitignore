@@ -23,4 +23,5 @@ yarn-error.log*
 .ipynb_checkpoints
 __pycache__
 .venv
-tail_ipyk_output_stream.pid
+tail_ipyk_output_stream_*.pid
+tail_ipyk_output_stream_*.log
