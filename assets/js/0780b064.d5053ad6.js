@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[2],{2098:s=>{s.exports=JSON.parse('{"label":"oss launch","permalink":"/blog/tags/oss-launch","allTagsPath":"/blog/tags","count":1}')}}]);
