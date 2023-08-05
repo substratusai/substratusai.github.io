@@ -15,7 +15,7 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 * Install with minimal dependencies (a bucket and container registry).
 * Keep your data inside your network.
 * Scale to zero (save on GPU costs).
-* Leverage containers for reproducible environments.
+* Create reproducible environments using containers.
 * Leverage GitOps out of the box.
 
 ## Intro Video (under 2 minutes)
