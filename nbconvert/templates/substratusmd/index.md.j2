@@ -2,6 +2,14 @@
 
 {% block input %}
 ```bash
-{{ cell.source.lstrip('!').lstrip('%') }}
+{{ cell.source.lstrip('!').lstrip('%').replace("\n!", "\n").replace("\n%", "\n") | trim }}
 ```
 {% endblock input %}
+
+{% block stream %}
+{% if 'display_output' in cell.metadata.tags %}
+```bash
+#  {{ output.text.replace("\n", "\n#  ").rstrip("\n#  ") | strip_ansi }}
+```
+{% endif %}
+{% endblock stream %}

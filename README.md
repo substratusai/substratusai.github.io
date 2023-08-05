@@ -12,7 +12,7 @@ yarn
 ## Local Development
 
 ```bash
-yarn start
+make dev-run
 ```
 
 This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
@@ -24,19 +24,13 @@ A lot of the documents on this website are generated from Jupyter Notebooks. Thi
 To edit the notebook files, you can either start a notebook (see below) or use VSCode which can edit notebooks directly.
 
 ```bash
-npm run notebook
+make dev-nb
 ```
 
 Convert the notebook files to markdown.
 
 ```bash
-npm run convert-notebooks
-```
-
-You can clear notebook outputs:
-
-```bash
-npm run clear-notebooks
+make convert-notebooks
 ```
 
 ## Build
@@ -46,6 +40,12 @@ yarn build
 ```
 
 This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+## Releasing
+
+```bash
+make prepare-release
+```
 
 ## Deployment
 

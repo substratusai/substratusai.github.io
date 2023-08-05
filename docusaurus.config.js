@@ -100,8 +100,8 @@ const config = {
                 to: "/docs/quickstart",
               },
               {
-                label: "Architecture",
-                to: "/docs/architecture",
+                label: "Overview",
+                to: "/docs/overview",
               },
             ],
           },

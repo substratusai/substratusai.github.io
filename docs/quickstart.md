@@ -144,7 +144,7 @@ The process that is serving the model can be stopped by simply deleting the same
 
 
 ```bash
- kubectl delete -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
+kubectl delete -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
 ```
 
 If you want to uninstall the entire Substratus system and all infrastructure, you can run the `gcp-down.sh` script from the installation container.

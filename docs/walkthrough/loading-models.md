@@ -40,7 +40,7 @@ Run the following command to load the falcon-7b-instruct model:
 
 
 ```bash
- kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
 ```
 
 Once you create the Model, it will create a K8s job to load the HuggingFace model
@@ -51,7 +51,7 @@ You can take a look at the logs of the job by running:
 
 
 ```bash
- kubectl logs jobs/falcon-7b-instruct-modeller | tail -n 10
+kubectl logs jobs/falcon-7b-instruct-modeller | tail -n 10
 ```
 
 After about 5 minutes the job should finish and the Model resource should report the status
@@ -60,36 +60,39 @@ to be ready. Verify by running:
 
 
 ```bash
- kubectl describe model falcon-7b-instruct
+kubectl describe model falcon-7b-instruct
 ```
 
-    Name:         falcon-7b-instruct
-    Namespace:    default
-    Labels:       <none>
-    Annotations:  <none>
-    API Version:  substratus.ai/v1
-    Kind:         Model
-    Metadata:
-      Creation Timestamp:  2023-07-15T02:46:05Z
-      Generation:          1
-      Resource Version:    14266797
-      UID:                 077198a0-32ec-4f07-9bc3-ba3a1f1a3729
-    Spec:
-      Image:
-        Name:  substratusai/model-loader-huggingface
-      Params:
-        Name:  tiiuae/falcon-7b-instruct
-    Status:
-      Conditions:
-        Last Transition Time:  2023-07-15T02:51:18Z
-        Message:               
-        Observed Generation:   1
-        Reason:                JobComplete
-        Status:                True
-        Type:                  Modelled
-      Ready:                   true
-      URL:                     gs://my-gcs-bucket-name/077198a0-32ec-4f07-9bc3-ba3a1f1a3729/
-    Events:                    <none>
+
+```bash
+#  Name:         falcon-7b-instruct
+#  Namespace:    default
+#  Labels:       <none>
+#  Annotations:  <none>
+#  API Version:  substratus.ai/v1
+#  Kind:         Model
+#  Metadata:
+#    Creation Timestamp:  2023-07-15T02:46:05Z
+#    Generation:          1
+#    Resource Version:    14266797
+#    UID:                 077198a0-32ec-4f07-9bc3-ba3a1f1a3729
+#  Spec:
+#    Image:
+#      Name:  substratusai/model-loader-huggingface
+#    Params:
+#      Name:  tiiuae/falcon-7b-instruct
+#  Status:
+#    Conditions:
+#      Last Transition Time:  2023-07-15T02:51:18Z
+#      Message:               
+#      Observed Generation:   1
+#      Reason:                JobComplete
+#      Status:                True
+#      Type:                  Modelled
+#    Ready:                   true
+#    URL:                     gs://my-gcs-bucket-name/077198a0-32ec-4f07-9bc3-ba3a1f1a3729/
+#  Events:                    <none>
+```
 
 
 You can see the Model `status.url` field reports the location of where the model is saved.

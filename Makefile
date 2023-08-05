@@ -33,3 +33,23 @@ freeze:
 lint:
 	${VENV_NAME}/bin/isort ./**/*.py
 	${VENV_NAME}/bin/black .
+
+.PHONY: dev-run
+dev-run:
+	npm start
+
+.PHONY: dev-nb
+dev-nb:
+	jupyter lab --allow-root --ip=0.0.0.0 --NotebookApp.token= --notebook-dir=.
+
+.PHONY: clear-notebooks
+clear-notebooks:
+	./nbconvert/clear-all.sh
+
+.PHONY: convert-notebooks
+convert-notebooks:
+	./nbconvert/convert-all.sh
+
+.PHONY: prepare-release
+prepare-release: convert-notebooks
+	# TODO: More stuff
