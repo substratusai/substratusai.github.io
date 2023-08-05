@@ -9,7 +9,7 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 
 ## Why Substratus?
 
-* Finetune and deploy OSS LLMs with no code required and built-in optimizations.
+* Fine-tune and deploy OSS LLMs with no code required and built-in optimizations.
 * Launch remote Jupyter notebooks with a single command.
 * Run anywhere Kubernetes runs.
 * Install with minimal dependencies (a bucket and container registry).
