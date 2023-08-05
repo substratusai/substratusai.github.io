@@ -59,15 +59,15 @@ Run the commands below to ensure the you satisfy all the prerequisites:
 
 
 ```bash
- kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
-! kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/datasets/k8s-instructions.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
+ kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/datasets/k8s-instructions.yaml
 ```
 
 Verify that the falcon-7b-instruct model and k8s-instruct Dataset are ready (this should take ~5 minutes):
 
 
 ```bash
- kubectl describe dataset k8s-instruct
+kubectl describe dataset k8s-instruct
 ```
 
 ## Finetuning falcon-7b-instruct
@@ -76,14 +76,14 @@ Create the fine tuned model:
 
 
 ```bash
- kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/finetuned-model.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/finetuned-model.yaml
 ```
 
 The training takes about 20 to 30 minutes. You can watch the progress by running:
 
 
 ```bash
- kubectl logs jobs/falcon-7b-instruct-k8s-modeller
+kubectl logs jobs/falcon-7b-instruct-k8s-modeller
 ```
 
 Wait until the falcon-7b-instruct-k8s-modeller job has finished. Once finished you can create
@@ -95,14 +95,14 @@ Create a Server to serve the falcon-7b-instruct-k8s finetuned model:
 
 
 ```bash
- kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/finetuned-server.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/finetuned-server.yaml
 ```
 
 Verify that the Server is ready by running:
 
 
 ```bash
- kubectl describe server falcon-7b-instruct-k8s
+kubectl describe server falcon-7b-instruct-k8s
 ```
 
 By default Substratus creates a K8s Service to expose the Server, however this Service is of type ClusterIP, which means you can not directly access it over the internet. So let's use K8s Port Forwarding to access the server.
@@ -111,7 +111,7 @@ Run the following command to forward your local 8080 port to the Server port 808
 
 
 ```bash
- kubectl port-forward service/falcon-7b-instruct-server 8080:8080
+kubectl port-forward service/falcon-7b-instruct-server 8080:8080
 ```
 
 You should now be able to access the web interface of the Server by going to

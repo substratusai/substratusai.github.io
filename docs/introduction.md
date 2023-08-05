@@ -28,7 +28,7 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 - Go through the [Quickstart](./quickstart.md) to deploy a falcon-7b-instruct model
 - [Install Substratus](./installation.md) and provision required cloud infrastructure
 - Finetune a model by following the [walkthroughs](./walkthrough/finetuning-models.md)
-- Learn more about the [Architecture](./architecture.md)
+- View the [Overview](./overview.md)
 - Star the repo the [GitHub repo](https://github.com/substratusai/substratus) and file an
   issue to provide feedback
 
