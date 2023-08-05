@@ -19,7 +19,7 @@ This follows the same standard that is used by OpenAI for finetuning.
 
 ## Using a Dataset loader
 
-For this walkthrough, a K8s instruction dataset will be used. The dataset
+For this guide, a K8s instruction dataset will be used. The dataset
 contains prompts and completions. Example entry in the dataset:
 
 ```

@@ -134,7 +134,7 @@ curl http://localhost:8080/v1/completions \
 ```
 
 
-If you are interested in continuing your journey through Substratus, take a look at the [Guided Walkthrough](./category/walkthrough) to learn how to finetune models with your own dataset and much more!
+If you are interested in continuing your journey through Substratus, take a look at the [guides](./category/guides) to learn how to finetune models with your own dataset and much more!
 
 
 ## Cleanup
@@ -158,5 +158,5 @@ docker run -it \
   substratusai/installer:main gcp-down.sh
 ```
 
-To learn more about how Substratus works, check out the [Overview](./overview) page.
+To learn more about how Substratus works, check out the [Overview](./overview.md) page.
 

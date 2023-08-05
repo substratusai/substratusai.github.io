@@ -91,7 +91,7 @@ def auth_tb_quickstart(tb_quickstart, branch):
 @pytest.fixture(scope="module")
 def auth_tb_finetuning_models(branch):
     with testbook(
-        "docs/walkthrough/finetuning-models.ipynb",
+        "docs/guides/finetuning-models.ipynb",
         execute=False,
     ) as tb:
         verify_auth()
@@ -103,7 +103,7 @@ def auth_tb_finetuning_models(branch):
 @pytest.fixture(scope="module")
 def auth_tb_loading_datasets(branch):
     with testbook(
-        "docs/walkthrough/loading-datasets.ipynb",
+        "docs/guides/loading-datasets.ipynb",
         # TODO(bjb): next iteration, try to execute=True against this nb
         execute=False,
     ) as tb:
@@ -116,7 +116,7 @@ def auth_tb_loading_datasets(branch):
 @pytest.fixture(scope="module")
 def auth_tb_loading_models(branch):
     with testbook(
-        "docs/walkthrough/loading-models.ipynb",
+        "docs/guides/loading-models.ipynb",
         execute=False,
     ) as tb:
         verify_auth()
@@ -128,7 +128,7 @@ def auth_tb_loading_models(branch):
 @pytest.fixture(scope="module")
 def auth_tb_serving_models(branch):
     with testbook(
-        "docs/walkthrough/serving-models.ipynb",
+        "docs/guides/serving-models.ipynb",
         execute=False,
     ) as tb:
         verify_auth()
