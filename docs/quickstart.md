@@ -158,5 +158,5 @@ docker run -it \
   substratusai/installer:main gcp-down.sh
 ```
 
-To learn more about how Substratus works, check out the [Architecture](./architecture) page.
+To learn more about how Substratus works, check out the [Overview](./overview) page.
 

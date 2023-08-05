@@ -8,9 +8,11 @@ sidebar_position: 5
 
 Substratus notebooks allow you to access high-performance GPUs while developing machine learning code. In this guide you will explore how to launch a containerized notebook from your local machine.
 
-## Setup
+## Prerequisites
 
-Install Substratus kubectl plugins.
+This guide assumes you already have a Substratus cluster [installed](../installation).
+
+Also make sure to install up-to-date Substratus kubectl plugins:
 
 
 ```bash
@@ -18,6 +20,8 @@ source <(curl -s https://raw.githubusercontent.com/substratusai/substratus/main/
 ```
 
 
+
+## Clone the Example Notebook
 
 Clone the example notebook repo.
 
@@ -29,7 +33,7 @@ cd example-minimal-notebook
 
 
 
-By convention, notebook source code is stored in `src/`. A Dockerfile is used to describe the environment the notebook will run in. When launching a notebook, the command will look for a `notebook.yaml` by default. In our example, this file contains almost no configuration.
+By convention in Substratus source code is stored in `src/`. A Dockerfile is used to describe the environment the notebook will run in. When launching a notebook, Substratus will look for a `notebook.yaml` file. This file can be used to configure things like the compute resources allocated to the notebook.
 
 
 ```bash
@@ -44,7 +48,7 @@ ls
 
 ## Launch a Remote Notebook
 
-With the following command, a Substratus will upload, build, and serve our notebook. The `-d` flag instructs the command to launch from the current directory. Once your notebook starts trying making a change to a file in the notebook and saving it.
+With the following command Substratus will upload, build, and serve your notebook. The `-d` flag instructs the command to launch from the current directory. Once launched, try making a change to a file in the notebook and saving it.
 
 
 ```bash
@@ -53,7 +57,7 @@ kubectl notebook -d .
 
 
 
-View the synced file changes in your local directory.
+Substratus continuously syncs any changes you made in your remote notebook back to your local directory.
 
 
 ```bash
@@ -66,11 +70,11 @@ git status --short
 ```
 
 
-Once you are done, press `Ctrl-C` to terminate the notebook session. This will suspend the remote notebook (you will see the browser session freeze).
+Once you are done, press `Ctrl-C` to terminate the notebook session. This will suspend the remote notebook (you will see the browser session end).
 
 ## Cleanup
 
-Your remote notebook will continue to exist in the cluster in a suspended state (not consuming any compute resources). You can completely remove the Notebook object if you do not intend to relaunch the notebook.
+Your remote notebook will continue to exist in the cluster in a suspended state (not consuming any compute resources). You can completely remove the Notebook object if you are done with it.
 
 
 ```bash
