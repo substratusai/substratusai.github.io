@@ -108,9 +108,7 @@ now please file an [Issue on GitHub](https://github.com/substratusai/substratus/
 
 ## Next steps
 
-- Follow the [Serving Models walkthrough](./serving-models.md) to expose the falcon-7b-instruct model
-  and sent it some prompts.
-- Follow the [Loading Datasets walkthrough](./loading-datasets.md) so you can finetune
-  model that you loaded with your own dataset
-- Follow the [Finetuning walkthrough](./finetuning-models.md) to finetune a model that you loaded from HuggingFace
+- Follow the [serving models walkthrough](./serving-models.md) to launch a model inference server.
+- Follow the [loading datasets walkthrough](./loading-datasets.md) to prepare a dataset for fine-tuning.
+- Follow the [fine-tuning models walkthrough](./finetuning-models.md) to produce a customized model.
 

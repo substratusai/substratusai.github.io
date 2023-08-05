@@ -1,3 +1,7 @@
+---
+sidebar_position: 1
+---
+
 # Notebooks
 
 Jupyter notebooks are at the heart of machine learning workflows in Substratus. They offer seamless integration with all other resources within the Substratus environment.
@@ -31,4 +35,4 @@ A typical development workflow leveraging notebooks on Substratus might look lik
 
 To gain hands-on experience with Substratus notebooks, consider exploring one of the following guides:
 
-* [Guided Introduction to Substratus Notebooks](./walkthrough/intro-to-notebooks)
+* [Guided Introduction to Substratus Notebooks](../guides/intro-to-notebooks)
