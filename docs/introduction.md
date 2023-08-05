@@ -9,28 +9,25 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 
 ## Why Substratus?
 
-* Zero code needed to deploy and finetune OSS LLMs
-* Ability to deploy and finetune state of the art large language models easily within an hour.
-* Automatically provision all the required infrastructure (K8s cluster, buckets etc) in your cloud account using Terraform.
-* Scale from 0 and spot VMs supported by default (GPUs $$$).
-* Your data stays private and won't be used by the corporate overlords
-* Leverage containers to avoid library lock-in and dependency wrangling.
-* Adopt best practice conventions by default.
+* Finetune and deploy OSS LLMs with no code required and built-in optimizations.
+* Launch remote Jupyter notebooks with a single command.
+* Run anywhere Kubernetes runs.
+* Install with minimal dependencies (a bucket and container registry).
+* Keep your data inside your network.
+* Scale to zero (save on GPU costs).
+* Leverage containers for reproducible environments.
 * Leverage GitOps out of the box.
 
-## Intro Video (less than 2 mins)
+## Intro Video (under 2 minutes)
 
 <div class="video-container">
   <iframe class="video" src="https://www.youtube.com/embed/CLyXKJHIQ6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 ## Next steps
-- Go through the [Quickstart](./quickstart.md) to deploy a falcon-7b-instruct model
-- [Install Substratus](./installation.md) and provision required cloud infrastructure
-- Finetune a model by following the [walkthroughs](./walkthrough/finetuning-models.md)
-- Learn more about the [Architecture](./architecture.md)
-- Star the repo the [GitHub repo](https://github.com/substratusai/substratus) and file an
-  issue to provide feedback
 
-Note: Substratus might still introduce backward incompatible changes to the APIs. This
-will change once Substratus reaches 1.0 milestone.
+Learn more in the [Overview section](./overview.md) or jump straight into the [Quickstart](./quickstart.md) to deploy a Falcon 7B Instruct model.
+
+Don't forget to star the [GitHub repo](https://github.com/substratusai/substratus) and request the features you would like to see!
+
+Note: Substratus might still introduce backward incompatible changes to the APIs until v1.0 is released.
