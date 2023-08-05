@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# Architecture
+# Overview
 
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 
@@ -49,5 +49,7 @@ The Notebook resource facilitates the development of ML source code. Unlike regu
 <img src="/img/diagrams/notebook-architecture.excalidraw.png"></img>
 
 Because Substratus relies on Kubernetes port-forwarding, administrators do not need to manage TLS certificates, networking ingress paths, and bespoke firewall rules. Substratus users just need access to the Kubernetes API server (they need to be able to download Kubernetes credentials). Most companies already have a method in place of distributing these kubeconfig files.
+
+Read more about [what makes Substratus Notebooks unique](./notebooks).
 
 

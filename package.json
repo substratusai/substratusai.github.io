@@ -3,9 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "notebook": "jupyter lab --allow-root --ip=0.0.0.0 --NotebookApp.token= --notebook-dir=.",
-    "convert-notebooks": "./nbconvert/convert-all.sh",
-    "clear-notebooks": "./nbconvert/clear-all.sh",
     "docusaurus": "docusaurus",
     "start": "docusaurus start",
     "build": "docusaurus build",
