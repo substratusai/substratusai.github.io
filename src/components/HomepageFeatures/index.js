@@ -9,8 +9,8 @@ const FeatureList = [
     description: (
       <>
         Substratus enables production-ready deployments of
-        cutting-edge open-source LLMs in minutes. Popular state-of-the-art models are available as
-        prepackaged container images. Use best-practices from the start.
+        cutting-edge open-source LLMs in minutes. Popular state-of-the-art models can be imported using
+        prepackaged container images. Launch remote notebooks once you are ready to jump into the code.
       </>
     ),
   },
@@ -21,7 +21,7 @@ const FeatureList = [
       <>
         Pull an OSS model off the shelf, register a training dataset, and
         Substratus will do the heavy-lifting to fine-tune the model on
-        suitable hardware. Focus on your data instead of fiddling with infrastructure.
+        suitable hardware. Focus on your data not your infrastructure.
       </>
     ),
   },
@@ -31,8 +31,8 @@ const FeatureList = [
     description: (
       <>
         Kubernetes controllers sit at the heart of Substratus, orchestrating
-        workflows between Models, Datasets, and Notebooks. This architecture and
-        our flexible contract empowers users to seamlessly run any framework, on any cloud.
+        all ML operations from importing a dataset to
+        training and serving models. Run anywhere Kubernetes runs with minimal dependencies.
       </>
     ),
   },
