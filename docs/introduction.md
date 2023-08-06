@@ -21,7 +21,7 @@ Substratus is a cross-cloud substrate for training and serving ML models. Substr
 ## Intro Video (under 2 minutes)
 
 <div class="video-container">
-  <iframe class="video" src="https://www.youtube.com/embed/CLyXKJHIQ6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+  <iframe class="video" src="https://www.youtube-nocookie.com/embed/CLyXKJHIQ6A" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </div>
 
 ## Next steps
