@@ -8,9 +8,9 @@
     <subtitle>Substratus Blog</subtitle>
     <icon>https://www.substratus.ai/img/favicon.ico</icon>
     <entry>
-        <title type="html"><![CDATA[Tutorial: Llama2 70b on GKE]]></title>
-        <id>https://www.substratus.ai/blog/llama2-70b</id>
-        <link href="https://www.substratus.ai/blog/llama2-70b"/>
+        <title type="html"><![CDATA[Tutorial: Llama2 70b serving on GKE]]></title>
+        <id>https://www.substratus.ai/blog/tutorial-llama2-70b-serving-gke</id>
+        <link href="https://www.substratus.ai/blog/tutorial-llama2-70b-serving-gke"/>
         <updated>2023-08-06T00:00:00.000Z</updated>
         <summary type="html"><![CDATA[Llama 2 70b, is the newest iteration of the Llama model published by Meta.]]></summary>
         <content type="html"><![CDATA[<p>Llama 2 70b, is the newest iteration of the Llama model published by Meta.

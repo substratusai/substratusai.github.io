@@ -9,9 +9,9 @@
         <generator>https://github.com/jpmonette/feed</generator>
         <language>en</language>
         <item>
-            <title><![CDATA[Tutorial: Llama2 70b on GKE]]></title>
-            <link>https://www.substratus.ai/blog/llama2-70b</link>
-            <guid>https://www.substratus.ai/blog/llama2-70b</guid>
+            <title><![CDATA[Tutorial: Llama2 70b serving on GKE]]></title>
+            <link>https://www.substratus.ai/blog/tutorial-llama2-70b-serving-gke</link>
+            <guid>https://www.substratus.ai/blog/tutorial-llama2-70b-serving-gke</guid>
             <pubDate>Sun, 06 Aug 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Llama 2 70b, is the newest iteration of the Llama model published by Meta.]]></description>
             <content:encoded><![CDATA[<p>Llama 2 70b, is the newest iteration of the Llama model published by Meta.

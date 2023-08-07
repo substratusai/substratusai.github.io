@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[535],{5641:t=>{t.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"Tutorial: Llama2 70b serving on GKE","permalink":"/blog/tutorial-llama2-70b-serving-gke"},{"title":"Introducing Substratus","permalink":"/blog/introducing-substratus"}]}')}}]);
