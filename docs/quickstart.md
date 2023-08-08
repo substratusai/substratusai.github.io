@@ -49,7 +49,7 @@ docker run -it \
   -v ${HOME}/.kube:/root/.kube \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
-  substratusai/installer:main gcp-up.sh
+  substratusai/installer:latest gcp-up.sh
 ```
 
 `kubectl` should now be pointing at the substratus cluster.
@@ -155,7 +155,7 @@ If you want to uninstall the entire Substratus system and all infrastructure, yo
 docker run -it \
   -e PROJECT=$(gcloud config get project) \
   -e TOKEN=$(gcloud auth print-access-token) \
-  substratusai/installer:main gcp-down.sh
+  substratusai/installer:latest gcp-down.sh
 ```
 
 To learn more about how Substratus works, check out the [Overview](./overview.md) page.
