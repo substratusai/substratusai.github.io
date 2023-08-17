@@ -5,14 +5,16 @@ sidebar_position: 6
 # Installation Guide
 
 Looking to install Substratus on a specific Cloud/Environment?
+
 - [GCP Install Guide](./gcp.md)
 - AWS Install Guide (Coming soon)
 - Kind/Local Install Guide (coming soon)
-Each environment comes with a basic automagic installer and an advanced install. 
 
-## Basic install
-The basic automagic installer creates a new K8s cluster, new bucket, new principal and automatically
-sets up everything that's needed for Substratus to work. The automagic installer is packaged
+Each environment comes with a basic automated installer and an advanced install. 
+
+## Auto install
+The basic automatic installer creates a new K8s cluster, new bucket, new principal and automatically
+sets up everything that's needed for Substratus to work. The automatic installer is packaged
 as a container and contains all the tools required. It's intended to work on a new cloud
 project/account free of any significant constraints (i.e. GCP Org Policies).
 
