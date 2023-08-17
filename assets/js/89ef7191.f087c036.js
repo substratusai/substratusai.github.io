@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[9897],{8563:s=>{s.exports=JSON.parse('{"label":"hello world","permalink":"/blog/tags/hello-world","allTagsPath":"/blog/tags","count":1}')}}]);
