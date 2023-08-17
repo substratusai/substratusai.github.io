@@ -25,7 +25,7 @@ Substratus resources are Kubernetes resources. This means that multi-tenancy is 
 
 ## Requirements for Advanced Features
 
-While not required, Substratus can provide the following advanced features when the following access is granted to the Substratus system:
+While not required, Substratus can provide a more advanced set features when the following access is granted to the Substratus system:
 
 **Write Access to Container Registry:**
 
