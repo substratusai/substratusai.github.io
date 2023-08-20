@@ -34,6 +34,8 @@ lint:
 	${VENV_NAME}/bin/isort ./**/*.py
 	${VENV_NAME}/bin/black .
 
+# TODO: Add tooling download.
+# For now go to: https://github.com/campoy/embedmd
 .PHONY: embed
 embed:
 	embedmd -w ./docs/*.md
