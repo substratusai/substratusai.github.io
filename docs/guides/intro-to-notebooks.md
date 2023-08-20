@@ -16,7 +16,7 @@ Also make sure to install up-to-date Substratus kubectl plugins:
 
 
 ```bash
-wget -O - https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/install-kubectl-plugins.sh | bash
+wget -O - https://raw.githubusercontent.com/substratusai/substratus/main/install/kubectl-plugins.sh | bash
 ```
 
 
