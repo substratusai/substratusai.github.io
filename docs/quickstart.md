@@ -2,80 +2,89 @@
 sidebar_position: 2
 ---
 
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
 # Quickstart
 
-<!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
+<Tabs groupId="cloud">
+<TabItem value="kind" label="Kind" default>
 
-In this quickstart guide, you will install Substratus into a Google Cloud Platform project. Then you'll explore how Substratus can be used to load and deploy Open Source LLMs.
+## Kind
 
-NOTE: Support for AWS ([GitHub Issue #12](https://github.com/substratusai/substratus/issues/12)) and Azure ([GitHub Issue #63](https://github.com/substratusai/substratus/issues/63)) is planned. Give those issues a thumbs up if you would like to see them prioritized.
+In this quickstart guide, you will install Substratus into a local Kubernetes cluster and deploy a small open source LLM.
 
+## Required Tools
 
-## Prerequisites
+Make sure you have the following tools installed and up to date.
 
-You will need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled.
+* [kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installation)
+* [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
 
-Run the commands below to make sure you have the required tools.
+## Setup
 
+Create a local Kubernetes cluster using Kind.
 
-
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/kind-up.sh bash /kind.*/ $)
 ```bash
-docker version || open 'https://docs.docker.com/get-docker/'
+kind create cluster --name substratus --config - <<EOF
+apiVersion: kind.x-k8s.io/v1alpha4
+kind: Cluster
+nodes:
+- role: control-plane
+  extraPortMappings:
+  - containerPort: 30080
+    hostPort: 30080
+EOF
 ```
 
+Install Substratus.
 
 ```bash
-gcloud version || open 'https://cloud.google.com/sdk/docs/install'
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kubernetes/kind/system.yaml
 ```
 
+## Deploy LLM
+
+Because Substratus is deployed on your local machine, you can use the (relatively-tiny) Facebook OPT 125M model (125 million parameters) from HuggingFace.
+
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/base-model.yaml yaml)
+```yaml
+apiVersion: substratus.ai/v1
+kind: Model
+metadata:
+  namespace: default
+  name: facebook-opt-125m
+spec:
+  image: substratusai/model-loader-huggingface
+  params:
+    name: facebook/opt-125m
+```
 
 ```bash
-gke-gcloud-auth-plugin --version || gcloud components install gke-gcloud-auth-plugin
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/base-model.yaml
 ```
 
+The model is now being downloaded from HuggingFace into local storage.
+You can apply the following Server manifest to deploy the Model once it is imported.
+
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/base-server.yaml yaml)
+```yaml
+apiVersion: substratus.ai/v1
+kind: Server
+metadata:
+  name: facebook-opt-125m
+spec:
+  image: substratusai/model-server-basaran
+  model:
+    name: facebook-opt-125m
+```
 
 ```bash
-kubectl version --client || open 'https://kubernetes.io/docs/tasks/tools/#kubectl'
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/facebook-opt-125m/base-server.yaml
 ```
 
-## Install Substratus in GCP
-
-Create a substratus GKE cluster along with supporting infrastructure (buckets, service accounts, image registries).
-
-
-
-```bash
-docker run -it \
-  -v ${HOME}/.kube:/root/.kube \
-  -e PROJECT=$(gcloud config get project) \
-  -e TOKEN=$(gcloud auth print-access-token) \
-  substratusai/installer:latest gcp-up.sh
-```
-
-`kubectl` should now be pointing at the substratus cluster.
-
-
-## Deploy an Open Source Model
-
-To keep this quick, we'll use a smallish model, the falcon-7b-instruct model (just 7 billion parameters).
-
-
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
-```
-
-The model is now being downloaded from HuggingFace into a GCS bucket. This takes about 5 minutes.
-Let's also deploy the built model by applying a Server manifest. Server should start serving shortly after the Model build finishes (~10 minutes total).
-
-
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
-```
-
-You can check on the progress of both processes using a single command.
-
+You can check on the progress of both processes using the following command.
 
 
 ```bash
@@ -84,21 +93,143 @@ kubectl get ai
 
 When the Server reports a `Ready` status, proceed to the next section to test it out.
 
-
-## Testing out the Server
-
-The way every company chooses to expose a model will be different. In most cases models are integrated into other business applications and are rarely exposed directly to the Internet. By default, substratus will only serve the model within the Kubernetes cluster (with a Kubernetes [Service](https://kubernetes.io/docs/concepts/services-networking/service/) object). From here, it's up to you to expose the model to a wider network (e.g., the internal VPC network or the Internet) via annotated Service or Ingress objects.
+## Talk to your LLM!
 
 In order to access the model for exploratory purposes, forward ports from within the cluster to your local machine.
 
+```bash
+kubectl port-forward service/facebook-opt-125m-server 8080:8080
+```
 
+All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the OpenAI compatible HTTP API:
+
+
+```bash
+curl http://localhost:8080/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{ \
+    "model": "facebook-opt-125m", \
+    "prompt": "Who was the first president of the United States? ", \
+    "max_tokens": 10\
+  }'
+```
+
+
+The process that is serving the model can be stopped by simply deleting the same Server object that was applied before.
+
+```bash
+kubectl delete server facebook-opt-125m
+```
+
+## Cleanup
+
+Delete the local cluster.
+
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/kind-down.sh bash /kind.*/ $)
+```bash
+kind delete cluster --name substratus
+```
+
+</TabItem>
+<TabItem value="gcp" label="GCP">
+
+## Google Cloud Platform
+
+In this quickstart guide, you will create a GKE cluster, install Substratus and deploy an Open Source LLM.
+
+:::note
+
+Support for AWS ([GitHub Issue #12](https://github.com/substratusai/substratus/issues/12)) and Azure ([GitHub Issue #63](https://github.com/substratusai/substratus/issues/63)) is planned. Give those issues a thumbs up if you would like to see them prioritized.
+
+:::
+
+## Required Tools
+
+Make sure you have the following tools installed and up to date.
+
+* [gcloud](https://cloud.google.com/sdk/docs/install)
+* [kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)
+
+## Setup
+
+You will need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled. Find your GCP project id and set the `PROJECT_ID` environment variable for use later.
+
+```bash
+export PROJECT_ID=<your-project-id>
+```
+
+Create a GKE cluster along with supporting infrastructure (buckets, service accounts, image registries).
+
+```sh
+wget -O - https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/gcp-up.sh | bash
+```
+
+After creating the GKE cluster in the last step, `kubectl` should now be pointing at the Substratus cluster. The following command will install Substratus into that cluster.
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kubernetes/kind/system.yaml
+```
+
+## Deploy LLM
+
+The following Model object will import the medium-sized Falcon 7B Instruct model (7 billion parameters) from HuggingFace.
+
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml yaml)
+```yaml
+apiVersion: substratus.ai/v1
+kind: Model
+metadata:
+  name: falcon-7b-instruct
+spec:
+  image: substratusai/model-loader-huggingface
+  params:
+    name: tiiuae/falcon-7b-instruct
+```
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/base-model.yaml
+```
+
+The model is now being downloaded from HuggingFace into the Substratus GCS bucket. This takes about 5 minutes. You can apply the following Server object to start serving the Model once it is loaded.
+
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml yaml)
+```yaml
+apiVersion: substratus.ai/v1
+kind: Server
+metadata:
+  name: falcon-7b-instruct
+spec:
+  image: substratusai/model-server-basaran
+  model:
+    name: falcon-7b-instruct
+  resources:
+    gpu:
+      type: nvidia-l4
+      count: 1
+```
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
+```
+
+You can check on the progress of both processes using the following command.
+
+
+```bash
+kubectl get ai
+```
+
+When the Server reports a `Ready` status, proceed to the next section to test it out.
+
+## Talk to your LLM!
+
+In order to access the model for exploratory purposes, forward ports from within the cluster to your local machine.
 
 ```bash
 kubectl port-forward service/falcon-7b-instruct-server 8080:8080
 ```
 
 All substratus Servers ship with an API and interactive frontend. Open up your browser to [http://localhost:8080/](http://localhost:8080/) and talk to your model! Alternatively, request text generation via the OpenAI compatible HTTP API:
-
 
 
 ```bash
@@ -111,52 +242,25 @@ curl http://localhost:8080/v1/completions \
   }'
 ```
 
-```json
-{
-  "id": "cmpl-e42772faf58cd46c18a955f1",
-  "object": "text_completion",
-  "created": 1689485483,
-  "model": "falcon-7b-instruct",
-  "choices": [
-    {
-      "text": "\nGeorge Washington was the first president of the United States.",
-      "index": 0,
-      "logprobs": null,
-      "finish_reason": "length"
-    }
-  ],
-  "usage": {
-    "prompt_tokens": 11,
-    "completion_tokens": 12,
-    "total_tokens": 23
-  }
-}
-```
-
-
-If you are interested in continuing your journey through Substratus, take a look at the [guides](./category/guides) to learn how to finetune models with your own dataset and much more!
-
-
-## Cleanup
 
 The process that is serving the model can be stopped by simply deleting the same Server object that was applied before.
 
-
-
 ```bash
-kubectl delete -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-7b-instruct/server.yaml
+kubectl delete server falcon-7b-instruct
 ```
 
-If you want to uninstall the entire Substratus system and all infrastructure, you can run the `gcp-down.sh` script from the installation container.
+## Cleanup
 
-
+Delete all GCP infrastructure.
 
 ```bash
-docker run -it \
-  -e PROJECT=$(gcloud config get project) \
-  -e TOKEN=$(gcloud auth print-access-token) \
-  substratusai/installer:latest gcp-down.sh
+wget -O - https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/gcp-down.sh | bash
 ```
+
+</TabItem>
+</Tabs>
+
+If you are interested in continuing your journey through Substratus, take a look at the [guides](./category/guides) to learn how to finetune models with your own dataset and much more!
 
 To learn more about how Substratus works, check out the [Overview](./overview.md) page.
 
