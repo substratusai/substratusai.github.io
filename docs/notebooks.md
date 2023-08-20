@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 6
 ---
 
 import ReactPlayer from 'react-player'
@@ -39,4 +39,4 @@ A typical development workflow leveraging notebooks on Substratus might look lik
 
 To gain hands-on experience with Substratus notebooks, consider exploring one of the following guides:
 
-* [Guided Introduction to Substratus Notebooks](../guides/intro-to-notebooks)
+* [Guided Introduction to Substratus Notebooks](guides/intro-to-notebooks)
