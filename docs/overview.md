@@ -4,8 +4,6 @@ sidebar_position: 3
 
 # Overview
 
-<!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
-
 Substratus extends the Kubernetes control plane to orchestrate the full lifecycle
 of machine learning models. It does this by introducing new custom resources
 into the Kubernetes API: Model, Server, Dataset, Notebook. A set of controllers,
@@ -24,7 +22,19 @@ The Model resource is at the center of Substratus. A Model object represents an 
 
 <img src="/img/diagrams/model-architecture.excalidraw.png"></img>
 
+Example of a Model used to import Falcon 40B from HuggingFace:
 
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-40b/base-model.yaml yaml)
+```yaml
+apiVersion: substratus.ai/v1
+kind: Model
+metadata:
+  name: falcon-40b
+spec:
+  image: substratusai/model-loader-huggingface
+  params:
+    name: tiiuae/falcon-40b
+```
 
 ## Servers
 
@@ -35,6 +45,24 @@ The Server resource is responsible for exposing the a Model with a HTTP API for 
 Give [GitHub issue #66](https://github.com/substratusai/substratus/issues/66) a thumbs up if support for Embeddings is important to you.
 
 :::
+
+Example of a Server that will serve Falcon 40B:
+
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/falcon-40b/server.yaml yaml)
+```yaml
+apiVersion: substratus.ai/v1
+kind: Server
+metadata:
+  name: falcon-40b
+spec:
+  image: substratusai/model-server-basaran
+  model:
+    name: falcon-40b
+  resources:
+    gpu:
+      type: nvidia-l4
+      count: 4
+```
 
 ## Datasets
 

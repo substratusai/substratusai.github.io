@@ -34,6 +34,10 @@ lint:
 	${VENV_NAME}/bin/isort ./**/*.py
 	${VENV_NAME}/bin/black .
 
+.PHONY: embed
+embed:
+	embedmd -w ./docs/*.md
+
 .PHONY: dev-run
 dev-run:
 	npm start
