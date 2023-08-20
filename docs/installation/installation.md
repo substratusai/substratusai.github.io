@@ -32,5 +32,4 @@ In general for clouds the following steps would be done during advanced install:
 3. Create or reuse an existing Container Image Registry
 4. Create or reuse an existing IAM Principal (e.g. AWS Role/GCP Service Account)
 5. Assign the permissions needed to the IAM Principal
-6. Create a ConfigMap for Substratus that references resources from steps 2 to 5
-7. Deploy Substratus operator
+6. Deploy and configure the Substratus operator
