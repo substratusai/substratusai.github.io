@@ -76,6 +76,6 @@ The Notebook resource facilitates the development of ML source code. Unlike regu
 
 <img src="/img/diagrams/notebook-architecture.excalidraw.png"></img>
 
-Read more about [what makes Substratus Notebooks unique](./components/notebooks).
+Read more about [what makes Substratus Notebooks unique](./notebooks).
 
 
