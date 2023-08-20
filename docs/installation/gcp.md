@@ -115,7 +115,7 @@ and pull images. You can reuse an existing one or create a new one.
 Specify the repository you wish to use:
 ```sh
 export GAR_REPO_NAME=substratus
-export IMAGE_REGISTRY=${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPO_NAME}
+export REGISTRY_URL=${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPO_NAME}
 ```
 
 Create a new GAR repo:
@@ -131,7 +131,7 @@ that hosts the Model and Datasets data.
 Specify the service account you wish to use:
 ```sh
 export SERVICE_ACCOUNT_NAME=substratus
-export SERVICE_ACCOUNT="${SERVICE_ACCOUNT}@${PROJECT}.iam.gserviceaccount.com"
+export SERVICE_ACCOUNT="${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
 Create a new service account:
