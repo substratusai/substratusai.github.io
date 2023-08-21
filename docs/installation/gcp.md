@@ -214,6 +214,9 @@ metadata:
   namespace: substratus
 data:
   CLOUD: gcp
+  ARTIFACT_BUCKET_URL: ${ARTIFACTS_BUCKET}
+  REGISTRY_URL: ${REGISTRY_URL}
+  PRINCIPAL: ${SERVICE_ACCOUNT}
 EOF
 ```
 
