@@ -221,7 +221,7 @@ EOF
 ```
 
 Deploy the Substratus operator:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl apply -f https.*system.yaml/ /$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl apply -f https.*substratus.yaml/ /$/)
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kubernetes/gcp/system.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/substratus.yaml
 ```
