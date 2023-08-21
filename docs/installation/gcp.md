@@ -123,7 +123,7 @@ export ARTIFACTS_BUCKET="gs://${PROJECT_ID}-substratus-artifacts"
 Create the bucket if needed
 [embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^gcloud storage buckets create/ /$/)
 ```bash
-gcloud storage buckets create --project ${PROJECT_ID} "${ARTIFACTS_BUCKET}" \
+gcloud storage buckets create "${ARTIFACTS_BUCKET}" --location ${REGION}
 ```
 
 ### 3. Create or reuse existing Google Artifact Registry
@@ -132,16 +132,17 @@ and pull images. You can reuse an existing one or create a new one.
 
 Specify the repository you wish to use:
 [embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^export GAR_REPO_NAME/ /REGISTRY_URL.*$/)
-
-```sh
+```bash
 export GAR_REPO_NAME=substratus
 export REGISTRY_URL=${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPO_NAME}
 ```
 
+
 Create a new GAR repo:
-```sh
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /gcloud artifacts repositories create/ /format=docker.*$/)
+```bash
 gcloud artifacts repositories create ${GAR_REPO_NAME} \
-  --repository-format=docker --location=${REGION}
+  --repository-format=docker --location=${REGION} \
 ```
 
 ### 4. Create or reuse an existing GCP Service Account
@@ -149,30 +150,36 @@ Substratus uses a GCP Service Account to authenticate to the GCS Bucket
 that hosts the Model and Datasets data.
 
 Specify the service account you wish to use:
-```sh
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /export SERVICE_ACCOUNT_NAME/ /SERVICE_ACCOUNT=.*$/)
+```bash
 export SERVICE_ACCOUNT_NAME=substratus
 export SERVICE_ACCOUNT="${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
 Create a new service account:
-```sh
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /gcloud iam service-accounts create/ /$/)
+```bash
 gcloud iam service-accounts create ${SERVICE_ACCOUNT_NAME}
 ```
 
 ### 5. Assign the permissions needed to the GCP Service Account
-```sh
-gcloud storage buckets add-iam-policy-binding ${BUCKET} \
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /gcloud storage buckets add-iam-policy-binding/ /svc.id.goog\[substratus\/sci\].*$/)
+```bash
+gcloud storage buckets add-iam-policy-binding ${ARTIFACTS_BUCKET} \
   --member="serviceAccount:${SERVICE_ACCOUNT}" --role=roles/storage.admin
 
-gcloud artifacts repositories add-iam-policy-binding ${GAR_REPO_NAME} \
+gcloud artifacts repositories add-iam-policy-binding substratus \
   --location us-central1 --member="serviceAccount:${SERVICE_ACCOUNT}" \
   --role=roles/artifactregistry.admin
 
+# Allow the Service Account to bind K8s Service Account to this Service Account
 gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
    --role roles/iam.serviceAccountAdmin --member "serviceAccount:${SERVICE_ACCOUNT}"
 
+# Allow to create signed URLs
 gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
-   --role roles/iam.serviceAccountTokenCreator  --member "serviceAccount:${SERVICE_ACCOUNT}"
+   --role roles/iam.serviceAccountTokenCreator \
+   --member "serviceAccount:${SERVICE_ACCOUNT}"
 
 gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
    --role roles/iam.workloadIdentityUser \
@@ -181,7 +188,8 @@ gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
 
 ### 6. Deploy and configure Substratus operator
 Create the namespace for the operator (needs to be substratus):
-```sh
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl create ns/ /$/)
+```bash
 kubectl create ns substratus
 ```
 
@@ -190,13 +198,14 @@ the environment variables that you set.
 
 Verify the environment variables have been set correctly:
 ```sh
-echo "BUCKET: ${BUCKET}"
+echo "ARTIFACTS_BUCKET: ${ARTIFACTS_BUCKET}"
 echo "REGISTRY_URL: ${REGISTRY_URL}"
 echo "PRINCIPAL: ${SERVICE_ACCOUNT}"
 ```
 
 Run the following to create the ConfigMap:
-```sh
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl apply -f - << EOF/ /\nEOF$/)
+```bash
 kubectl apply -f - << EOF
 apiVersion: v1
 kind: ConfigMap
@@ -205,13 +214,11 @@ metadata:
   namespace: substratus
 data:
   CLOUD: gcp
-  ARTIFACT_BUCKET_URL: ${BUCKET}
-  REGISTRY_URL: ${REGISTRY_URL}
-  PRINCIPAL: ${SERVICE_ACCOUNT}
 EOF
 ```
 
 Deploy the Substratus operator:
-```sh
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl apply -f https.*system.yaml/ /$/)
+```bash
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kubernetes/gcp/system.yaml
 ```
