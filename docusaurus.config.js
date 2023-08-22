@@ -97,7 +97,7 @@ const config = {
               },
               {
                 label: "Quickstart",
-                to: "/docs/quickstart",
+                to: "/docs/quickstart/local-kind",
               },
               {
                 label: "Overview",

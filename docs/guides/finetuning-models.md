@@ -19,7 +19,7 @@ To summarize:
 `finetunedModel = training_image(baseModel, trainingDataset)`. 
 
 
-The following Model resource would create a finetuned model:
+The following./guides/finetuning-models.ipynb Model resource would create a finetuned model:
 ```yaml
 apiVersion: substratus.ai/v1
 kind: Model
@@ -52,7 +52,7 @@ By using a predefined paths the model automatically loads and stores from cloud 
 
 ### Prerequisites
 - Installed Substratus following the [installation guide](../installation/installation.md)
-- You have loaded the falcon-7b-instruct model by following [quickstart guide](../quickstart.md)
+- You have loaded the falcon-7b-instruct model by following [quickstart guide](../quickstart/gcp.md)
 - You have loaded the k8s-instruction Dataset by following the [loading datasets guide](./loading-datasets.md)
 
 Run the commands below to ensure the you satisfy all the prerequisites:

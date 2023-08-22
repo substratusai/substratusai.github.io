@@ -4,11 +4,7 @@ sidebar_position: 6
 
 # Installation
 
-:::note
-
-If you are just looking to quickly evaluate Substratus, consider deploying it on your local machine by following the [Quickstart with Kind](../quickstart.md).
-
-:::
+If you are just looking to quickly evaluate Substratus, consider deploying it on your *local machine* by following the [Quickstart with Kind](../quickstart/local-kind.md).
 
 When you are ready to operate at scale, follow one of the cloud-installation guides:
 
