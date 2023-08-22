@@ -41,7 +41,7 @@ EOF
 Install Substratus.
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kubernetes/kind/system.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/manifests.yaml
 ```
 
 ## Deploy LLM
