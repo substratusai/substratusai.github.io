@@ -5,14 +5,16 @@ sidebar_position: 4
 # GCP Install Guide
 
 ## Subsratus required resources
-* GKE Cluster with GCSfuse and Workload Identity
+* GKE Cluster with GCSFuse and Workload Identity
 * GCS Bucket to store Model and Dataset data
 * Google Artifact Registry Container Repository to store newly built container images
-* Google Service Account for accessin GCS Bucket, Artifact Registry and managing cross
-  namespace Workload Identity bindings
+* Google Service Account for:
+  - read/write access to GCS Bucket
+  - read/write access to to Artifact Registry
+  - setIamPolicy on Google ServiceAccount for managing cross namespace Workload Identity bindings
 
 
-## Automatic Install
+## Basic
 
 A basic automatic installer creates everything you would need in an empty GCP project.
 It automatically creates the GKE cluster, GCS bucket, Artifact Registry and Service Account.
@@ -26,7 +28,7 @@ export PROJECT_ID=$(gcloud config get project)
 bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh)
 ```
 
-## Customized Install
+## Custom
 The customizable step by step install lets you use your existing resources (e.g. GKE cluster, bucket and GAR) and other resources instead
 of having Substratus automatically do everything for you. Users in restricted environments
 or who need to re-use existing resources are encouraged to use the advanced install.
@@ -56,11 +58,16 @@ Substratus has the following requirements for a GKE cluster:
 
 You can skip this step if you already have a cluster that meets those requirements.
 
-Create a new GKE cluster using gcloud:
-!TODO: before merge use main instead of branch
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /export CLUSTER_NAME=substratus/ /--addons GcsFuseCsiDriver/)
+Set the name of your cluster:
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /export CLUSTER_NAME/ /$/)
 ```bash
 export CLUSTER_NAME=substratus
+```
+
+
+Create a new GKE cluster using gcloud:
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /gcloud container clusters create/ /--addons GcsFuseCsiDriver/)
+```bash
 gcloud container clusters create ${CLUSTER_NAME} --location ${REGION} \
   --machine-type n2d-standard-8 --num-nodes 1 --min-nodes 1 --max-nodes 5 \
   --node-locations ${ZONE} --workload-pool ${PROJECT_ID}.svc.id.goog \
@@ -72,8 +79,7 @@ gcloud container clusters create ${CLUSTER_NAME} --location ${REGION} \
 ```
 
 Configure a maintenance exclusion so GKE doesn't randomly start upgrading your nodes:
-!TODO: before merge use main instead of branch
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^START=/ /no_minor_or_node_upgrades/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^START=/ /no_minor_or_node_upgrades/)
 ```bash
 START=$(date -I --date="-1 day")
 END=$(date -I --date="+160 days")
@@ -85,8 +91,7 @@ gcloud container clusters update ${CLUSTER_NAME} --region ${REGION} \
 ```
 
 Create new GPU nodepools (e.g. L4 GPU nodepools):
-!TODO: before merge use main instead of branch
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^nodepool_args=/ /machine-type g2-standard-48.*\n.*/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^nodepool_args=/ /machine-type g2-standard-48.*\n.*/)
 ```bash
 nodepool_args=(--spot --enable-autoscaling --enable-image-streaming
   --num-nodes=0 --min-nodes=0 --max-nodes=3 --cluster ${CLUSTER_NAME}
@@ -115,13 +120,13 @@ as the GKE cluster. This GCS bucket will be used for storing
 ML models and datasets.
 
 Specify the URL of the bucket you wish to use:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^export ARTIFACTS_BUCKET=/ /$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^export ARTIFACTS_BUCKET=/ /$/)
 ```bash
 export ARTIFACTS_BUCKET="gs://${PROJECT_ID}-substratus-artifacts"
 ```
 
 Create the bucket if needed
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^gcloud storage buckets create/ /$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^gcloud storage buckets create/ /$/)
 ```bash
 gcloud storage buckets create "${ARTIFACTS_BUCKET}" --location ${REGION}
 ```
@@ -131,7 +136,7 @@ Substratus uses the Google Artifact Registry to push new images
 and pull images. You can reuse an existing one or create a new one.
 
 Specify the repository you wish to use:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /^export GAR_REPO_NAME/ /REGISTRY_URL.*$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^export GAR_REPO_NAME/ /REGISTRY_URL.*$/)
 ```bash
 export GAR_REPO_NAME=substratus
 export REGISTRY_URL=${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPO_NAME}
@@ -139,10 +144,10 @@ export REGISTRY_URL=${REGION}-docker.pkg.dev/${PROJECT_ID}/${GAR_REPO_NAME}
 
 
 Create a new GAR repo:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /gcloud artifacts repositories create/ /format=docker.*$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /gcloud artifacts repositories create/ /format=docker.*$/)
 ```bash
 gcloud artifacts repositories create ${GAR_REPO_NAME} \
-  --repository-format=docker --location=${REGION} \
+  --repository-format=docker --location=${REGION}
 ```
 
 ### 4. Create or reuse an existing GCP Service Account
@@ -150,20 +155,20 @@ Substratus uses a GCP Service Account to authenticate to the GCS Bucket
 that hosts the Model and Datasets data.
 
 Specify the service account you wish to use:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /export SERVICE_ACCOUNT_NAME/ /SERVICE_ACCOUNT=.*$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /export SERVICE_ACCOUNT_NAME/ /SERVICE_ACCOUNT=.*$/)
 ```bash
 export SERVICE_ACCOUNT_NAME=substratus
 export SERVICE_ACCOUNT="${SERVICE_ACCOUNT_NAME}@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
 Create a new service account:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /gcloud iam service-accounts create/ /$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /gcloud iam service-accounts create/ /$/)
 ```bash
 gcloud iam service-accounts create ${SERVICE_ACCOUNT_NAME}
 ```
 
 ### 5. Assign the permissions needed to the GCP Service Account
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /gcloud storage buckets add-iam-policy-binding/ /svc.id.goog\[substratus\/sci\].*$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /gcloud storage buckets add-iam-policy-binding/ /svc.id.goog\[substratus\/sci\].*$/)
 ```bash
 gcloud storage buckets add-iam-policy-binding ${ARTIFACTS_BUCKET} \
   --member="serviceAccount:${SERVICE_ACCOUNT}" --role=roles/storage.admin
@@ -188,7 +193,7 @@ gcloud iam service-accounts add-iam-policy-binding ${SERVICE_ACCOUNT} \
 
 ### 6. Deploy and configure Substratus operator
 Create the namespace for the operator (needs to be substratus):
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl create ns/ /$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /kubectl create ns/ /$/)
 ```bash
 kubectl create ns substratus
 ```
@@ -204,7 +209,7 @@ echo "PRINCIPAL: ${SERVICE_ACCOUNT}"
 ```
 
 Run the following to create the ConfigMap:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl apply -f - << EOF/ /\nEOF$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /kubectl apply -f - << EOF/ /\nEOF$/)
 ```bash
 kubectl apply -f - << EOF
 apiVersion: v1
@@ -221,7 +226,7 @@ EOF
 ```
 
 Deploy the Substratus operator:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/update-gcp-install/install/gcp/up.sh bash /kubectl apply -f https.*substratus.yaml/ /$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /kubectl apply -f https.*manifests.yaml/ /$/)
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/substratus.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/manifests.yaml
 ```
