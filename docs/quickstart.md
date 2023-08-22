@@ -25,7 +25,7 @@ Make sure you have the following tools installed and up to date.
 
 Create a local Kubernetes cluster using Kind.
 
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/kind-up.sh bash /kind.*/ $)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/up.sh bash /kind.*/ $)
 ```bash
 kind create cluster --name substratus --config - <<EOF
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -125,7 +125,7 @@ kubectl delete server facebook-opt-125m
 
 Delete the local cluster.
 
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/kind-down.sh bash /kind.*/ $)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/down.sh bash /kind.*/ $)
 ```bash
 kind delete cluster --name substratus
 ```
@@ -135,7 +135,7 @@ kind delete cluster --name substratus
 
 ## Google Cloud Platform
 
-In this quickstart guide, you will create a GKE cluster, install Substratus and deploy an Open Source LLM.
+In this quickstart guide, you will create a GKE cluster, install Substratus and deploy an Open Source LLM such as falcon-7b-instruct.
 
 :::note
 
@@ -152,23 +152,22 @@ Make sure you have the following tools installed and up to date.
 
 ## Setup
 
-You will need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled. Find your GCP project id and set the `PROJECT_ID` environment variable for use later.
+You will need a [Google Cloud Platform](https://console.cloud.google.com/) project with billing enabled.
+
+Set your current project to the project you want to use for Substratus:
+```bash
+gcloud config set project <your-project-id>
+export PROJECT_ID=$(gcloud config get project)
+```
+
+Create a GKE cluster along with supporting infrastructure (buckets, service accounts, image registries) and install Substratus operator by using the convenience script:
 
 ```bash
-export PROJECT_ID=<your-project-id>
+export INSTALL_OPERATOR=yes
+bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh)
 ```
 
-Create a GKE cluster along with supporting infrastructure (buckets, service accounts, image registries).
-
-```sh
-wget -O - https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/gcp-up.sh | bash
-```
-
-After creating the GKE cluster in the last step, `kubectl` should now be pointing at the Substratus cluster. The following command will install Substratus into that cluster.
-
-```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kubernetes/kind/system.yaml
-```
+After creating the GKE cluster in the last step, `kubectl` should now be pointing at the Substratus cluster. The substratus operator has been installed into the `substratus` namespace.
 
 ## Deploy LLM
 
@@ -254,7 +253,7 @@ kubectl delete server falcon-7b-instruct
 Delete all GCP infrastructure.
 
 ```bash
-wget -O - https://raw.githubusercontent.com/substratusai/substratus/main/install/scripts/gcp-down.sh | bash
+bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/down.sh)
 ```
 
 </TabItem>
