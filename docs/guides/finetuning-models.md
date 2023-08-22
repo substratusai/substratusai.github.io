@@ -51,7 +51,7 @@ By using a predefined paths the model automatically loads and stores from cloud 
 
 
 ### Prerequisites
-- Installed Substratus following the [installation guide](../installation.md)
+- Installed Substratus following the [installation guide](../installation/installation.md)
 - You have loaded the falcon-7b-instruct model by following [quickstart guide](../quickstart.md)
 - You have loaded the k8s-instruction Dataset by following the [loading datasets guide](./loading-datasets.md)
 
