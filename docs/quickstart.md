@@ -6,13 +6,17 @@ import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
 # Quickstart
+In this quickstart guide, you will install Substratus into a Kubernetes cluster and deploy a small open source LLM.
+
+Choose your desired environment:
 
 <Tabs groupId="cloud">
 <TabItem value="kind" label="Kind" default>
 
 ## Kind
 
-In this quickstart guide, you will install Substratus into a local Kubernetes cluster and deploy a small open source LLM.
+Kind lets you run a K8s cluster locally easily. Follow along to create a Kind cluster,
+install Substratus and deploy a 125M parameter model.
 
 ## Required Tools
 
@@ -135,7 +139,8 @@ kind delete cluster --name substratus
 
 ## Google Cloud Platform
 
-In this quickstart guide, you will create a GKE cluster, install Substratus and deploy an Open Source LLM such as falcon-7b-instruct.
+Follow along and utilize the basic automated install to create a GKE cluster,
+install Substratus and deploy an Open Source LLM, the falcon-7b-instruct model.
 
 :::note
 
