@@ -125,7 +125,7 @@ Delete all GCP infrastructure.
 bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/down.sh)
 ```
 
-If you are interested in continuing your journey through Substratus, take a look at the [guides](./category/guides) to learn how to finetune models with your own dataset and much more!
+If you are interested in continuing your journey through Substratus, take a look at the [guides](../category/guides) to learn how to finetune models with your own dataset and much more!
 
 To learn more about how Substratus works, check out the [Overview](../overview.md) page.
 
