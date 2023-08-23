@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[2483],{2935:t=>{t.exports=JSON.parse('{"title":"Quickstart","slug":"/category/quickstart","permalink":"/docs/category/quickstart","navigation":{"previous":{"title":"Introduction","permalink":"/docs/"},"next":{"title":"Local - Kind","permalink":"/docs/quickstart/local-kind"}}}')}}]);

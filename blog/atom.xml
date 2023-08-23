@@ -37,8 +37,8 @@ could instead deploy the "Instruct" variation of Llama.</p><p>Stay tuned for ano
         <summary type="html"><![CDATA[We are excited to introduce Substratus, the open-source cross-cloud substrate]]></summary>
         <content type="html"><![CDATA[<p>We are excited to introduce Substratus, the open-source cross-cloud substrate
 for training and serving ML models with an initial focus on Large Language
-Models. Fine-tune and serve LLMs on your Kubernetes clusters in your cloud.</p><p>Can’t wait? - Get started with our <a href="https://www.substratus.ai/docs/quickstart" target="_blank" rel="noopener noreferrer">quick start
-docs</a> or hop over to our <a href="https://github.com/substratusai/substratus" target="_blank" rel="noopener noreferrer">GitHub
+Models. Fine-tune and serve LLMs on your Kubernetes clusters in your cloud.</p><p>Can’t wait? - Get started with our <a href="/docs/category/quickstart">quick start
+docs</a> or jump over to the <a href="https://github.com/substratusai/substratus" target="_blank" rel="noopener noreferrer">GitHub
 repo</a>.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="why-substratus"><strong>Why Substratus?</strong><a href="#why-substratus" class="hash-link" aria-label="Direct link to why-substratus" title="Direct link to why-substratus">​</a></h2><p><strong>Press the fast-button for ML</strong>: Leverage out of the box container images to
 load a base model, optionally fine-tune with your own dataset and spin up a
 model server, all without writing any code.</p><p><strong>Notebook-integrated workflows:</strong> Launch a remote, containerized, GPU-enabled
@@ -61,7 +61,7 @@ Substratus seeks to maximize the productivity of data scientists and engineers
 through providing a best-in-class user experience. We strive to build a set of
 well-designed primitives that allow ML practitioners to enter a flow state as
 they move between importing data, training, and serving models.</p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="roadmap"><strong>Roadmap</strong><a href="#roadmap" class="hash-link" aria-label="Direct link to roadmap" title="Direct link to roadmap">​</a></h2><p>We are fast at work adding new functionality, focused on creating the most
-productive and enjoyable platform for ML practitioners. Coming soon:</p><ol><li>Support for AWS and Azure</li><li>VS Code Notebook Integration</li><li>Large-scale distributed training</li><li>ML ecosystem integrations</li></ol><p>Try Substratus today in your GCP project by following the <a href="https://www.substratus.ai/docs/quickstart" target="_blank" rel="noopener noreferrer">quick start
+productive and enjoyable platform for ML practitioners. Coming soon:</p><ol><li>Support for AWS and Azure</li><li>VS Code Notebook Integration</li><li>Large-scale distributed training</li><li>ML ecosystem integrations</li></ol><p>Try Substratus today in your GCP project by following the <a href="/docs/category/quickstart">quick start
 docs</a>. Let us know what features you
 would like to see on our <a href="https://github.com/substratusai/substratus" target="_blank" rel="noopener noreferrer">GitHub
 repo</a> and don’t forget to add a
