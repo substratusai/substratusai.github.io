@@ -22,10 +22,21 @@ The script also ensures all required permissions are given to the Service Accoun
 
 This installation method is only intended to work in a basic GCP project free of any significant constraints (i.e. GCP Organizational Policies, etc).
 
+### Install
 Run the automatic installer:
 ```bash
 export PROJECT_ID=$(gcloud config get project)
 bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh)
+```
+
+### Cleanup
+Clean up deletes all the resources that are created in the script. This could
+destroy valuable data and resources.
+
+Run the clean up script to delete all resources created by the automatic installer:
+```bash
+export PROJECT_ID=$(gcloud config get project)
+bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/down.sh)
 ```
 
 ## Custom
