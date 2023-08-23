@@ -2,7 +2,7 @@
 sidebar_position: 4
 ---
 
-# GCP Install Guide
+# GCP - Google Cloud
 
 ## Subsratus required resources
 * GKE Cluster with GCSFuse and Workload Identity

@@ -24,7 +24,7 @@ for training and serving ML models with an initial focus on Large Language
 Models. Fine-tune and serve LLMs on your Kubernetes clusters in your cloud.
 
 Can’t wait? - Get started with our [quick start
-docs](https://www.substratus.ai/docs/quickstart) or hop over to our [GitHub
+docs](/docs/category/quickstart) or jump over to the [GitHub
 repo](https://github.com/substratusai/substratus).
 
 ## **Why Substratus?**
@@ -83,7 +83,7 @@ productive and enjoyable platform for ML practitioners. Coming soon:
 4. ML ecosystem integrations
 
 Try Substratus today in your GCP project by following the [quick start
-docs](https://www.substratus.ai/docs/quickstart). Let us know what features you
+docs](/docs/category/quickstart). Let us know what features you
 would like to see on our [GitHub
 repo](https://github.com/substratusai/substratus) and don’t forget to add a
 star!
