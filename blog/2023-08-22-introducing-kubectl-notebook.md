@@ -6,9 +6,11 @@ authors:
   title: Engineer
   url: https://github.com/nstogner
   image_url: https://avatars.githubusercontent.com/u/10274189?v=4
-
+image: /img/kubectl-notebook-cmd.png
 tags: [introduction, feature]
 ---
+
+<img src="/img/kubectl-notebook-cmd.png" alt="kubectl notebook" width="100%" />
 
 import ReactPlayer from 'react-player'
 import GitHubButton from 'react-github-btn'
@@ -57,7 +59,7 @@ Some interesting details:
 
 The system underneath the `notebook` command:
 
-<img src="/img/diagrams/kubectl-notebook.excalidraw.png" />
+![diagram](/img/diagrams/kubectl-notebook.excalidraw.png)
 
 ## More to come!
 
