@@ -2,13 +2,14 @@
 sidebar_position: 6
 ---
 
-import ReactPlayer from 'react-player'
-
 # Notebooks
 
 Jupyter notebooks are at the heart of machine learning workflows in Substratus. They offer seamless integration with all other resources within the Substratus environment.
 
-<ReactPlayer playing controls url='/video/notebook.mp4' width='100%' height='100%' />
+<div class="video-container">
+  <iframe class="video" src="https://www.youtube-nocookie.com/embed/0_PWl6vjqdE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 
 ## Key Features of Substratus Notebooks
 

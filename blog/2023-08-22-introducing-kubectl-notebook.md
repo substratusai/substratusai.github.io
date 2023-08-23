@@ -12,7 +12,6 @@ tags: [introduction, feature]
 
 <img src="/img/kubectl-notebook-cmd.png" alt="kubectl notebook" width="100%" />
 
-import ReactPlayer from 'react-player'
 import GitHubButton from 'react-github-btn'
 
 <blockquote>
@@ -33,11 +32,15 @@ kubectl notebook -d .
 
 And now it has become an integral part of our workflow as we build out the Substratus ML platform.
 
-<ReactPlayer playing controls url='/video/notebook.mp4' width='100%' height='100%' />
+Check out the 50 second screenshare:
+
+<div class="video-container">
+  <iframe class="video" src="https://www.youtube-nocookie.com/embed/0_PWl6vjqdE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
 
 ## Design Goals
 
-1. One command should do everything.
+1. One command should build, launch, and sync the Notebook.
 2. Users should only need a Kubeconfig - no other credentials.
 3. Admins should not need to setup networking, TLS, etc.
 
