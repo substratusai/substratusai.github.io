@@ -19,7 +19,7 @@ To summarize:
 `finetunedModel = training_image(baseModel, trainingDataset)`. 
 
 
-The following./guides/finetuning-models.ipynb Model resource would create a finetuned model:
+The following Model resource would create a finetuned model:
 ```yaml
 apiVersion: substratus.ai/v1
 kind: Model
