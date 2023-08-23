@@ -19,7 +19,7 @@ import GitHubButton from 'react-github-btn'
 "Wouldn't it be nice to have a single command that containerized your local directory and served it as a Jupyter Notebook running on a machine with a bunch of GPUs attached?"
 </blockquote>
 
-The conversation went something like that while we daydreamed about our preferred workflow in the midst of developing a LLM training job.
+The conversation went something like that while we daydreamed about our preferred workflow. At that point in time we were hopping back-n-forth between Google Colab and our containers while developing a LLM training job.
 
 <blockquote>
 "Annnddd it should automatically sync file-changes back to your local directory so that you can commit your changes to git and kick off a long-running ML training job - containerized with the exact same python version and packages!"
@@ -31,7 +31,7 @@ So we built it!
 kubectl notebook -d .
 ```
 
-A quick screenshare:
+And now it has become an integral part of our workflow as we build out the Substratus ML platform.
 
 <ReactPlayer playing controls url='/video/notebook.mp4' width='100%' height='100%' />
 
