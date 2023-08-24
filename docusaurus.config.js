@@ -79,9 +79,10 @@ const config = {
           },
           { to: "/blog", label: "Blog", position: "left" },
           {
-            type: "html",
+            href: "https://github.com/substratusai/substratus",
             position: "right",
-            value: '<iframe src="https://ghbtns.com/github-btn.html?user=substratusai&repo=substratus&type=star&count=true&size=large" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>',
+            className: "header-github-link",
+            "aria-label": "GitHub repository",
           },
         ],
       },
