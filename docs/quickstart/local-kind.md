@@ -20,7 +20,7 @@ Make sure you have the following tools installed and up to date.
 Larger models require a GPU and Kind can work with GPUs.
 It's recommended to choose GPU if you have a GPU available on your machine.
 
-<Tabs groupId="kind-gpu">
+<Tabs groupId="kind-gpu" queryString>
   <TabItem value="cpu" label="CPU" default>
 
 Create a local Kubernetes cluster using Kind.
@@ -112,7 +112,7 @@ kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/
 ## Deploy LLM
 Now that Substratus is running let's deploy an Open Source LLM.
 
-<Tabs groupId="kind-gpu">
+<Tabs groupId="kind-gpu" queryString>
   <TabItem value="cpu" label="CPU" default>
 
 Running CPU mode only supports smaller models. Rou can use the (relatively-tiny) Facebook OPT 125M model (125 million parameters) from HuggingFace.
@@ -214,7 +214,7 @@ When the Server reports a `Ready` status, proceed to the next section to test it
 
 ## Talk to your LLM!
 
-<Tabs groupId="kind-gpu">
+<Tabs groupId="kind-gpu" queryString>
   <TabItem value="cpu" label="CPU" default>
 
 :::note
