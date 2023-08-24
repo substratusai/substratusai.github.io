@@ -14,6 +14,8 @@ tags: [introduction, feature]
 
 import GitHubButton from 'react-github-btn'
 
+[Substratus](https://github.com/substratusai/substratus) has added the `kubectl notebook` command!
+
 <blockquote>
 "Wouldn't it be nice to have a single command that containerized your local directory and served it as a Jupyter Notebook running on a machine with a bunch of GPUs attached?"
 </blockquote>
@@ -30,7 +32,7 @@ So we built it!
 kubectl notebook -d .
 ```
 
-And now it has become an integral part of our workflow as we build out the Substratus ML platform.
+And now it has become an integral part of our workflow as we build out the [Substratus ML platform](https://github.com/substratusai/substratus).
 
 Check out the 50 second screenshare:
 
@@ -70,7 +72,10 @@ Lazy-loading large models from disk...
 Incremental dataset loading...
 Stay tuned to learn more about how Notebooks on Substratus can speed up your ML workflows.
 
+Don't forget to star and follow the repo!
+
+[https://github.com/substratusai/substratus](https://github.com/substratusai/substratus)
+
 <GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
 
-Don't forget to star and follow the repo!
 
