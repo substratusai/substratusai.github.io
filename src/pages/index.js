@@ -4,6 +4,7 @@ import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import HomepageFeatures from '@site/src/components/HomepageFeatures';
+import GitHubButton from 'react-github-btn'
 
 import styles from './index.module.css';
 
@@ -15,10 +16,11 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
+          <GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
           <Link
-            className="button button--danger button--lg"
-            to="/docs/">
-            Learn More
+            className="button button--danger button--lg margin-left--lg"
+            to="https://github.com/substratusai/substratus">
+            Quickstart
           </Link>
         </div>
       </div>
