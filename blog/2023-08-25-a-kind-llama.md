@@ -5,11 +5,11 @@ authors:
 - name: Sam Stoelinga
   title: Engineer
   url: https://github.com/samos123
-image: /img/kubectl-notebook-cmd.small.png
+image: /img/kind-llama-on-laptop-gpu.png
 tags: [llama, kind]
 ---
 
-<img src="/img/kubectl-notebook-cmd.png" alt="kubectl notebook" width="100%" />
+<img src="/img/kind-llama-on-laptop-gpu.png" alt="kubectl notebook" width="100%" />
 
 import GitHubButton from 'react-github-btn'
 
@@ -26,63 +26,15 @@ Want to try this out yourself? Follow a long for a fun ride.
 ### Install Kind with GPU support
 Install the NVIDIA container toolkit for Docker: [Install Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
-The steps below are all required as part of a workaround for Kind to
-support GPUs. You can read more about the workaround on the [Kind PR
-for GPU support](https://github.com/kubernetes-sigs/kind/pull/3257#issuecomment-1607287275)
-
-Configure nvidia as the default runtime for Docker:
+Use the convenience script to create a Kind cluster and configure GPU support:
 ```bash
-sudo nvidia-ctk runtime configure --runtime=docker --set-as-default
+bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/up-gpu.sh)
 ```
+Or inspect the script and run the steps one by one.
 
-Restart docker daemon:
-```
-sudo systemctl restart docker
-```
-
-Change `accept-nvidia-visible-devices-as-volume-mounts` to `true` in `/etc/nvidia-container-runtime/config.toml`:
-```bash
-sudo sed -i '/accept-nvidia-visible-devices-as-volume-mounts/c\accept-nvidia-visible-devices-as-volume-mounts = true' \
-  /etc/nvidia-container-runtime/config.toml
-```
-
-Create the kind cluster:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/up-gpu.sh bash /kind create cluster.*/ /^EOF$/)
-```bash
-kind create cluster --name substratus --config - <<EOF
-apiVersion: kind.x-k8s.io/v1alpha4
-kind: Cluster
-nodes:
-- role: control-plane
-  image: kindest/node:v1.27.3@sha256:3966ac761ae0136263ffdb6cfd4db23ef8a83cba8a463690e98317add2c9ba72
-  extraPortMappings:
-  - containerPort: 30080
-    hostPort: 30080
-  # required for GPU workaround
-  extraMounts:
-    - hostPath: /dev/null
-      containerPath: /var/run/nvidia-container-devices/all
-EOF
-```
-
-Create required symlink inside kind container ([workaround](https://github.com/NVIDIA/nvidia-docker/issues/614#issuecomment-423991632) for issue with nvidia operator):
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/up-gpu.sh bash /docker exec -ti .*/ /.*ldconfig.real/)
-```bash
-docker exec -ti substratus-control-plane ln -s /sbin/ldconfig /sbin/ldconfig.real
-```
-
-Install the NVIDIA GPU operator:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/up-gpu.sh bash /helm repo add .*/ /.*driver.enabled=false/)
-```bash
-helm repo add nvidia https://helm.ngc.nvidia.com/nvidia || true
-helm repo update
-helm install --wait --generate-name \
-     -n gpu-operator --create-namespace \
-     nvidia/gpu-operator --set driver.enabled=false
-```
 
 ### Install Substratus
-Install the Substratus K8s operator to make it easy to load and server GGML models.
+Install the Substratus K8s operator to make it easy to load and serve GGML models.
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/manifests.yaml
 ```
@@ -122,7 +74,23 @@ spec:
     files: "config.json,llama-2-13b-chat.ggmlv3.q2_K.bin"
 ```
 
-<GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
+Once the model is ready it will start serving an OpenAI compatible
+API endpoint.
 
-Don't forget to star and follow the repo!
+Let's throw some prompts at it:
+```bash
+curl http://localhost:8080/v1/completions \
+  -H "Content-Type: application/json" \
+  -d '{ \
+    "model": "falcon-7b-instruct", \
+    "prompt": "Who was the first president of the United States?", \
+    "max_tokens": 10\
+  }'
+```
+
+You can play around with other models. For example, if you have a 24 GB GPU card you should
+be run Llama 2 70b in 2 bit mode by using llama.cpp.
+
+Want to show your support? Give a star:
+<GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
 
