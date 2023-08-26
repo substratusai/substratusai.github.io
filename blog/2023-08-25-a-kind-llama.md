@@ -29,7 +29,7 @@ Luckily, [Llama.cpp](https://github.com/ggerganov/llama.cpp) allows us to load m
 
 Want to try this out yourself? Follow a long for a fun ride.
 
-### Install Kind with GPU support
+### Create Kind K8s cluster with GPU support
 Install the NVIDIA container toolkit for Docker: [Install Guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
 
 Use the convenience script to create a Kind cluster and configure GPU support:
