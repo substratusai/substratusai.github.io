@@ -13,17 +13,19 @@ tags: [llama, kind]
 
 import GitHubButton from 'react-github-btn'
 
-I was pleasantly surprised by how well the Llama 13B Chat model was able to
-run on my laptop that has a mere RTX 2060 (6GB of GPU memory). My setup
-looked like this:
-* Kind for deploying a single K8s cluster
-* Substratus as the K8s operator for ML workloads
+I've always wanted to have a Llama all for myself. So I went ahead and tried
+to deploy Llama 13B Chat model on a local K8s cluster on my laptop.
+The model ran surprisingly well on my laptop that has a mere RTX 2060.
+
+My laptop setup looks like this:
+* Kind for deploying a single node K8s cluster
+* AMD Ryzen 7 (8 threads), 16 GB of memory, RTX 2060 (6GB GPU memory)
 * Llama.cpp/GGML for fast serving and loading larger models on consumer hardware
 
 Now you might be thinking how did a 13 billion parameter model fit on just 6GB GPU memory?
 Shouldn't that require ~13 GB of GPU memory when serving the model in 4 bit mode?
 Yes it should because 13 billion * 4 bytes / (32 bits / 4 bits) = 13 GB.
-[Llama.cpp](https://github.com/ggerganov/llama.cpp) allows us to load models in 2 bit mode and supports running on CPU only at low speeds.
+Luckily, [Llama.cpp](https://github.com/ggerganov/llama.cpp) allows us to load models in 2 bit mode and supports running on CPU only at low speeds.
 
 Want to try this out yourself? Follow a long for a fun ride.
 
@@ -97,4 +99,3 @@ be run Llama 2 70b in 2 bit mode by using llama.cpp.
 
 Support the project by adding a star on GitHub!
 <GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
-
