@@ -1,6 +1,6 @@
 ---
-slug: a-kind-k8s-llama-13b-on-rtx-2060
-title: "A Kind K8s Llama 13b on my RTX 2060 laptop"
+slug: kind-local-llama-on-rtx-2060
+title: "A Kind Local Llama on K8s"
 authors:
 - name: Sam Stoelinga
   title: Engineer
@@ -13,13 +13,17 @@ tags: [llama, kind]
 
 import GitHubButton from 'react-github-btn'
 
-I was pleasantly surprised by how well the Llama 13b chat model was able to
-run on my laptop that has a RTX 2060. Because the RTX 2060 has just 6GB of GPU memory.
-Another cool fact, this all ran on a local K8s cluster on my laptop
-by using Kind.
+I was pleasantly surprised by how well the Llama 13B Chat model was able to
+run on my laptop that has a mere RTX 2060 (6GB of GPU memory). My setup
+looked like this:
+* Kind for deploying a single K8s cluster
+* Substratus as the K8s operator for ML workloads
+* Llama.cpp/GGML for fast serving and loading larger models on consumer hardware
 
-Now you might be thinking how did a 13 billion parameter model fit on just 6GB
-GPU memory? Shouldn't that require ~13 GB of GPU memory when serving the model in 4 bit mode? Yes it should, unless you use [llama.cpp](https://github.com/ggerganov/llama.cpp) which is a C++ port of Llama and allows us to run larger models with less GPU memory or with no GPU at all.
+Now you might be thinking how did a 13 billion parameter model fit on just 6GB GPU memory?
+Shouldn't that require ~13 GB of GPU memory when serving the model in 4 bit mode?
+Yes it should because 13 billion * 4 bytes / (32 bits / 4 bits) = 13 GB.
+[Llama.cpp](https://github.com/ggerganov/llama.cpp) allows us to load models in 2 bit mode and supports running on CPU only at low speeds.
 
 Want to try this out yourself? Follow a long for a fun ride.
 
@@ -30,11 +34,11 @@ Use the convenience script to create a Kind cluster and configure GPU support:
 ```bash
 bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/up-gpu.sh)
 ```
-Or inspect the script and run the steps one by one.
+Or inspect the [script](https://github.com/substratusai/substratus/blob/main/install/kind/up-gpu.sh) and run the steps one by one.
 
 
 ### Install Substratus
-Install the Substratus K8s operator to make it easy to load and serve GGML models.
+Install the Substratus K8s operator which will orchestrate model loading and serving:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/manifests.yaml
 ```
@@ -91,6 +95,6 @@ curl http://localhost:8080/v1/completions \
 You can play around with other models. For example, if you have a 24 GB GPU card you should
 be run Llama 2 70b in 2 bit mode by using llama.cpp.
 
-Want to show your support? Give a star:
+Support the project by adding a star on GitHub!
 <GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
 
