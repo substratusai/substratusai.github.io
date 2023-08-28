@@ -104,8 +104,10 @@ curl http://localhost:8080/v1/completions \
   -d '{ "prompt": "Who was the first president of the United States?", "stop": ["."]}'
 ```
 
+Checkout the full API docs here: [http://localhost:8080/docs](http://localhost:8080/docs)
+
 You can play around with other models. For example, if you have a 24 GB GPU card you should
-be able to run Llama 2 70B in 2 bit mode by using llama.cpp.
+be able to run Llama 2 70B in 4 bit mode by using llama.cpp.
 
 Support the project by adding a star on GitHub! ❤️
 <GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
