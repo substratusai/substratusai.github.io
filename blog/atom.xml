@@ -12,8 +12,8 @@
         <id>https://www.substratus.ai/blog/kind-local-llama-on-rtx-2060</id>
         <link href="https://www.substratus.ai/blog/kind-local-llama-on-rtx-2060"/>
         <updated>2023-08-25T00:00:00.000Z</updated>
-        <summary type="html"><![CDATA[A Kind Local Llama on a laptop with a mere RTX 2060?!]]></summary>
-        <content type="html"><![CDATA[<img loading="lazy" src="/img/kind-llama-on-laptop-gpu.png" alt="kubectl notebook" width="100%" class="img_ev3q"><p>A Kind Local Llama on a laptop with a mere RTX 2060?!
+        <summary type="html"><![CDATA[A Llama 13B parameter model running on a laptop with a mere RTX 2060?!]]></summary>
+        <content type="html"><![CDATA[<img loading="lazy" src="/img/kind-llama-on-laptop-gpu.png" alt="kubectl notebook" width="100%" class="img_ev3q"><p>A Llama 13B parameter model running on a laptop with a mere RTX 2060?!
 Yes, it all ran surprisingly well at around 7 tokens / sec.
 Follow along and learn how to do this on your environment.</p><p>My laptop setup looks like this:</p><ul><li>Kind for deploying a single node K8s cluster</li><li>AMD Ryzen 7 (8 threads), 16 GB system memory, RTX 2060 (6GB GPU memory)</li><li>Llama.cpp/GGML for fast serving and loading larger models on consumer hardware</li></ul><p>You might be wondering: How can a model with 13 billion parameters fit into a 6GB GPU? You'd expect it to need about 13GB, especially if it's running in 4-bit mode, right?
 Yes it should because 13 billion * 4 bytes / (32 bits / 4 bits) = 13 GB.
