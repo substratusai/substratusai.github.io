@@ -86,8 +86,8 @@ spec:
 ```bash
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server.yaml
 ```
-Note in my case 30 out of 42 layers loaded into GPU is the max but you might be able
-to load all 42 lays into the GPU if you have more GPU memory.
+Note in my case 30 out of 42 layers loaded into GPU is the max, but you might be able
+to load all 42 layers into the GPU if you have more GPU memory.
 
 Once the model is ready it will start serving an OpenAI compatible
 API endpoint.
