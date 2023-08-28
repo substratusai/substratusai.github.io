@@ -45,53 +45,58 @@ Install the Substratus K8s operator which will orchestrate model loading and ser
 kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/install/kind/manifests.yaml
 ```
 
-### Load the Llama 2 13b chat GGML model
-Create a Model resource to load the [Llama 2 13b chat GGML model](https://huggingface.co/TheBloke/Llama-2-13B-chat-GGML) from The Bloke.
+### Load the Llama 2 13b chat GGUF model
+Create a Model resource to load the [Llama 2 13b chat GGUF model](https://huggingface.co/substratusai/Llama-2-13B-chat-GGUF)
 
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-ggml/base-model.yaml yaml)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/base-model.yaml yaml)
 ```yaml
 apiVersion: substratus.ai/v1
 kind: Model
 metadata:
-  name: llama2-13b-chat-ggml
+  name: llama2-13b-chat-gguf
 spec:
   image: substratusai/model-loader-huggingface
   params:
-    name: TheBloke/Llama-2-13B-chat-GGML
-    files: "config.json,llama-2-13b-chat.ggmlv3.q2_K.bin"
+    name: substratusai/Llama-2-13B-chat-GGUF
+    files: "model.bin"
 ```
 
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-ggml/base-model.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/base-model.yaml
 ```
 The model is being downloaded from HuggingFace into your Kind cluster.
 
 ### Serve the model
 Create a Server resource to serve the model:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-ggml/server.yaml yaml)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server.yaml yaml)
 ```yaml
 apiVersion: substratus.ai/v1
 kind: Server
 metadata:
-  name: llama2-13b-chat-ggml
+  name: llama2-13b-chat-gguf
 spec:
   image: substratusai/model-server-llama-cpp
   model:
-    name: llama2-13b-chat-ggml
+    name: llama2-13b-chat-gguf
+  params:
+    n_gpu_layers: 30
   resources:
     gpu:
       count: 1
 ```
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-ggml/server.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server.yaml
 ```
+
+Note in my case 30 out of 42 layers loaded into GPU is the max but you might be able
+to load all 42 lays into the GPU if you have more GPU memory.
 
 Once the model is ready it will start serving an OpenAI compatible
 API endpoint.
 
 Expose the Server to a local port by using port forwarding:
 ```bash
-kubectl port-forward service/llama2-13b-chat-ggml-server 8080:8080
+kubectl port-forward service/llama2-13b-chat-gguf-server 8080:8080
 ```
 
 Let's throw some prompts at it:
