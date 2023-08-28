@@ -13,7 +13,7 @@ tags: [llama, kind]
 
 import GitHubButton from 'react-github-btn'
 
-A Kind Local Llama on a laptop with a mere RTX 2060?!
+A Llama 13B parameter model running on a laptop with a mere RTX 2060?!
 Yes, it all ran surprisingly well at around 7 tokens / sec.
 Follow along and learn how to do this on your environment.
 
