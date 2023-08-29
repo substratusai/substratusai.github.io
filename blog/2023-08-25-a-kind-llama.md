@@ -67,14 +67,14 @@ The model is being downloaded from HuggingFace into your Kind cluster.
 
 ### Serve the model
 Create a Server resource to serve the model:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server.yaml yaml)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server-gpu.yaml yaml)
 ```yaml
 apiVersion: substratus.ai/v1
 kind: Server
 metadata:
   name: llama2-13b-chat-gguf
 spec:
-  image: substratusai/model-server-llama-cpp
+  image: substratusai/model-server-llama-cpp:latest-gpu
   model:
     name: llama2-13b-chat-gguf
   params:
@@ -84,7 +84,7 @@ spec:
       count: 1
 ```
 ```bash
-kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server.yaml
+kubectl apply -f https://raw.githubusercontent.com/substratusai/substratus/main/examples/llama2-13b-chat-gguf/server-gpu.yaml
 ```
 Note in my case 30 out of 42 layers loaded into GPU is the max, but you might be able
 to load all 42 layers into the GPU if you have more GPU memory.
