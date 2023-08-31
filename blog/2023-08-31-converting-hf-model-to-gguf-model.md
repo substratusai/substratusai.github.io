@@ -107,7 +107,7 @@ has the following content:
 from huggingface_hub import HfApi
 api = HfApi()
 
-model_id = "substratusai/vicuna-13b-v1.5-gguf
+model_id = "substratusai/vicuna-13b-v1.5-gguf"
 api.upload_file(
     path_or_fileobj="vicuna-13b-v1.5.gguf",
     path_in_repo="vicuna-13b-v1.5.gguf",
