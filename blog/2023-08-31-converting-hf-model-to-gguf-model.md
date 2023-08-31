@@ -8,6 +8,8 @@ authors:
 tags: [llama.cpp, gguf]
 ---
 
+import GitHubButton from 'react-github-btn';
+
 Llama.cpp is a great way to run LLMs efficiently on CPUs and GPUs. The downside
 however is that you need to convert models to a format that's supported by Llama.cpp,
 which is now the GGUF file format.  In this blog post you will learn how to convert
@@ -114,7 +116,20 @@ api.upload_file(
 )
 ```
 
+Get a HuggingFace Token that has write permission from here:
+[https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
+
+Set your HuggingFace token:
+```bash
+export HUGGING_FACE_HUB_TOKEN=<paste-your-own-token>
+```
+
 Run the `upload.py` script:
 ```bash
 python upload.py
 ```
+
+Interested in learning how to automate flows like this? Checkout our
+open source project:
+<GitHubButton href="https://github.com/substratusai/substratus" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star substratusai/substratus on GitHub">Star</GitHubButton>
+
