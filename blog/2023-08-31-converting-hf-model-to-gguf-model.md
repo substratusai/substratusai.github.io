@@ -108,11 +108,11 @@ from huggingface_hub import HfApi
 api = HfApi()
 
 model_id = "substratusai/vicuna-13b-v1.5-gguf"
+api.create_repo(model_id, exist_ok=True, repo_type=model_id)
 api.upload_file(
     path_or_fileobj="vicuna-13b-v1.5.gguf",
     path_in_repo="vicuna-13b-v1.5.gguf",
     repo_id=model_id,
-    repo_type="model",
 )
 ```
 
