@@ -25,6 +25,14 @@ const config = {
   onBrokenLinks: "throw",
   onBrokenMarkdownLinks: "warn",
 
+  scripts: [
+    {
+      src: '//gc.zgo.at/count.js',
+      async: true,
+      'data-goatcounter': 'https://substratus.goatcounter.com/count',
+    },
+  ],
+
   // Even if you don't use internalization, you can use this field to set useful
   // metadata like html lang. For example, if your site is Chinese, you may want
   // to replace "en" with "zh-Hans".
