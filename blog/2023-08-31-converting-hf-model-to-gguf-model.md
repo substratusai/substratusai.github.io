@@ -92,6 +92,11 @@ python llama.cpp/convert.py vicuna-hf \
   --outfile vicuna-13b-v1.5.gguf \
   --outtype q8_0
 ```
+In this case we're also quantizing the model to 8 bit by setting
+`--outtype q8_0`. Quantizing helps improve inference speed, but it can
+negatively impact quality.
+You can use `--outtype f16` (16 bit) or `--outtype f32` (32 bit) to preserve original
+quality.
 
 Verify the GGUF model was created:
 ```bash
