@@ -32,7 +32,6 @@ export PROJECT_ID=$(gcloud config get project)
 Create a GKE cluster along with supporting infrastructure (buckets, service accounts, image registries) and install Substratus operator by using the convenience script:
 
 ```bash
-export INSTALL_OPERATOR=yes
 bash <(curl https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh)
 ```
 
