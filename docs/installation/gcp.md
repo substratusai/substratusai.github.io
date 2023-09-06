@@ -89,18 +89,6 @@ gcloud container clusters create ${CLUSTER_NAME} --location ${REGION} \
   --addons GcsFuseCsiDriver
 ```
 
-Configure a maintenance exclusion so GKE doesn't randomly start upgrading your nodes:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^START=/ /no_minor_or_node_upgrades/)
-```bash
-START=$(date -I --date="-1 day")
-END=$(date -I --date="+160 days")
-gcloud container clusters update ${CLUSTER_NAME} --region ${REGION} \
-    --add-maintenance-exclusion-name notouchy \
-    --add-maintenance-exclusion-start ${START} \
-    --add-maintenance-exclusion-end ${END} \
-    --add-maintenance-exclusion-scope no_minor_or_node_upgrades
-```
-
 Create new GPU nodepools (e.g. L4 GPU nodepools):
 [embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /^nodepool_args=/ /machine-type g2-standard-48.*\n.*/)
 ```bash
