@@ -8,6 +8,10 @@ authors:
 tags: [kind, gpu]
 ---
 
+<div class="video-container">
+  <iframe class="video" src="https://www.youtube-nocookie.com/embed/O1683vzaJVE" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</div>
+
 Don't you just love it when you submit a PR and it turns out that no code is
 needed? That's exactly what happened when I tried add GPU support to Kind.
 
@@ -44,10 +48,10 @@ nodes:
 EOF
 ```
 
-Workaround for issue with missing file:
+Workaround for issue with missing required file `/sbin/ldconfig.real`:
 ```bash
 # https://github.com/NVIDIA/nvidia-docker/issues/614#issuecomment-423991632
-docker exec -ti substratus-control-plane ln -s /sbin/ldconfig /sbin/ldconfig.real || true
+docker exec -ti substratus-control-plane ln -s /sbin/ldconfig /sbin/ldconfig.real
 ```
 
 Install the K8s NVIDIA GPU operator so K8s is aware of your NVIDIA device:
