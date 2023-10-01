@@ -69,6 +69,8 @@ spec:
   image: substratusai/model-server-basaran
   model:
     name: falcon-7b-instruct
+  env:
+    MODEL_LOAD_IN_8BIT: "true"
   resources:
     gpu:
       type: nvidia-l4
