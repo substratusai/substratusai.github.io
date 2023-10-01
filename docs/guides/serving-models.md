@@ -7,11 +7,13 @@ sidebar_position: 2
 <!-- THE MARKDOWN (.md) FILE IS GENERATED FROM THE NOTEBOOK (.ipynb) FILE -->
 
 The Substratus Server resource lets you serve models that were loaded into Substratus.
-Substratus provides a serving image that uses Basaran to provide an OpenAI
-compatible API endpoint and also a Web UI which is compatible with most of the
-Large Language Models on HuggingFace.
+You can use one of Substratus provided Server images or create your own image.
 
-## Creating a server for falcon-7b-instruct
+Substratus provides the following images:
+* `substratusai/model-server-basaran`: This image can serve most HuggingFace models. It uses Basaran to provide an OpenAI compatible API endpoint and also a Web UI with streaming support.
+* `substratusai/model-server-llama-cpp`: This image can serve GGML models that are supported by llama.cpp
+
+## Tutorial: Creating a Server for falcon-7b-instruct
 
 Prerequisites:
 

@@ -12,11 +12,11 @@ Finetuning is especially helpful for use cases that require private internal
 data or for use cases that require domain specific knowledge that wasn't
 available on the internet.
 
-In Substratus the Model resource allows you to specify a `baseModel` and
-a `trainingDataset` to create new finetuned models.
+In Substratus the Model resource allows you to specify an existing `model` and
+a `dataset` to create new finetuned models.
 
 To summarize: 
-`finetunedModel = training_image(baseModel, trainingDataset)`. 
+`finetunedModel = training_image(model, dataset)`.
 
 
 The following Model resource would create a finetuned model:
@@ -28,9 +28,9 @@ metadata:
 spec:
   image:
     name: substratusai/model-trainer-huggingface
-  baseModel:
+  model:
     name: falcon-7b-instruct
-  trainingDataset:
+  dataset:
     name: k8s-instructions
   params:
     epochs: 1
