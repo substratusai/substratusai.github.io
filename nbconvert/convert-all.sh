@@ -18,12 +18,6 @@ convert() {
     --TagRemovePreprocessor.remove_cell_tags remove_cell
 }
 
-for nbfile in $repo/docs/*.ipynb; do
-  mdfile="${nbfile%.ipynb}.md"
-  echo "Converting: $(basename $nbfile) --> $(basename $mdfile)"
-  convert $nbfile $mdfile
-done
-
 for nbfile in $repo/docs/**/*.ipynb; do
   mdfile="${nbfile%.ipynb}.md"
   echo "Converting: $(basename $nbfile) --> $(basename $mdfile)"
