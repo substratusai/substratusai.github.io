@@ -14,7 +14,7 @@
             <guid>https://www.substratus.ai/blog/k8s-yaml-dataset</guid>
             <pubDate>Mon, 09 Oct 2023 00:00:00 GMT</pubDate>
             <description><![CDATA[Excited to announce the K8s YAML dataset containing]]></description>
-            <content:encoded><![CDATA[<p>Excited to announce the K8s YAML dataset containing
+            <content:encoded><![CDATA[<img loading="lazy" src="/img/the-stack-yaml-k8s-banner.png" alt="kubectl notebook" width="100%" class="img_ev3q"><p>Excited to announce the K8s YAML dataset containing
 276,520 valid K8s YAML files.</p><p>HuggingFace Dataset: <a href="https://huggingface.co/datasets/substratusai/the-stack-yaml-k8s" target="_blank" rel="noopener noreferrer">https://huggingface.co/datasets/substratusai/the-stack-yaml-k8s</a><br>
 <!-- -->Source code: <a href="https://github.com/substratusai/the-stack-yaml-k8s" target="_blank" rel="noopener noreferrer">https://github.com/substratusai/the-stack-yaml-k8s</a></p><h2 class="anchor anchorWithStickyNavbar_LWe7" id="why">Why?<a href="#why" class="hash-link" aria-label="Direct link to Why?" title="Direct link to Why?">​</a></h2><ul><li>This dataset can be used to fine-tune an LLM directly</li><li>New datasets can be created from his dataset such as an K8s instruct dataset (coming soon!)</li><li>What's your use case?</li></ul><h2 class="anchor anchorWithStickyNavbar_LWe7" id="how">How?<a href="#how" class="hash-link" aria-label="Direct link to How?" title="Direct link to How?">​</a></h2><p>Getting a lot of K8s YAML manifests wasn't easy. My initial approach
 was to use the Kubernetes website and scrape the YAML example files,
