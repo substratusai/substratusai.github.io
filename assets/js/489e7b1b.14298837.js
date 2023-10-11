@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[9638],{3384:s=>{s.exports=JSON.parse('{"label":"dataset","permalink":"/blog/tags/dataset","allTagsPath":"/blog/tags","count":1}')}}]);

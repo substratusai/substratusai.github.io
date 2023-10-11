@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[7825],{1354:s=>{s.exports=JSON.parse('{"label":"yaml","permalink":"/blog/tags/yaml","allTagsPath":"/blog/tags","count":1}')}}]);
