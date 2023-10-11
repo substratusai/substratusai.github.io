@@ -6,8 +6,11 @@ authors:
   title: Engineer
   url: https://github.com/samos123
 tags: [k8s, yaml, dataset]
+image: /img/the-stack-yaml-k8s-banner.png
 ---
 import GitHubButton from 'react-github-btn'
+
+<img src="/img/the-stack-yaml-k8s-banner.png" alt="kubectl notebook" width="100%" />
 
 Excited to announce the K8s YAML dataset containing
 276,520 valid K8s YAML files.
