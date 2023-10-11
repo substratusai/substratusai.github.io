@@ -50,8 +50,8 @@ print(ds[0]["content"])
 You probably notice that this ain't a K8s YAML file, so next we need to filter
 these 13 million YAML files and only keep the one that have valid K8 YAML.
 
-The approach I took was to use the kubernetes-validate OSS library. It turned out
-that YAML parsing was extremely slow so I added a 10x speed improvement
+The approach I took was to use the [kubernetes-validate](https://github.com/willthames/kubernetes-validate) OSS library. It turned out
+that YAML parsing was too slow so I added a 10x speed improvement
 by eagerly checking if "Kind or "kind" is not a substring in the YAML file.
 
 Here is the validate function that takes the yaml_content as a string and
