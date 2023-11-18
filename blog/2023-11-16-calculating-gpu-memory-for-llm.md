@@ -6,6 +6,7 @@ authors:
   title: Engineer
   url: https://github.com/samos123
 tags: [llm, gpu, memory]
+image: /img/llm-gpu-mem-formula.png
 ---
 
 How many GPUs do I need to be able to serve Llama 70B? In order
