@@ -208,7 +208,7 @@ echo "PRINCIPAL: ${SERVICE_ACCOUNT}"
 ```
 
 Run the following to create the ConfigMap:
-[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /kubectl apply -f - << EOF/ /\nEOF$/)
+[embedmd]:# (https://raw.githubusercontent.com/substratusai/substratus/main/install/gcp/up.sh bash /kubectl apply -f -/ /\nEOF$/)
 ```bash
 kubectl apply -f - << EOF
 apiVersion: v1
