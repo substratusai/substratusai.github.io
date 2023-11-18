@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[491],{4413:s=>{s.exports=JSON.parse('{"label":"gguf","permalink":"/blog/tags/gguf","allTagsPath":"/blog/tags","count":1}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[7256],{1504:s=>{s.exports=JSON.parse('{"label":"mistral-7b","permalink":"/blog/tags/mistral-7-b","allTagsPath":"/blog/tags","count":1,"unlisted":false}')}}]);

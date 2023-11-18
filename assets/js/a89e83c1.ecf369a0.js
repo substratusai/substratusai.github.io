@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksubstratus_website=self.webpackChunksubstratus_website||[]).push([[7672],{6410:s=>{s.exports=JSON.parse('{"label":"llama.cpp","permalink":"/blog/tags/llama-cpp","allTagsPath":"/blog/tags","count":1}')}}]);
