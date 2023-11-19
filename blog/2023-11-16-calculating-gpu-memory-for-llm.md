@@ -49,6 +49,9 @@ $$
 $$
 This is something you could run on 2 x L4 24GB GPUs.
 
+### Relevant tools and resources
+1. [Tool for checking how many GPUs you need for a specific model](https://huggingface.co/spaces/Vokturz/can-it-run-llm)
+2. [Transformer Math 101](https://blog.eleuther.ai/transformer-math/)
 
 Got more questions? Don't hesitate to join our Discord and ask away.
 
